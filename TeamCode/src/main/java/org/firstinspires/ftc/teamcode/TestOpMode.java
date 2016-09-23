@@ -35,6 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -78,7 +79,7 @@ public class TestOpMode extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         motor = hardwareMap.dcMotor.get("motor_1");
-        motor.setDirection(DcMotor.Direction.REVERSE);
+        motor.setDirection(DcMotor.Direction.FORWARD);
         telemetry.addData("Mode", motor.getMode());
         telemetry.update();
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -86,14 +87,14 @@ public class TestOpMode extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        motor.setPower(0.75);
+        motor.setPower(0.5);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
-            motor.setPower(0.25);
+            //motor.setPower(0.25);
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
