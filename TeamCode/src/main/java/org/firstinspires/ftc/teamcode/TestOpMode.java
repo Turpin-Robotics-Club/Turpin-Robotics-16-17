@@ -34,6 +34,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -51,13 +52,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Test Op Mode #1", group="Testing Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Test Op Mode #1", group="Testing Opmode")  // @Autonomous(...) is the other common choice
 //@Disabled
 public class TestOpMode extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor motor;
+    public DcMotor drive_motor;
+    public DcMotor steering_motor;
     // DcMotor rightMotor = null;
 
     @Override
@@ -78,29 +80,70 @@ public class TestOpMode extends LinearOpMode {
         // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Wait for the game to start (driver presses PLAY)
-        motor = hardwareMap.dcMotor.get("motor_1");
-        motor.setDirection(DcMotor.Direction.FORWARD);
-        telemetry.addData("Mode", motor.getMode());
-        telemetry.update();
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive_motor = hardwareMap.dcMotor.get("motor_1");
+        steering_motor = hardwareMap.dcMotor.get("motor_2");
+        drive_motor.setDirection(DcMotor.Direction.FORWARD);
+        steering_motor.setDirection(DcMotor.Direction.FORWARD);
+        //telemetry.addData("Mode", motor.getMode());
+        //telemetry.update();
+        drive_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
         runtime.reset();
 
-        motor.setPower(0.5);
+        boolean resettingWheel = false;
+
+        //motor.setPower(0.5);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
+            //telemetry.addData("Status", "Run Time: " + runtime.toString());
+            //telemetry.update();
 
             //motor.setPower(0.25);
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
             // rightMotor.setPower(-gamepad1.right_stick_y);
+            if (!resettingWheel) {
+                steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            drive_motor.setPower(-gamepad1.left_stick_y * 0.35);
+            if (steering_motor.getCurrentPosition() <= -119 && gamepad1.right_stick_x < 0) {
+
+            }
+            steering_motor.setPower(gamepad1.right_stick_x * 0.1);
+            telemetry.addData("Current Position", steering_motor.getCurrentPosition());
+            telemetry.update();
+
+            int current_position = steering_motor.getCurrentPosition();
+            if (gamepad1.y) {
+                resettingWheel = true;
+                //steering_motor.setTargetPosition(0);
+                //steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //steering_motor.setPower(0.2);
+                //if (steering_motor.getCurrentPosition() == 0) {
+                //    steering_motor.setPower(0);
+                    //steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                //}
+            }
+
+            if (resettingWheel) {
+                steering_motor.setTargetPosition(0);
+                steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                steering_motor.setPower(0.5);
+                if (steering_motor.getCurrentPosition() >= -5 && steering_motor.getCurrentPosition() <=5) {
+                    steering_motor.setPower(0);
+                    resettingWheel = false;
+                    steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                }
+            }
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
+        //steering_motor.setTargetPosition(0);
+        //steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //steering_motor.setPower(0.2);
     }
 }
