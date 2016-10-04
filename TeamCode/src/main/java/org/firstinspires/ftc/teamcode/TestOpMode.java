@@ -113,7 +113,9 @@ public class TestOpMode extends LinearOpMode {
             if (steering_motor.getCurrentPosition() <= -119 && gamepad1.right_stick_x < 0) {
 
             }
-            steering_motor.setPower(gamepad1.right_stick_x * 0.1);
+            if(!resettingWheel) {
+                steering_motor.setPower(gamepad1.right_stick_x * 0.1);
+            }
             telemetry.addData("Current Position", steering_motor.getCurrentPosition());
             telemetry.update();
 
@@ -132,12 +134,16 @@ public class TestOpMode extends LinearOpMode {
             if (resettingWheel) {
                 steering_motor.setTargetPosition(0);
                 steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                steering_motor.setPower(0.5);
-                if (steering_motor.getCurrentPosition() >= -5 && steering_motor.getCurrentPosition() <=5) {
+                steering_motor.setPower(Math.min((Math.pow(steering_motor.getCurrentPosition(), 2))/500, 0.5));
+                //steering_motor.setPower(0.5);
+                if (steering_motor.getCurrentPosition() <= 2 && steering_motor.getCurrentPosition() >= -2) {
                     steering_motor.setPower(0);
                     resettingWheel = false;
                     steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 }
+
+
+
             }
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
