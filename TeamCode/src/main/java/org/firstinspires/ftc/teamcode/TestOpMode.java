@@ -60,6 +60,9 @@ public class TestOpMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     public DcMotor drive_motor;
     public DcMotor steering_motor;
+
+    public double drive_power = 0.35;
+    public double steering_power = 0.09;
     // DcMotor rightMotor = null;
 
     @Override
@@ -109,33 +112,36 @@ public class TestOpMode extends LinearOpMode {
             if (!resettingWheel) {
                 steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
-            drive_motor.setPower(-gamepad1.left_stick_y * 0.35);
-            if (steering_motor.getCurrentPosition() <= -119 && gamepad1.right_stick_x < 0) {
+            drive_motor.setPower(-gamepad1.left_stick_y * this.drive_power);
+            if (!resettingWheel) {
+                if (steering_motor.getCurrentPosition() <= -110) {
+                    steering_motor.setPower(0.0);
+                    if (gamepad1.right_stick_x > 0) {
+                        steering_motor.setPower(gamepad1.right_stick_x * this.steering_power);
+                    }
+                } else if (steering_motor.getCurrentPosition() >= 110) {
+                    steering_motor.setPower(0.0);
+                    if (gamepad1.right_stick_x < 0) {
+                        steering_motor.setPower(gamepad1.right_stick_x * this.steering_power);
+                    }
+                } else {
+                    steering_motor.setPower(gamepad1.right_stick_x * this.steering_power);
+                }
+            }
 
-            }
-            if(!resettingWheel) {
-                steering_motor.setPower(gamepad1.right_stick_x * 0.1);
-            }
             telemetry.addData("Current Position", steering_motor.getCurrentPosition());
+            telemetry.addData("Joystick", gamepad1.right_stick_x);
             telemetry.update();
 
             int current_position = steering_motor.getCurrentPosition();
             if (gamepad1.y) {
                 resettingWheel = true;
-                //steering_motor.setTargetPosition(0);
-                //steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                //steering_motor.setPower(0.2);
-                //if (steering_motor.getCurrentPosition() == 0) {
-                //    steering_motor.setPower(0);
-                    //steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                //}
             }
 
             if (resettingWheel) {
                 steering_motor.setTargetPosition(0);
                 steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 steering_motor.setPower(Math.min((Math.pow(steering_motor.getCurrentPosition(), 2))/500, 0.5));
-                //steering_motor.setPower(0.5);
                 if (steering_motor.getCurrentPosition() <= 2 && steering_motor.getCurrentPosition() >= -2) {
                     steering_motor.setPower(0);
                     resettingWheel = false;
@@ -148,8 +154,5 @@ public class TestOpMode extends LinearOpMode {
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
-        //steering_motor.setTargetPosition(0);
-        //steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //steering_motor.setPower(0.2);
     }
 }
