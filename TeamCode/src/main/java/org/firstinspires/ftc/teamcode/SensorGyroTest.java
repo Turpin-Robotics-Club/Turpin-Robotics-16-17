@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
 */
-@Autonomous(name = "Sensor: MR Gyro", group = "Sensor")
+@Autonomous(name = "Gyro initialization", group = "mechanum")
 //@Disabled
 public class SensorGyroTest extends LinearOpMode {
 

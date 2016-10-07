@@ -16,7 +16,7 @@ public class AutonomousOpMode extends LinearOpMode {
 
     public double wheel_diameter = 5.0; // In Inches
     public double wheel_circumference = wheel_diameter * Math.PI;
-    public double gear_ratio = 0.33333;
+    public double gear_ratio = 1/3;
 
     @Override
     public void runOpMode() throws InterruptedException {

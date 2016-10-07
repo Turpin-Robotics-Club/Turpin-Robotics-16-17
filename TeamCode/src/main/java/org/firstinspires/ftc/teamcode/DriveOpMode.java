@@ -114,6 +114,9 @@ public class DriveOpMode extends LinearOpMode {
             }
             drive_motor.setPower(-gamepad1.left_stick_y * this.drive_power);
             if (!resettingWheel) {
+
+                //try gamepad1.setJoystickDeadzone(); to limit the point at which the controller says the stick is at 0
+
                 if (steering_motor.getCurrentPosition() <= -110) {
                     steering_motor.setPower(0.0);
                     if (gamepad1.right_stick_x > 0) {
@@ -141,6 +144,7 @@ public class DriveOpMode extends LinearOpMode {
             if (resettingWheel) {
                 steering_motor.setTargetPosition(0);
                 steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //takes the lowest value of the current position squared divided by a slope modifier, and 0.5
                 steering_motor.setPower(Math.min((Math.pow(steering_motor.getCurrentPosition(), 2))/500, 0.5));
                 if (steering_motor.getCurrentPosition() <= 2 && steering_motor.getCurrentPosition() >= -2) {
                     steering_motor.setPower(0);
