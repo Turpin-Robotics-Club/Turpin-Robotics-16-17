@@ -27,8 +27,8 @@ public class mecanumDrive extends OpMode {
         double relativeHeading;
         double xmove;
         double ymove;
-        float turnRate = 0.5f;
-        float driveRate = 0.75f;
+        float turnRate = 0.002f;
+        float driveRate = 0.5f;
 
 
 
@@ -112,26 +112,26 @@ public class mecanumDrive extends OpMode {
         if(relativeHeading >= 0 && relativeHeading < 90)
         {
             telemetry.addData("Quadrant", "1");
-            xmove = Math.sin(Math.toRadians(relativeHeading)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
-            ymove = -Math.cos(Math.toRadians(relativeHeading)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
+            xmove = Math.sin(Math.toRadians(relativeHeading)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
+            ymove = -Math.cos(Math.toRadians(relativeHeading)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 90 && relativeHeading < 180)
         {
             telemetry.addData("Quadrant", "4");
-            xmove = Math.cos(Math.toRadians(relativeHeading-90)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
-            ymove = Math.sin(Math.toRadians(relativeHeading-90)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
+            xmove = Math.cos(Math.toRadians(relativeHeading-90)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
+            ymove = Math.sin(Math.toRadians(relativeHeading-90)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 180 && relativeHeading < 270)
         {
             telemetry.addData("Quadrant", "3");
-            xmove = -Math.sin(Math.toRadians(relativeHeading-180)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
-            ymove = Math.cos(Math.toRadians(relativeHeading-180)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
+            xmove = -Math.sin(Math.toRadians(relativeHeading-180)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
+            ymove = Math.cos(Math.toRadians(relativeHeading-180)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 270 && relativeHeading < 360)
         {
             telemetry.addData("Quadrant", "2");
-            xmove = -Math.cos(Math.toRadians(relativeHeading-270)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
-            ymove = -Math.sin(Math.toRadians(relativeHeading-270)) * Math.sqrt((G1_Lstk_x * G1_Lstk_x) + (G1_Lstk_y * G1_Lstk_y)) * driveRate;
+            xmove = -Math.cos(Math.toRadians(relativeHeading-270)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
+            ymove = -Math.sin(Math.toRadians(relativeHeading-270)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
 
 
@@ -144,17 +144,17 @@ public class mecanumDrive extends OpMode {
         //Beginning of turn
         if((joy < currentPos + 180 && joy > currentPos) || joy < (currentPos + 180) -360)
         {
-            flvalue = flvalue + -Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            frvalue = frvalue + -Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            blvalue = blvalue + -Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            brvalue = brvalue + -Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
+            flvalue = flvalue + -Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            frvalue = frvalue + -Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            blvalue = blvalue + -Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            brvalue = brvalue + -Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
         }
         if((joy > currentPos - 180 && joy < currentPos) || joy > 360 - (180 - currentPos))
         {
-            flvalue = flvalue + Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            frvalue = frvalue + Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            blvalue = blvalue + Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
-            brvalue = brvalue + Math.sqrt((gamepad1.right_stick_x * gamepad1.right_stick_x) + (gamepad1.right_stick_y * gamepad1.right_stick_y)) * turnRate;
+            flvalue = flvalue + Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            frvalue = frvalue + Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            blvalue = blvalue + Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
+            brvalue = brvalue + Math.min(0.75, Math.pow(Math.sqrt(Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2)) * turnRate, 2));
         }
 
 
