@@ -68,7 +68,6 @@ Each OpMode sample class begins with several lines of code like the ones shown b
  @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")
  @Disabled
 ```
-This is a change
 
 The name that will appear on the driver station's "opmode list" is defined by the code:
  ``name="Template: Linear OpMode"``

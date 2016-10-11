@@ -32,43 +32,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
 
-@TeleOp(name="Drive Op Mode", group="Custom Opmode")  // @Autonomous(...) is the other common choice
-//@Disabled
+@TeleOp(name="Drive Op Mode", group="Custom Opmode")
 public class DriveOpMode extends LinearOpMode {
 
-    /* Declare OpMode members. */
-    private ElapsedTime runtime = new ElapsedTime();
     public DcMotor drive_motor;
     public DcMotor steering_motor;
 
-    public double drive_power = 0.35;
+    //public double drive_power = 0.35;
+    public double drive_power = 0.4;
     public double steering_power = 0.09;
-    // DcMotor rightMotor = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -87,28 +67,17 @@ public class DriveOpMode extends LinearOpMode {
         steering_motor = hardwareMap.dcMotor.get("motor_2");
         drive_motor.setDirection(DcMotor.Direction.FORWARD);
         steering_motor.setDirection(DcMotor.Direction.FORWARD);
-        //telemetry.addData("Mode", motor.getMode());
-        //telemetry.update();
+
         drive_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
-        runtime.reset();
 
         boolean resettingWheel = false;
 
-        //motor.setPower(0.5);
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.update();
 
-            //motor.setPower(0.25);
-
-            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-            // leftMotor.setPower(-gamepad1.left_stick_y);
-            // rightMotor.setPower(-gamepad1.right_stick_y);
             if (!resettingWheel) {
                 steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
@@ -132,13 +101,19 @@ public class DriveOpMode extends LinearOpMode {
                 }
             }
 
-            telemetry.addData("Current Position", steering_motor.getCurrentPosition());
-            telemetry.addData("Joystick", gamepad1.right_stick_x);
-            telemetry.update();
-
-            int current_position = steering_motor.getCurrentPosition();
             if (gamepad1.y) {
                 resettingWheel = true;
+            }
+
+            if (gamepad1.dpad_down) {
+                drive_power = Math.max(drive_power - 0.05, 0.05);
+                telemetry.addData("Drive Power", drive_power);
+                telemetry.update();
+            }
+            if (gamepad1.dpad_up) {
+                drive_power = Math.min(drive_power + 0.05, 1.0);
+                telemetry.addData("Drive Power", drive_power);
+                telemetry.update();
             }
 
             if (resettingWheel) {
@@ -151,9 +126,6 @@ public class DriveOpMode extends LinearOpMode {
                     resettingWheel = false;
                     steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 }
-
-
-
             }
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop

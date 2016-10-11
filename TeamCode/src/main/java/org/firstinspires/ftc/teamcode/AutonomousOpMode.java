@@ -23,7 +23,7 @@ public class AutonomousOpMode extends LinearOpMode {
         drive_motor = hardwareMap.dcMotor.get("motor_1");
         steering_motor = hardwareMap.dcMotor.get("motor_2");
 
-        drive_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive_motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
@@ -32,10 +32,36 @@ public class AutonomousOpMode extends LinearOpMode {
 
             double rotations = 24 / wheel_circumference;
             double counts = 1120 * rotations * gear_ratio;
+
             drive_motor.setTargetPosition((int) counts);
             drive_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            drive_motor.setPower(Math.min((Math.pow(steering_motor.getCurrentPosition(), 2))/500, 0.5));
+            drive_motor.setPower(
+                    Math.min(
+                            (Math.pow(
+                                    (
+                                            drive_motor.getTargetPosition() - drive_motor.getCurrentPosition()
+                                    ),
+                                    2)
+                            )/500,
+                            0.5)
+            );
 
+            telemetry.addData("Rotations", rotations);
+            telemetry.addData("Counts", counts);
+            telemetry.addData("Current Pos", drive_motor.getCurrentPosition());
+            telemetry.addData("Target Pos", drive_motor.getTargetPosition());
+            telemetry.addData("Current Power", drive_motor.getPower());
+            telemetry.addData("Target Power",  Math.min(
+                    (Math.pow(
+                            (
+                                    drive_motor.getTargetPosition() - drive_motor.getCurrentPosition()
+                            ),
+                            2)
+                    )/500,
+                    0.4));
+            telemetry.update();
+
+            idle();
         }
     }
 }
