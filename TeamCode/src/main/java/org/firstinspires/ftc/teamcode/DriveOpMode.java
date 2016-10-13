@@ -47,20 +47,13 @@ public class DriveOpMode extends LinearOpMode {
     public double drive_power = 0.4;
     public double steering_power = 0.09;
 
+    public DPadStatus dpad_up_status = DPadStatus.UNLOCKED;
+    public DPadStatus dpad_down_status = DPadStatus.UNLOCKED;
+    public int dpad_up_cooldown = 0;
+    public int dpad_down_cooldown = 0;
+
     @Override
     public void runOpMode() throws InterruptedException {
-
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
-        // leftMotor  = hardwareMap.dcMotor.get("left motor");
-        // rightMotor = hardwareMap.dcMotor.get("right motor");
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
-        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Wait for the game to start (driver presses PLAY)
         drive_motor = hardwareMap.dcMotor.get("motor_1");
@@ -70,6 +63,8 @@ public class DriveOpMode extends LinearOpMode {
 
         drive_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status", "Motors initialized");
+        telemetry.update();
 
         waitForStart();
 
@@ -81,7 +76,9 @@ public class DriveOpMode extends LinearOpMode {
             if (!resettingWheel) {
                 steering_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
+
             drive_motor.setPower(-gamepad1.left_stick_y * this.drive_power);
+
             if (!resettingWheel) {
 
                 //try gamepad1.setJoystickDeadzone(); to limit the point at which the controller says the stick is at 0
@@ -105,20 +102,41 @@ public class DriveOpMode extends LinearOpMode {
                 resettingWheel = true;
             }
 
-            if (gamepad1.dpad_down) {
-                drive_power = Math.max(drive_power - 0.05, 0.05);
-                telemetry.addData("Drive Power", drive_power);
-                telemetry.update();
+            // This is probably the worst way to accomplish this
+            if (!gamepad1.dpad_down && dpad_down_status == DPadStatus.LOCKED) {
+                if (dpad_down_cooldown > 0) {
+                    dpad_down_cooldown--;
+                } else {
+                    dpad_down_status = DPadStatus.UNLOCKED;
+                }
             }
-            if (gamepad1.dpad_up) {
-                drive_power = Math.min(drive_power + 0.05, 1.0);
-                telemetry.addData("Drive Power", drive_power);
-                telemetry.update();
+            if (gamepad1.dpad_down && dpad_down_status == DPadStatus.UNLOCKED) {
+                if (drive_power > 0.05) {
+                    dpad_down_cooldown = 750;
+                    dpad_down_status = DPadStatus.LOCKED;
+                    drive_power -= 0.05;
+                }
+            }
+
+            if (!gamepad1.dpad_up && dpad_up_status == DPadStatus.LOCKED) {
+                if (dpad_up_cooldown > 0) {
+                    dpad_up_cooldown--;
+                } else {
+                    dpad_up_status = DPadStatus.UNLOCKED;
+                }
+            }
+            if (gamepad1.dpad_up && dpad_up_status == DPadStatus.UNLOCKED) {
+                if (drive_power < 1.0) {
+                    dpad_up_cooldown = 750;
+                    dpad_up_status = DPadStatus.LOCKED;
+                    drive_power += 0.05;
+                }
             }
 
             if (resettingWheel) {
-                steering_motor.setTargetPosition(0);
+                steering_motor.setTargetPosition(0); // Reset the steering wheel to straight forward
                 steering_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
                 //takes the lowest value of the current position squared divided by a slope modifier, and 0.5
                 steering_motor.setPower(Math.min((Math.pow(steering_motor.getCurrentPosition(), 2))/500, 0.5));
                 if (steering_motor.getCurrentPosition() <= 2 && steering_motor.getCurrentPosition() >= -2) {
@@ -128,7 +146,20 @@ public class DriveOpMode extends LinearOpMode {
                 }
             }
 
+
+            telemetry.addData("Drive Power", drive_power);
+            telemetry.addData("Increase Cooldown", dpad_up_cooldown);
+            telemetry.addData("DPad Up Status", dpad_up_status);
+            telemetry.addData("Decrease Cooldown", dpad_down_cooldown);
+            telemetry.addData("DPad Down Status", dpad_down_status);
+            telemetry.update();
+
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
+    }
+
+    public enum DPadStatus {
+        LOCKED,
+        UNLOCKED;
     }
 }
