@@ -28,7 +28,7 @@ public class mecanumDrive extends OpMode {
         double xmove;
         double ymove;
         float turnRate = 0.1f;
-        float spinRate = 0.075f;
+        float spinRate = 0.1f;
         float driveRate = 0.75f;
 
 
