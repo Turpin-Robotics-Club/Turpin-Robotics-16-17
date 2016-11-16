@@ -3,67 +3,104 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import static java.lang.Thread.sleep;
 
 public class move {
 
     static ColorSensor c1;
     static ColorSensor c2;
-    static DcMotor motor1;
-    static DcMotor motor2;
-    static DcMotor motor3;
-    static DcMotor motor4;
-    static Servo servo;
+    static DcMotor flmotor;
+    static DcMotor frmotor;
+    static DcMotor blmotor;
+    static DcMotor brmotor;
+
 
 
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
-    static double WHEEL_DIAMETER = 2.7;
-    static double servoStartPos;
+    static double WHEEL_DIAMETER = 4;
 
-    public static int EncCounts;
-
-    public move(DcMotor flmotor, DcMotor frmotor, DcMotor blmotor, DcMotor brmotor, ColorSensor cLeft, ColorSensor cRight, boolean red) throws InterruptedException {
+    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, ColorSensor cLeft, ColorSensor cRight, boolean red) throws InterruptedException {
 
         if (red == true) {
-            motor1 = flmotor;
-            motor2 = frmotor;
-            motor3 = blmotor;
-            motor4 = brmotor;
+            flmotor = frontleft;
+            frmotor = frontright;
+            blmotor = backleft;
+            brmotor = backright;
             c1 = cLeft;
             c2 = cRight;
-            //motor1.setDirection(DcMotor.Direction.REVERSE);
-            //motor2.setDirection(DcMotor.Direction.REVERSE);
-            c1.setI2cAddress(0x4c);
-            c2.setI2cAddress(0x5c);
+            frmotor.setDirection(DcMotor.Direction.REVERSE);
+            brmotor.setDirection(DcMotor.Direction.REVERSE);
+            c1.setI2cAddress(I2cAddr.create8bit(0x4c));
+            c2.setI2cAddress(I2cAddr.create8bit(0x5c));
         } else {
-            motor1 = frmotor;
-            motor2 = flmotor;
-            motor3 = brmotor;
-            motor4 = blmotor;
+            flmotor = frontright;
+            frmotor = frontleft;
+            blmotor = backright;
+            brmotor = backleft;
             c1 = cRight;
             c2 = cLeft;
-            //motor2.setDirection(DcMotor.Direction.REVERSE);
-            //motor1.setDirection(DcMotor.Direction.REVERSE);
-            c1.setI2cAddress(0x5c);
-            c2.setI2cAddress(0x4c);
+            frmotor.setDirection(DcMotor.Direction.REVERSE);
+            brmotor.setDirection(DcMotor.Direction.REVERSE);
+            c1.setI2cAddress(I2cAddr.create8bit(0x5c));
+            c2.setI2cAddress(I2cAddr.create8bit(0x4c));
         }
-        motor1.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor2.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor3.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor4.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
     }
 
 
     public static void initialization(){
-        motor1.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor2.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor3.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        motor4.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
 
     }
+    public static void forward(double forward, double left, double power) throws InterruptedException{
 
+
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+
+
+
+        double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
+        double fROTATIONS = forward / CIRCUMFERENCE;
+        double flfCOUNTS = ENCODER_CPR * fROTATIONS * GEAR_RATIO;
+        double lROTATIONS = left / CIRCUMFERENCE;
+        double fllCOUNTS = ENCODER_CPR * lROTATIONS * GEAR_RATIO;
+        flmotor.setTargetPosition((int) (flfCOUNTS - fllCOUNTS));
+        flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+
+
+        flmotor.setPower(flfCOUNTS - fllCOUNTS);
+        /*
+        while(motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
+        {EncCounts = motor1.getCurrentPosition();}
+        motor1.setPower(0);
+        motor2.setPower(0);
+
+        motor1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motor2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        */
+
+        sleep(50);
+
+        return;
+    }
 
 
 }
