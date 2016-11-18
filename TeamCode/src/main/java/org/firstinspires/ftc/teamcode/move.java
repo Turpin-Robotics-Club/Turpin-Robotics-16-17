@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import static java.lang.Thread.sleep;
 
@@ -16,7 +14,9 @@ public class move {
     static DcMotor frmotor;
     static DcMotor blmotor;
     static DcMotor brmotor;
-
+    static double relativeHeading = 0;
+    static double xmove;
+    static double ymove;
 
 
 
@@ -82,11 +82,43 @@ public class move {
         flmotor.setTargetPosition((int) (flfCOUNTS - fllCOUNTS));
         flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        relativeHeading = (Math.toDegrees(Math.atan2(-fllCOUNTS,flfCOUNTS)));
+
+        if(relativeHeading >= 0 && relativeHeading < 90)
+        {
+            xmove = Math.sin(Math.toRadians(relativeHeading-0));
+            ymove = -Math.cos(Math.toRadians(relativeHeading-0));
+        }
+        if(relativeHeading >= 90 && relativeHeading < 180)
+        {
+            xmove = Math.cos(Math.toRadians(relativeHeading-90));
+            ymove = Math.sin(Math.toRadians(relativeHeading-90));
+        }
+        if(relativeHeading >= 180 && relativeHeading < 270)
+        {
+            xmove = -Math.sin(Math.toRadians(relativeHeading-180));
+            ymove = Math.cos(Math.toRadians(relativeHeading-180));
+        }
+        if(relativeHeading >= 270 && relativeHeading < 360)
+        {
+            xmove = -Math.cos(Math.toRadians(relativeHeading-270));
+            ymove = -Math.sin(Math.toRadians(relativeHeading-270));
+        }
 
 
 
 
-        flmotor.setPower(flfCOUNTS - fllCOUNTS);
+
+
+
+        flmotor.setPower(-xmove + ymove);
+        frmotor.setPower(-xmove - ymove);
+        blmotor.setPower(xmove - ymove);
+        brmotor.setPower(xmove + ymove);
+
+
+
+
         /*
         while(motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
         {EncCounts = motor1.getCurrentPosition();}
