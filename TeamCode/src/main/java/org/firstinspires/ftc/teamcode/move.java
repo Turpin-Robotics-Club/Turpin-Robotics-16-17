@@ -74,6 +74,12 @@ public class move {
         blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        flmotor.setTargetPosition((int) COUNTS);
+        frmotor.setTargetPosition((int) COUNTS);
+        blmotor.setTargetPosition((int) COUNTS);
+        brmotor.setTargetPosition((int) COUNTS);
+
+
         flmotor.setPower(power);
         frmotor.setPower(power);
         blmotor.setPower(power);
@@ -104,6 +110,62 @@ public class move {
 
         sleep(50);
     }
+
+
+
+    public static void left(double distance, double power) throws InterruptedException
+    {
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
+        double ROTATIONS = distance / CIRCUMFERENCE;
+        double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
+
+        flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        flmotor.setTargetPosition((int) -COUNTS);
+        frmotor.setTargetPosition((int) COUNTS);
+        blmotor.setTargetPosition((int) COUNTS);
+        brmotor.setTargetPosition((int) -COUNTS);
+
+        flmotor.setPower(power);
+        frmotor.setPower(power);
+        blmotor.setPower(power);
+        brmotor.setPower(power);
+
+        if(distance > 0){
+
+            while(flmotor.getCurrentPosition() > COUNTS){
+
+            }
+        }
+        else
+        {
+            while(flmotor.getCurrentPosition() < COUNTS){
+
+            }
+        }
+
+        flmotor.setPower(0);
+        frmotor.setPower(0);
+        blmotor.setPower(0);
+        brmotor.setPower(0);
+
+
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        sleep(50);
+    }
+
 
 
 
