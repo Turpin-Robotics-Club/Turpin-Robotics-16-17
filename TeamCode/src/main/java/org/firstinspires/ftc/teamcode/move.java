@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 
 import static java.lang.Thread.sleep;
 
 public class move {
 
-    static ColorSensor c1;
-    static ColorSensor c2;
+
     static DcMotor flmotor;
     static DcMotor frmotor;
     static DcMotor blmotor;
@@ -24,30 +21,26 @@ public class move {
     static double GEAR_RATIO = 1;
     static double WHEEL_DIAMETER = 4;
 
-    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, ColorSensor cLeft, ColorSensor cRight, boolean red) throws InterruptedException {
+    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, boolean red) throws InterruptedException {
 
         if (red == true) {
             flmotor = frontleft;
             frmotor = frontright;
             blmotor = backleft;
             brmotor = backright;
-            c1 = cLeft;
-            c2 = cRight;
+
             frmotor.setDirection(DcMotor.Direction.REVERSE);
             brmotor.setDirection(DcMotor.Direction.REVERSE);
-            c1.setI2cAddress(I2cAddr.create8bit(0x4c));
-            c2.setI2cAddress(I2cAddr.create8bit(0x5c));
+
         } else {
             flmotor = frontright;
             frmotor = frontleft;
             blmotor = backright;
             brmotor = backleft;
-            c1 = cRight;
-            c2 = cLeft;
+
             frmotor.setDirection(DcMotor.Direction.REVERSE);
             brmotor.setDirection(DcMotor.Direction.REVERSE);
-            c1.setI2cAddress(I2cAddr.create8bit(0x5c));
-            c2.setI2cAddress(I2cAddr.create8bit(0x4c));
+
         }
         flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
@@ -56,14 +49,66 @@ public class move {
     }
 
 
-    public static void initialization(){
+    public static void initialize(){
         flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
 
+
     }
-    public static void forward(double forward, double left, double power) throws InterruptedException{
+
+    public static void forward(double distance, double power) throws InterruptedException
+    {
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
+        double ROTATIONS = distance / CIRCUMFERENCE;
+        double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
+
+        flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        flmotor.setPower(power);
+        frmotor.setPower(power);
+        blmotor.setPower(power);
+        brmotor.setPower(power);
+
+        if(distance < 0){
+
+            while(flmotor.getCurrentPosition() > COUNTS){
+
+            }
+        }
+        else
+        {
+            while(flmotor.getCurrentPosition() < COUNTS){
+
+            }
+        }
+
+        flmotor.setPower(0);
+        frmotor.setPower(0);
+        blmotor.setPower(0);
+        brmotor.setPower(0);
+
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        sleep(50);
+    }
+
+
+
+
+    public static void diagonal(double forward, double left, double power) throws InterruptedException{
 
 
         flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
@@ -118,7 +163,10 @@ public class move {
 
 
 
+        while(-fllCOUNTS + flfCOUNTS > flmotor.getCurrentPosition())
+        {
 
+        }
         /*
         while(motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
         {EncCounts = motor1.getCurrentPosition();}
