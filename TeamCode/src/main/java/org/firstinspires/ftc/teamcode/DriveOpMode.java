@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.utils.DPadStatus;
+
 
 @TeleOp(name="Drive Op Mode", group="Custom Opmode")
 public class DriveOpMode extends LinearOpMode {
@@ -156,10 +158,5 @@ public class DriveOpMode extends LinearOpMode {
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
-    }
-
-    public enum DPadStatus {
-        LOCKED,
-        UNLOCKED;
     }
 }

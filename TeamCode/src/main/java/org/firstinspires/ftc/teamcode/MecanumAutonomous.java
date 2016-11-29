@@ -27,7 +27,7 @@ public class MecanumAutonomous extends OpMode {
             backright = hardwareMap.dcMotor.get("motor_4");
 
             //frontleft.setDirection(DcMotor.Direction.REVERSE);
-            //backleft.setDirection(DcMotor.Direction.REVERSE);
+            //backright.setDirection(DcMotor.Direction.REVERSE);
 
         }
 

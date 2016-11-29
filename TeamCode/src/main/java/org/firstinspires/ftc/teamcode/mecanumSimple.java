@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.utils.DPadStatus;
+
 @TeleOp(name = "Simple Mecanum Drive", group = "TeleOp")
 public class mecanumSimple extends OpMode {
 
@@ -19,8 +21,8 @@ public class mecanumSimple extends OpMode {
 
     public double drive_power = 0.45;
 
-    public DriveOpMode.DPadStatus dpad_up_status = DriveOpMode.DPadStatus.UNLOCKED;
-    public DriveOpMode.DPadStatus dpad_down_status = DriveOpMode.DPadStatus.UNLOCKED;
+    public DPadStatus dpad_up_status = DPadStatus.UNLOCKED;
+    public DPadStatus dpad_down_status = DPadStatus.UNLOCKED;
     public int dpad_up_cooldown = 0;
     public int dpad_down_cooldown = 0;
 
@@ -36,32 +38,32 @@ public class mecanumSimple extends OpMode {
 
     public void loop() {
 
-        if (!gamepad1.dpad_down && dpad_down_status == DriveOpMode.DPadStatus.LOCKED) {
+        if (!gamepad1.dpad_down && dpad_down_status == DPadStatus.LOCKED) {
             if (dpad_down_cooldown > 0) {
                 dpad_down_cooldown--;
             } else {
-                dpad_down_status = DriveOpMode.DPadStatus.UNLOCKED;
+                dpad_down_status = DPadStatus.UNLOCKED;
             }
         }
-        if (gamepad1.dpad_down && dpad_down_status == DriveOpMode.DPadStatus.UNLOCKED) {
+        if (gamepad1.dpad_down && dpad_down_status == DPadStatus.UNLOCKED) {
             if (drive_power > 0.05) {
                 dpad_down_cooldown = 750;
-                dpad_down_status = DriveOpMode.DPadStatus.LOCKED;
+                dpad_down_status = DPadStatus.LOCKED;
                 drive_power -= 0.05;
             }
         }
 
-        if (!gamepad1.dpad_up && dpad_up_status == DriveOpMode.DPadStatus.LOCKED) {
+        if (!gamepad1.dpad_up && dpad_up_status == DPadStatus.LOCKED) {
             if (dpad_up_cooldown > 0) {
                 dpad_up_cooldown--;
             } else {
-                dpad_up_status = DriveOpMode.DPadStatus.UNLOCKED;
+                dpad_up_status = DPadStatus.UNLOCKED;
             }
         }
-        if (gamepad1.dpad_up && dpad_up_status == DriveOpMode.DPadStatus.UNLOCKED) {
+        if (gamepad1.dpad_up && dpad_up_status == DPadStatus.UNLOCKED) {
             if (drive_power < 1.0) {
                 dpad_up_cooldown = 750;
-                dpad_up_status = DriveOpMode.DPadStatus.LOCKED;
+                dpad_up_status = DPadStatus.LOCKED;
                 drive_power += 0.05;
             }
         }
