@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 
 import static java.lang.Thread.sleep;
 
 public class move {
 
-
+    static GyroSensor gyro;
     static DcMotor flmotor;
     static DcMotor frmotor;
     static DcMotor blmotor;
@@ -14,14 +15,17 @@ public class move {
     static double relativeHeading = 0;
     static double xmove;
     static double ymove;
-
+    static int initGyroPos = 0;
+    static double stabilityMultiplier = 0.05;
 
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
     static double WHEEL_DIAMETER = 4;
 
-    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, boolean red) throws InterruptedException {
+    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, GyroSensor Gyroz, boolean red) throws InterruptedException {
+
+        gyro = Gyroz;
 
         if (red == true) {
             flmotor = frontleft;
@@ -46,6 +50,7 @@ public class move {
         frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        gyro.calibrate();
     }
 
 
@@ -60,6 +65,9 @@ public class move {
 
     public static void forward(double distance, double power) throws InterruptedException
     {
+
+        initGyroPos = gyro.getHeading();
+
         flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
@@ -87,14 +95,43 @@ public class move {
 
         if(distance < 0){
 
-            while(flmotor.getCurrentPosition() > COUNTS){
-
+            while(flmotor.getCurrentPosition() > COUNTS)
+            {
+                if (gyro.getHeading() - initGyroPos < 0)
+                {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0)
+                {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
             }
         }
         else
         {
-            while(flmotor.getCurrentPosition() < COUNTS){
+            while(flmotor.getCurrentPosition() < COUNTS)
+            {
 
+                if (gyro.getHeading() - initGyroPos < 0)
+                {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0)
+                {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
             }
         }
 
@@ -115,6 +152,8 @@ public class move {
 
     public static void left(double distance, double power) throws InterruptedException
     {
+        initGyroPos = gyro.getHeading();
+
         flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
         blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
@@ -134,21 +173,50 @@ public class move {
         blmotor.setTargetPosition((int) COUNTS);
         brmotor.setTargetPosition((int) -COUNTS);
 
-        flmotor.setPower(-power);
+        flmotor.setPower(power);
         frmotor.setPower(power);
         blmotor.setPower(power);
-        brmotor.setPower(-power);
+        brmotor.setPower(power);
 
         if(distance > 0){
 
-            while(flmotor.getCurrentPosition() > COUNTS){
+            while(flmotor.getCurrentPosition() > -COUNTS)
+            {
 
+                if (gyro.getHeading() - initGyroPos < 0)
+                {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0)
+                {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
             }
         }
         else
         {
-            while(flmotor.getCurrentPosition() < COUNTS){
+            while(flmotor.getCurrentPosition() < -COUNTS){
 
+                if (gyro.getHeading() - initGyroPos < 0)
+                {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0)
+                {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2,2) * stabilityMultiplier));
+                }
             }
         }
 
@@ -164,6 +232,13 @@ public class move {
         brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
 
         sleep(50);
+    }
+
+    public static void turnLeft(int degrees)
+    {
+        initGyroPos = gyro.getHeading();
+        if
+        flmotor.setPower(Math.pow((flmotor.getTargetPosition() - flmotor.getCurrentPosition()), 2)/500);
     }
 
 

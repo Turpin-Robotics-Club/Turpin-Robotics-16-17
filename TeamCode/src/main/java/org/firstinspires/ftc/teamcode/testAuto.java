@@ -23,13 +23,14 @@ public class testAuto extends LinearOpMode {
         }
         telemetry.addData("red", red);
 
-        drive = new move(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"), red);
+        drive = new move(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"), hardwareMap.gyroSensor.get("gyro"), red);
         drive.initialize();
 
         waitForStart();
         drive.forward(20,0.5);
         drive.forward(-30,0.5);
         drive.forward(10,0.5);
+        drive.left(-10,0.75);
 
 
 
