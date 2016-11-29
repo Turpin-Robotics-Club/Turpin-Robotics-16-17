@@ -4,62 +4,92 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 @TeleOp(name = "Simple Mecanum Drive", group = "TeleOp")
-//@Disabled
-
 public class mecanumSimple extends OpMode {
 
-        DcMotor frontleft;
-        DcMotor frontright;
-        DcMotor backleft;
-        DcMotor backright;
-        double flvalue;
-        double frvalue;
-        double blvalue;
-        double brvalue;
+    DcMotor frontleft;
+    DcMotor frontright;
+    DcMotor backleft;
+    DcMotor backright;
 
+    double flvalue;
+    double frvalue;
+    double blvalue;
+    double brvalue;
 
+    public double drive_power = 0.45;
 
+    public DriveOpMode.DPadStatus dpad_up_status = DriveOpMode.DPadStatus.UNLOCKED;
+    public DriveOpMode.DPadStatus dpad_down_status = DriveOpMode.DPadStatus.UNLOCKED;
+    public int dpad_up_cooldown = 0;
+    public int dpad_down_cooldown = 0;
 
+    public void init() {
+        frontleft = hardwareMap.dcMotor.get("motor_1");
+        frontright = hardwareMap.dcMotor.get("motor_2");
+        backleft = hardwareMap.dcMotor.get("motor_3");
+        backright = hardwareMap.dcMotor.get("motor_4");
 
+        frontright.setDirection(DcMotor.Direction.REVERSE);
+        backright.setDirection(DcMotor.Direction.REVERSE);
+    }
 
-        public void init() {
+    public void loop() {
 
-            frontleft = hardwareMap.dcMotor.get("motor_1");
-            frontright = hardwareMap.dcMotor.get("motor_2");
-            backleft = hardwareMap.dcMotor.get("motor_3");
-            backright = hardwareMap.dcMotor.get("motor_4");
-
-            frontleft.setDirection(DcMotor.Direction.REVERSE);
-            backleft.setDirection(DcMotor.Direction.REVERSE);
-
-
-
+        if (!gamepad1.dpad_down && dpad_down_status == DriveOpMode.DPadStatus.LOCKED) {
+            if (dpad_down_cooldown > 0) {
+                dpad_down_cooldown--;
+            } else {
+                dpad_down_status = DriveOpMode.DPadStatus.UNLOCKED;
+            }
+        }
+        if (gamepad1.dpad_down && dpad_down_status == DriveOpMode.DPadStatus.UNLOCKED) {
+            if (drive_power > 0.05) {
+                dpad_down_cooldown = 750;
+                dpad_down_status = DriveOpMode.DPadStatus.LOCKED;
+                drive_power -= 0.05;
+            }
         }
 
-        public void loop() {
+        if (!gamepad1.dpad_up && dpad_up_status == DriveOpMode.DPadStatus.LOCKED) {
+            if (dpad_up_cooldown > 0) {
+                dpad_up_cooldown--;
+            } else {
+                dpad_up_status = DriveOpMode.DPadStatus.UNLOCKED;
+            }
+        }
+        if (gamepad1.dpad_up && dpad_up_status == DriveOpMode.DPadStatus.UNLOCKED) {
+            if (drive_power < 1.0) {
+                dpad_up_cooldown = 750;
+                dpad_up_status = DriveOpMode.DPadStatus.LOCKED;
+                drive_power += 0.05;
+            }
+        }
 
 
-
-            flvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
-            frvalue = (-gamepad1.left_stick_x - gamepad1.left_stick_y);
-            blvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
-            brvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
-
-
+        flvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
+        frvalue = (-gamepad1.left_stick_x - gamepad1.left_stick_y);
+        blvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
+        brvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
 
         flvalue = flvalue + gamepad1.right_stick_x;
         frvalue = frvalue - gamepad1.right_stick_x;
         blvalue = blvalue + gamepad1.right_stick_x;
         brvalue = brvalue - gamepad1.right_stick_x;
 
+        /*
+        telemetry.addData("Front Left:", flvalue);
+        telemetry.addData("Front Right:", frvalue);
+        telemetry.addData("Back Left:", blvalue);
+        telemetry.addData("Back Right:", brvalue);
+        */
 
-            frontleft.setPower(flvalue / 3);
-            frontright.setPower(frvalue / 3);
-            backleft.setPower(blvalue / 3);
-            backright.setPower(brvalue / 3);
+        telemetry.addData("Drive Power", drive_power);
+        telemetry.update();
 
-
-        }
+        frontleft.setPower(flvalue * drive_power);
+        frontright.setPower(frvalue * drive_power);
+        backleft.setPower(blvalue * drive_power);
+        backright.setPower(brvalue * drive_power);
     }
+}
