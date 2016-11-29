@@ -134,10 +134,10 @@ public class move {
         blmotor.setTargetPosition((int) COUNTS);
         brmotor.setTargetPosition((int) -COUNTS);
 
-        flmotor.setPower(power);
+        flmotor.setPower(-power);
         frmotor.setPower(power);
         blmotor.setPower(power);
-        brmotor.setPower(power);
+        brmotor.setPower(-power);
 
         if(distance > 0){
 
