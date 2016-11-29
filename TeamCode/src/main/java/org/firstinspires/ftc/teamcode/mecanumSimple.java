@@ -71,8 +71,8 @@ public class mecanumSimple extends OpMode {
 
         flvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
         frvalue = (-gamepad1.left_stick_x - gamepad1.left_stick_y);
-        blvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
-        brvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
+        blvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
+        brvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
 
         flvalue = flvalue + gamepad1.right_stick_x;
         frvalue = frvalue - gamepad1.right_stick_x;
