@@ -32,8 +32,8 @@ public class mecanumSimple extends OpMode {
         backleft = hardwareMap.dcMotor.get("motor_3");
         backright = hardwareMap.dcMotor.get("motor_4");
 
-        frontright.setDirection(DcMotor.Direction.REVERSE);
-        backright.setDirection(DcMotor.Direction.REVERSE);
+        frontleft.setDirection(DcMotor.Direction.REVERSE);
+        backleft.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void loop() {
@@ -71,8 +71,8 @@ public class mecanumSimple extends OpMode {
 
         flvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
         frvalue = (-gamepad1.left_stick_x - gamepad1.left_stick_y);
-        blvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
-        brvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
+        blvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
+        brvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
 
         flvalue = flvalue + gamepad1.right_stick_x;
         frvalue = frvalue - gamepad1.right_stick_x;
