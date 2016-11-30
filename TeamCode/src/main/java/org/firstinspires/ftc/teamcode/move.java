@@ -234,7 +234,17 @@ public class move {
         sleep(50);
     }
 
-    public static void turnLeft(int degrees) {
+    public static void turnLeft(int degrees, double power) throws InterruptedException{
+
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         initGyroPos = gyro.getHeading();
         if (initGyroPos - degrees < 0) {
             degrees = 360 - (initGyroPos - degrees);
@@ -243,22 +253,50 @@ public class move {
         {
             degrees = (initGyroPos - degrees) - 360;
         }
+        while(gyro.getHeading() != degrees)
+        {
+
+            if ((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) - 360)
+            {
+                /*
+                flmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                blmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                frmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                brmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                */
+                flmotor.setPower(power);
+                frmotor.setPower(-power);
+                blmotor.setPower(power);
+                brmotor.setPower(-power);
+            }
+            if ((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading()))
+            {
+                /*
+                flmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                blmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                frmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                brmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
+                */
+                flmotor.setPower(-power);
+                frmotor.setPower(power);
+                blmotor.setPower(-power);
+                brmotor.setPower(power);
+            }
+        }
+
+        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        flmotor.setPower(0);
+        frmotor.setPower(0);
+        blmotor.setPower(0);
+        brmotor.setPower(0);
 
 
-        if((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) -360)
-        {
-            flmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            blmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            frmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            brmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-        }
-        if((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading()))
-        {
-            flmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            blmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            frmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-            brmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
-        }
+        sleep(50);
+
 
     }
 
