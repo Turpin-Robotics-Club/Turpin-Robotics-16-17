@@ -234,11 +234,32 @@ public class move {
         sleep(50);
     }
 
-    public static void turnLeft(int degrees)
-    {
+    public static void turnLeft(int degrees) {
         initGyroPos = gyro.getHeading();
-        if
-        flmotor.setPower(Math.pow((flmotor.getTargetPosition() - flmotor.getCurrentPosition()), 2)/500);
+        if (initGyroPos - degrees < 0) {
+            degrees = 360 - (initGyroPos - degrees);
+        }
+        if(initGyroPos - degrees > 360)
+        {
+            degrees = (initGyroPos - degrees) - 360;
+        }
+
+
+        if((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) -360)
+        {
+            flmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            blmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            frmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            brmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+        }
+        if((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading()))
+        {
+            flmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            blmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            frmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+            brmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2,2) * stabilityMultiplier));
+        }
+
     }
 
 

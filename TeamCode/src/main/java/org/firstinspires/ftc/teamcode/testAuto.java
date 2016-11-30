@@ -31,6 +31,7 @@ public class testAuto extends LinearOpMode {
         drive.forward(-30,0.5);
         drive.forward(10,0.5);
         drive.left(-10,0.75);
+        drive.turnLeft(90);
 
 
 
