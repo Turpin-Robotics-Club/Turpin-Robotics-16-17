@@ -24,7 +24,7 @@ public class move {
 
     static int initGyroPos = 0;
     static double stabilityMultiplier = 0.05;
-    static double spinRate = 0.001;
+    static double spinRate = 0.002;
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
@@ -272,10 +272,10 @@ public class move {
             telemetry.update();
             if ((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) - 360) {
 
-                flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                frmotor.setPower((Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                brmotor.setPower((Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
+                flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                frmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                brmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 /*
                 flmotor.setPower(power);
                 frmotor.setPower(-power);
@@ -285,10 +285,10 @@ public class move {
             }
             if ((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading())) {
 
-                flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                frmotor.setPower((Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
-                brmotor.setPower((Math.pow(degrees - (gyro.getHeading()), 2) * spinRate));
+                flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                frmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
+                brmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 /*
                 flmotor.setPower(-power);
                 frmotor.setPower(power);
