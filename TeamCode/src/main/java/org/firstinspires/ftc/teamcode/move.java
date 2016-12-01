@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import static java.lang.Thread.sleep;
 
 public class move {
@@ -12,6 +14,7 @@ public class move {
     static DcMotor frmotor;
     static DcMotor blmotor;
     static DcMotor brmotor;
+    static Telemetry telemetry;
 
     /* UNUSED VARIABLES (for unused classes)
     static double relativeHeading = 0;
@@ -38,9 +41,10 @@ public class move {
      * @param red        true if on the red Alliance, False otherwise
      * @throws InterruptedException
      */
-    public static void initialize(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, GyroSensor Gyroz, boolean red) throws InterruptedException {
+    public static void initialize(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, GyroSensor Gyroz, Telemetry telem, boolean red) throws InterruptedException {
 
         gyro = Gyroz;
+        telemetry = telem;
 
         if (red) {
             flmotor = frontleft;
@@ -263,7 +267,9 @@ public class move {
             degrees = degrees - 360;
         }
         while (gyro.getHeading() != degrees) {
-
+            telemetry.addData("Heading:", degrees);
+            telemetry.addData("Current: ", degrees);
+            telemetry.update();
             if ((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) - 360) {
 
                 flmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
