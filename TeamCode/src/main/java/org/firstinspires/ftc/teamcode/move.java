@@ -12,22 +12,26 @@ public class move {
     static DcMotor frmotor;
     static DcMotor blmotor;
     static DcMotor brmotor;
+
+    /* UNUSED VARIABLES (for unused classes)
     static double relativeHeading = 0;
     static double xmove;
     static double ymove;
+   */
+
     static int initGyroPos = 0;
     static double stabilityMultiplier = 0.05;
-
+    static double spinRate = 0.2;
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
     static double WHEEL_DIAMETER = 4;
 
-    public move(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, GyroSensor Gyroz, boolean red) throws InterruptedException {
+     static public void initialize(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright, GyroSensor Gyroz, boolean red) throws InterruptedException {
 
         gyro = Gyroz;
 
-        if (red == true) {
+        if (red) {
             flmotor = frontleft;
             frmotor = frontright;
             blmotor = backleft;
@@ -46,19 +50,11 @@ public class move {
             brmotor.setDirection(DcMotor.Direction.REVERSE);
 
         }
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         gyro.calibrate();
-    }
-
-
-    public static void initialize(){
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
 
 
     }
@@ -68,10 +64,10 @@ public class move {
 
         initGyroPos = gyro.getHeading();
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -140,10 +136,10 @@ public class move {
         blmotor.setPower(0);
         brmotor.setPower(0);
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         sleep(50);
     }
@@ -154,10 +150,10 @@ public class move {
     {
         initGyroPos = gyro.getHeading();
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -226,68 +222,72 @@ public class move {
         brmotor.setPower(0);
 
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         sleep(50);
     }
 
-    public static void turnLeft(int degrees, double power) throws InterruptedException{
+    public static void turnLeft(int degrees) throws InterruptedException{
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         initGyroPos = gyro.getHeading();
-        if (initGyroPos - degrees < 0) {
-            degrees = 360 - (initGyroPos - degrees);
+        degrees = initGyroPos - degrees;
+        if (degrees < 0) {
+            degrees = 360 + degrees;
         }
-        if(initGyroPos - degrees > 360)
+        if(degrees > 360)
         {
-            degrees = (initGyroPos - degrees) - 360;
+            degrees = degrees - 360;
         }
         while(gyro.getHeading() != degrees)
         {
 
             if ((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) - 360)
             {
+
+                flmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                blmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                frmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                brmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
                 /*
-                flmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                blmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                frmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                brmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                */
                 flmotor.setPower(power);
                 frmotor.setPower(-power);
                 blmotor.setPower(power);
                 brmotor.setPower(-power);
+                */
             }
             if ((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading()))
             {
+
+                flmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                blmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                frmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
+                brmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 2, 2) * spinRate));
                 /*
-                flmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                blmotor.setPower(-(Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                frmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                brmotor.setPower((Math.pow((gyro.getHeading() - degrees) * 2, 2) * stabilityMultiplier));
-                */
                 flmotor.setPower(-power);
                 frmotor.setPower(power);
                 blmotor.setPower(-power);
                 brmotor.setPower(power);
+                */
             }
         }
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flmotor.setPower(0);
         frmotor.setPower(0);
@@ -303,14 +303,14 @@ public class move {
 
 
 
-
+    /* INVALID STATEMENT
     public static void diagonal(double forward, double left, double power) throws InterruptedException{
 
 
-        flmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        frmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        blmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        brmotor.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -363,7 +363,7 @@ public class move {
         {
 
         }
-        /*
+        *//*
         while(motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
         {EncCounts = motor1.getCurrentPosition();}
         motor1.setPower(0);
@@ -371,12 +371,12 @@ public class move {
 
         motor1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         motor2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        */
+        *//*
 
         sleep(50);
 
         return;
     }
-
+*/
 
 }
