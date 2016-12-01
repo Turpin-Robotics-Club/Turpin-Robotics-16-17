@@ -29,7 +29,7 @@ public class testAuto extends LinearOpMode {
         move.left(-10, 0.75);
         move.turnLeft(90);
 
-
+        sleep(10000);
 
 
     }

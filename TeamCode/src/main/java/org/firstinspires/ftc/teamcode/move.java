@@ -259,6 +259,26 @@ public class move {
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         initGyroPos = gyro.getHeading();
+        int target = initGyroPos - degrees;
+
+        if (target < 0) {
+            target = 360 + target;
+        }
+        if (target > 360) {
+            target = target - 360;
+        }
+        while (gyro.getHeading() != target) {
+            telemetry.addData("Target:", target);
+            telemetry.addData("Current:", gyro.getHeading());
+            telemetry.addData("Delta:", target - gyro.getHeading());
+            telemetry.update();
+
+            flmotor.setPower(-(Math.pow(target - (gyro.getHeading() * 0.5), 2) * spinRate));
+            blmotor.setPower(-(Math.pow(target - (gyro.getHeading() * 0.5), 2) * spinRate));
+            frmotor.setPower((Math.pow(target - (gyro.getHeading() * 0.5), 2) * spinRate));
+            brmotor.setPower((Math.pow(target - (gyro.getHeading() * 0.5), 2) * spinRate));
+        }
+        /**
         degrees = initGyroPos - degrees;
         if (degrees < 0) {
             degrees = 360 + degrees;
@@ -269,9 +289,8 @@ public class move {
         while (gyro.getHeading() != degrees) {
             telemetry.addData("Heading:", degrees);
             telemetry.addData("Current: ", degrees);
-            telemetry.update();
             if ((degrees < gyro.getHeading() + 180 && degrees > gyro.getHeading()) || degrees < (gyro.getHeading() + 180) - 360) {
-
+                telemetry.addData("IF: ", 1);
                 flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 frmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
@@ -281,10 +300,10 @@ public class move {
                 frmotor.setPower(-power);
                 blmotor.setPower(power);
                 brmotor.setPower(-power);
-                */
+
             }
             if ((degrees > gyro.getHeading() - 180 && degrees < gyro.getHeading()) || degrees > 360 - (180 - gyro.getHeading())) {
-
+                telemetry.addData("IF: ", 2);
                 flmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 blmotor.setPower(-(Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
                 frmotor.setPower((Math.pow(degrees - (gyro.getHeading()) * 0.5, 2) * spinRate));
@@ -294,9 +313,10 @@ public class move {
                 frmotor.setPower(power);
                 blmotor.setPower(-power);
                 brmotor.setPower(power);
-                */
             }
+            telemetry.update();
         }
+        **/
 
         flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
