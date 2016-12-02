@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -31,6 +33,7 @@ public class move {
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
     static double WHEEL_DIAMETER = 6.12;
+    static ColorSensor color_sensor;
 
     /**
      * Initializes motor variables and calibrates the gyro
@@ -74,6 +77,11 @@ public class move {
         gyro.calibrate();
 
 
+    }
+
+    public static void initialize_color_sensor(ColorSensor sensor) {
+        color_sensor = sensor;
+        color_sensor.setI2cAddress(I2cAddr.create8bit(0x5c));
     }
 
     /**
@@ -340,6 +348,20 @@ public class move {
         sleep(50);
 
 
+    }
+
+    public static char checkColor() {
+
+        int red_value = color_sensor.red();
+        int blue_value = color_sensor.blue();
+
+        if (red_value == blue_value) {
+            return 'u';
+        } else if (red_value > blue_value) {
+            return 'r';
+        } else {
+            return 'b';
+        }
     }
 
 
