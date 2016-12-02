@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-@Autonomous(name="Autonomous Test", group="Autonomous")
+@Autonomous(name="Autonomous Test", group="Autonomous Tests")
 //@Disabled
 public class testAuto extends LinearOpMode {
     TouchSensor Tsensor;
@@ -23,13 +23,8 @@ public class testAuto extends LinearOpMode {
 
 
         waitForStart();
-        move.forward(20,0.5);
-        move.forward(-30, 0.5);
-        move.forward(10,0.5);
-        move.left(-10, 0.75);
-        move.turnLeft(90);
-
-        sleep(10000);
+        move.forward(100,0.5);
+        //sleep(30000);
 
 
     }

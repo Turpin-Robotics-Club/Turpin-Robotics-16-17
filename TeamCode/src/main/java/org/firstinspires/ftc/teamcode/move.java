@@ -9,6 +9,8 @@ import static java.lang.Thread.sleep;
 
 public class move {
 
+
+
     static GyroSensor gyro;
     static DcMotor flmotor;
     static DcMotor frmotor;
@@ -23,12 +25,12 @@ public class move {
    */
 
     static int initGyroPos = 0;
-    static double stabilityMultiplier = 0.05;
+    static double stabilityMultiplier = 0.006;
     static double spinRate = 0.002;
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
-    static double WHEEL_DIAMETER = 4;
+    static double WHEEL_DIAMETER = 6.12;
 
     /**
      * Initializes motor variables and calibrates the gyro
@@ -114,17 +116,20 @@ public class move {
 
             while (flmotor.getCurrentPosition() > COUNTS) {
                 if (gyro.getHeading() - initGyroPos < 0) {
-                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
                 }
                 if (gyro.getHeading() - initGyroPos > 0) {
-                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
                 }
+                telemetry.addData("front left counts", flmotor.getCurrentPosition());
+                telemetry.addData("target", COUNTS);
+                telemetry.update();
             }
         } else {
             while (flmotor.getCurrentPosition() < COUNTS) {
@@ -141,6 +146,9 @@ public class move {
                     frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
                     brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
                 }
+                telemetry.addData("front left counts", flmotor.getCurrentPosition());
+                telemetry.addData("target", COUNTS);
+                telemetry.update();
             }
         }
 
