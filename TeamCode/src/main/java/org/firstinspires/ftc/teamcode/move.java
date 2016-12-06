@@ -9,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static java.lang.Thread.sleep;
 
+
+
 public class move {
 
 
@@ -81,7 +83,7 @@ public class move {
         color_sensor = sensor;
         color_sensor.setI2cAddress(I2cAddr.create8bit(0x5c));
     }
-    public static void initalize_line_seeker(ColorSensor color)
+    public static void initialize_line_seeker(ColorSensor color)
     {
         line_sensor = color;
         line_sensor.setI2cAddress(I2cAddr.create8bit(0x4c));
@@ -424,10 +426,10 @@ public class move {
     public static void driveToLine(double power) throws InterruptedException
     {
         resetEncoders();
-        flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         while (line_sensor.green() < 2)
         {
@@ -435,6 +437,7 @@ public class move {
             frmotor.setPower(power);
             blmotor.setPower(power);
             brmotor.setPower(power);
+            telemetry.addData("green", line_sensor.green());
         }
 
         resetEncoders();
