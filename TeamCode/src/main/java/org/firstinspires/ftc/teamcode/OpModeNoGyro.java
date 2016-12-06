@@ -15,7 +15,11 @@ public class OpModeNoGyro extends LinearOpMode {
 
         MoveNoGyro.initialize(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"));
 
-        MoveNoGyro.forward(10, 0.5);
-        //MoveNoGyro.rightTurn90(.5);
+        waitForStart();
+        //MoveNoGyro.forward(10, 0.5);
+        //sleep(50);
+        //MoveNoGyro.forward(-10, 0.5);
+        //sleep(50);
+        MoveNoGyro.rightTurn90(.5);
     }
 }

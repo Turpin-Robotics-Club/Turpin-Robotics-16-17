@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -120,6 +121,9 @@ public class MoveNoGyro extends move {
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
