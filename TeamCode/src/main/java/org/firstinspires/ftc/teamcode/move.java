@@ -32,7 +32,7 @@ public class move {
 
     static int ENCODER_CPR = 1120;
     static double GEAR_RATIO = 1;
-    static double WHEEL_DIAMETER = 6.12;
+    static double WHEEL_DIAMETER = 5.94;
     static ColorSensor color_sensor;
 
     /**
@@ -171,6 +171,78 @@ public class move {
         brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         sleep(50);
+    }
+
+
+    public static void forward2(double distance, double minPower, double maxPower, double increment) throws InterruptedException
+    {
+        double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
+        double ROTATIONS = distance / CIRCUMFERENCE;
+        double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
+
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        if(distance < 0)
+        {
+            minPower = -Math.abs(minPower);
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/2)
+            {
+                minPower = minPower - increment;
+                flmotor.setPower(Math.max(minPower, maxPower));
+                frmotor.setPower(Math.max(minPower, maxPower));
+                blmotor.setPower(Math.max(minPower, maxPower));
+                brmotor.setPower(Math.max(minPower, maxPower));
+            }
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
+            {
+                minPower = minPower + increment;
+                flmotor.setPower(Math.max(minPower, maxPower));
+                frmotor.setPower(Math.max(minPower, maxPower));
+                blmotor.setPower(Math.max(minPower, maxPower));
+                brmotor.setPower(Math.max(minPower, maxPower));
+            }
+        }
+        else
+        {
+            minPower = Math.abs(minPower);
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/2)
+            {
+                minPower = minPower + increment;
+                flmotor.setPower(Math.min(minPower, maxPower));
+                frmotor.setPower(Math.min(minPower, maxPower));
+                blmotor.setPower(Math.min(minPower, maxPower));
+                brmotor.setPower(Math.min(minPower, maxPower));
+            }
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
+            {
+                minPower = minPower - increment;
+                flmotor.setPower(Math.min(minPower, maxPower));
+                frmotor.setPower(Math.min(minPower, maxPower));
+                blmotor.setPower(Math.min(minPower, maxPower));
+                brmotor.setPower(Math.min(minPower, maxPower));
+            }
+        }
+
+        flmotor.setPower(0);
+        frmotor.setPower(0);
+        blmotor.setPower(0);
+        brmotor.setPower(0);
+
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        sleep(50);
+
     }
 
     /**
