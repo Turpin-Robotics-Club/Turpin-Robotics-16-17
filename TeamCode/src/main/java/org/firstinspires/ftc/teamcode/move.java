@@ -34,6 +34,7 @@ public class move {
     static double GEAR_RATIO = 1;
     static double WHEEL_DIAMETER = 5.94;
     static ColorSensor color_sensor;
+    static ColorSensor line_sensor;
 
     /**
      * Initializes motor variables and calibrates the gyro
@@ -70,10 +71,7 @@ public class move {
             brmotor.setDirection(DcMotor.Direction.REVERSE);
 
         }
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        resetEncoders();
         gyro.calibrate();
 
 
@@ -82,6 +80,16 @@ public class move {
     public static void initialize_color_sensor(ColorSensor sensor) {
         color_sensor = sensor;
         color_sensor.setI2cAddress(I2cAddr.create8bit(0x5c));
+    }
+    public static void initalize_line_seeker(ColorSensor color)
+    {
+        line_sensor = color;
+        line_sensor.setI2cAddress(I2cAddr.create8bit(0x4c));
+        line_sensor.enableLed(true);
+    }
+    public static void resetEncoders()
+    {
+        resetEncoders();
     }
 
     /**
@@ -95,11 +103,7 @@ public class move {
 
         initGyroPos = gyro.getHeading();
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
         double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
@@ -165,26 +169,26 @@ public class move {
         blmotor.setPower(0);
         brmotor.setPower(0);
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         sleep(50);
     }
 
 
+    /**
+     *
+     * @param distance the distance the robot should go
+     * @param minPower the starting and ending speed
+     * @param maxPower the maximum power the robot will run at
+     * @param increment the speed at which the speed increases & decreases
+     * @throws InterruptedException for sleep
+     */
     public static void forward2(double distance, double minPower, double maxPower, double increment) throws InterruptedException
     {
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
         double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -236,11 +240,7 @@ public class move {
         blmotor.setPower(0);
         brmotor.setPower(0);
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         sleep(50);
 
     }
@@ -255,11 +255,7 @@ public class move {
     public static void left(double distance, double power) throws InterruptedException {
         initGyroPos = gyro.getHeading();
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
         double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
@@ -320,11 +316,7 @@ public class move {
         brmotor.setPower(0);
 
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         sleep(50);
     }
 
@@ -336,11 +328,7 @@ public class move {
      */
     public static void turnLeft(int degrees) throws InterruptedException {
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -406,11 +394,7 @@ public class move {
         }
         **/
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
         flmotor.setPower(0);
         frmotor.setPower(0);
         blmotor.setPower(0);
@@ -437,17 +421,35 @@ public class move {
     }
 
 
+    public static void driveToLine(double power) throws InterruptedException
+    {
+        resetEncoders();
+        flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        while (line_sensor.green() < 2)
+        {
+            flmotor.setPower(power);
+            frmotor.setPower(power);
+            blmotor.setPower(power);
+            brmotor.setPower(power);
+        }
+
+        resetEncoders();
+
+        sleep(50);
+    }
+
+
 
 
     /* INVALID STATEMENT
     public static void diagonal(double forward, double left, double power) throws InterruptedException{
 
 
-        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        resetEncoders();
 
 
 
