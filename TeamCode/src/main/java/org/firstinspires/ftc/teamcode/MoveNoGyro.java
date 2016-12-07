@@ -19,6 +19,11 @@ public class MoveNoGyro extends move {
         blmotor = backleft;
         brmotor = backright;
 
+        flmotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        blmotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -86,10 +91,10 @@ public class MoveNoGyro extends move {
         blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        flmotor.setTargetPosition((int) COUNTS);
+        flmotor.setTargetPosition((int) -COUNTS);
         frmotor.setTargetPosition((int) COUNTS);
         blmotor.setTargetPosition((int) COUNTS);
-        brmotor.setTargetPosition((int) COUNTS);
+        brmotor.setTargetPosition((int) -COUNTS);
 
         flmotor.setPower(power);
         frmotor.setPower(power);
@@ -121,9 +126,6 @@ public class MoveNoGyro extends move {
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
