@@ -91,7 +91,10 @@ public class move {
     }
     public static void resetEncoders()
     {
-        resetEncoders();
+        flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     /**
@@ -431,13 +434,14 @@ public class move {
         blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while (line_sensor.green() < 2)
+        while (line_sensor.green() < 3)
         {
             flmotor.setPower(power);
             frmotor.setPower(power);
             blmotor.setPower(power);
             brmotor.setPower(power);
             telemetry.addData("green", line_sensor.green());
+            telemetry.update();
         }
 
         resetEncoders();
