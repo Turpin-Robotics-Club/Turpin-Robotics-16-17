@@ -211,6 +211,20 @@ public class move {
                 frmotor.setPower(Math.max(minPower, maxPower));
                 blmotor.setPower(Math.max(minPower, maxPower));
                 brmotor.setPower(Math.max(minPower, maxPower));
+
+
+                if (gyro.getHeading() - initGyroPos < 0) {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0) {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
             }
             while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
             {
@@ -219,6 +233,20 @@ public class move {
                 frmotor.setPower(Math.max(minPower, maxPower));
                 blmotor.setPower(Math.max(minPower, maxPower));
                 brmotor.setPower(Math.max(minPower, maxPower));
+
+
+                if (gyro.getHeading() - initGyroPos < 0) {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0) {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
             }
         }
         else
@@ -231,6 +259,20 @@ public class move {
                 frmotor.setPower(Math.min(minPower, maxPower));
                 blmotor.setPower(Math.min(minPower, maxPower));
                 brmotor.setPower(Math.min(minPower, maxPower));
+
+
+                if (gyro.getHeading() - initGyroPos < 0) {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0) {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
             }
             while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
             {
@@ -239,6 +281,20 @@ public class move {
                 frmotor.setPower(Math.min(minPower, maxPower));
                 blmotor.setPower(Math.min(minPower, maxPower));
                 brmotor.setPower(Math.min(minPower, maxPower));
+
+
+                if (gyro.getHeading() - initGyroPos < 0) {
+                    flmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
+                if (gyro.getHeading() - initGyroPos > 0) {
+                    flmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    blmotor.setPower(flmotor.getPower() - (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    frmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                    brmotor.setPower(flmotor.getPower() + (Math.pow((gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
+                }
             }
         }
 
