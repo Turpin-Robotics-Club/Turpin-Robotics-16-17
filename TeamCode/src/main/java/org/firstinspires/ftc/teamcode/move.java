@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 
@@ -21,7 +22,8 @@ public class move {
     static DcMotor blmotor;
     static DcMotor brmotor;
     static Telemetry telemetry;
-
+    static DcMotor spinLeft;
+    static DcMotor spinRight;
     /* UNUSED VARIABLES (for unused classes)
     static double relativeHeading = 0;
     static double xmove;
@@ -450,7 +452,17 @@ public class move {
     }
 
 
+    public static void powerUpShooter(DcMotor spin1, DcMotor spin2)
+    {
+        spinLeft = spin1;
+        spinRight = spin2;
+        spinRight.setDirection(DcMotor.Direction.REVERSE);
 
+        spinLeft.setPower(0.8);
+        spinRight.setPower(0.8);
+
+
+    }
 
     /* INVALID STATEMENT
     public static void diagonal(double forward, double left, double power) throws InterruptedException{
