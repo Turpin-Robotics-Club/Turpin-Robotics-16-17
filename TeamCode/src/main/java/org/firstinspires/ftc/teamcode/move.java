@@ -13,7 +13,7 @@ import static java.lang.Thread.sleep;
 
 
 
-public class move {
+public class Move {
 
 
 
@@ -45,7 +45,7 @@ public class move {
      * @param red True if on the red Alliance, False otherwise
      */
     public static void initialize(HardwareMap hardware_map, Telemetry telemetry, boolean red) {
-        move.telemetry = telemetry;
+        Move.telemetry = telemetry;
 
         if (red) {
             flmotor = hardware_map.get(DcMotor.class, "motor_1");

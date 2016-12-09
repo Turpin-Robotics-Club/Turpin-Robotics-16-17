@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.utils.move;
+
 
 @Autonomous(name="A beacon1 0", group="Autonomous Finals")
 //@Disabled

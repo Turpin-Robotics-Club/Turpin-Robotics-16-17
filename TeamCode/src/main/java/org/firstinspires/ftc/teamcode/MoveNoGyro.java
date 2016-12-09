@@ -11,7 +11,7 @@ import static java.lang.Thread.sleep;
  * Created by Jonathan on 12/2/2016.
  */
 
-public class MoveNoGyro extends move {
+public class MoveNoGyro extends Move {
 
     /**
     public static void initialize(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright) {

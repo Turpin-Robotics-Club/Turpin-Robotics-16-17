@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.utils.move;
+
 @Autonomous(name="Autonomous Test", group="Autonomous Tests")
 //@Disabled
 
@@ -19,7 +21,7 @@ public class testAuto extends LinearOpMode {
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        move.initialize(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"), hardwareMap.gyroSensor.get("gyro"), telemetry, red);
+        move.initialize(hardwareMap, telemetry, red);
         //move.initialize_line_seeker(hardwareMap.colorSensor.get("line_sensor"));
 
         waitForStart();
