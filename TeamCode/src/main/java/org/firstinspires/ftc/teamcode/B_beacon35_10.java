@@ -25,8 +25,8 @@ public class B_beacon35_10 extends LinearOpMode
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        move.initialize_color_sensor(hardwareMap.colorSensor.get("color_sensor"));
-        move.initialize(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"), hardwareMap.gyroSensor.get("gyro"), telemetry, red);
+        Sensors.initialize(hardwareMap);
+        move.initialize(hardwareMap, telemetry, red);
 
 
         waitForStart();

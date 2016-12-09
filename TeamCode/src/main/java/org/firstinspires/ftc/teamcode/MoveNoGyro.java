@@ -13,6 +13,7 @@ import static java.lang.Thread.sleep;
 
 public class MoveNoGyro extends move {
 
+    /**
     public static void initialize(DcMotor frontleft, DcMotor frontright, DcMotor backleft, DcMotor backright) {
         flmotor = frontleft;
         frmotor = frontright;
@@ -206,5 +207,6 @@ public class MoveNoGyro extends move {
 
         sleep(50);
     }
+     */
 
 }

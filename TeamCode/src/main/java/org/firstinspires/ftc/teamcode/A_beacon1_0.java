@@ -21,8 +21,8 @@ public class A_beacon1_0 extends LinearOpMode{
             red = !Tsensor.isPressed();
             telemetry.addData("red", red);
             telemetry.update();
-            move.initialize_color_sensor(hardwareMap.colorSensor.get("color_sensor"));
-            move.initialize(hardwareMap.dcMotor.get("motor_1"), hardwareMap.dcMotor.get("motor_2"), hardwareMap.dcMotor.get("motor_3"), hardwareMap.dcMotor.get("motor_4"), hardwareMap.gyroSensor.get("gyro"), telemetry, red);
+            Sensors.initialize(hardwareMap);
+            move.initialize(hardwareMap, telemetry, red);
 
 
             waitForStart();
@@ -32,7 +32,7 @@ public class A_beacon1_0 extends LinearOpMode{
             sleep(50);
             move.left(-8,0.5);
 
-            char checkColorResult = move.checkColor();
+            char checkColorResult = Sensors.checkColor();
             telemetry.addData("Result:", checkColorResult);
             telemetry.update();
             sleep(4000);
@@ -40,7 +40,7 @@ public class A_beacon1_0 extends LinearOpMode{
                 move.left(-3, 0.3);
             }
 
-            telemetry.addData("Result:", move.checkColor());
+            telemetry.addData("Result:", Sensors.checkColor());
             telemetry.update();
 
             sleep(10000);
