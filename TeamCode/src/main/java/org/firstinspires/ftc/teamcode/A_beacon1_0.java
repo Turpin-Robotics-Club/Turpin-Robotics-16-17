@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.utils.MoveNoGyro;
+import org.firstinspires.ftc.teamcode.utils.Sensors;
+import org.firstinspires.ftc.teamcode.utils.move;
+
 
 @Autonomous(name="A beacon1 0", group="Autonomous Finals")
 //@Disabled
@@ -21,14 +25,14 @@ public class A_beacon1_0 extends LinearOpMode{
             red = !Tsensor.isPressed();
             telemetry.addData("red", red);
             telemetry.update();
-            Sensors.initialize(hardwareMap);
+
             move.initialize(hardwareMap, telemetry, red);
 
 
             waitForStart();
             move.left(-44, 0.5);
             sleep(50);
-            MoveNoGyro.forward(43,0.4);
+            MoveNoGyro.forward(43, 0.4);
             sleep(50);
             move.left(-8,0.5);
 
