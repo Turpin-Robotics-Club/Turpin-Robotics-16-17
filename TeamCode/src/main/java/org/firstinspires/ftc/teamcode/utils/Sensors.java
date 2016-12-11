@@ -77,5 +77,10 @@ public class Sensors {
         return (gyrochange * (runtime.seconds() + timeAutonomous));
     }
 
+    public static void offsetReset()
+    {
+        gyrochange = 0;
+    }
+
 
 }

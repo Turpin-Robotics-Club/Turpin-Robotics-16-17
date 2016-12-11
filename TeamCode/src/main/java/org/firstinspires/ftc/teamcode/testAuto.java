@@ -16,6 +16,7 @@ public class testAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
+
         boolean red;
         Tsensor = hardwareMap.touchSensor.get("touch");
         red = !Tsensor.isPressed();
