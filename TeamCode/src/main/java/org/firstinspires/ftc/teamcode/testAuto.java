@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.utils.move;
-
 @Autonomous(name="Autonomous Test", group="Autonomous Tests")
 //@Disabled
 
@@ -28,7 +26,7 @@ public class testAuto extends LinearOpMode {
 
 
         //move.driveToLine(0.2);
-        move.forward2(100,0,0.8,0.01);
+        move.forward2(100,0,0.6,0.01);
         //sleep(30000);
 
 

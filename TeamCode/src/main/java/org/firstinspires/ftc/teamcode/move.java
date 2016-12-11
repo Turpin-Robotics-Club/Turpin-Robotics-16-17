@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -13,7 +10,7 @@ import static java.lang.Thread.sleep;
 
 
 
-public class Move {
+public class move {
 
 
 
@@ -31,7 +28,7 @@ public class Move {
    */
 
     static int initGyroPos = 0;
-    static double stabilityMultiplier = 0.01;
+    static double stabilityMultiplier = 0.001;
     static double spinRate = 0.002;
 
     static int ENCODER_CPR = 1120;
@@ -45,7 +42,7 @@ public class Move {
      * @param red True if on the red Alliance, False otherwise
      */
     public static void initialize(HardwareMap hardware_map, Telemetry telemetry, boolean red) {
-        Move.telemetry = telemetry;
+        move.telemetry = telemetry;
 
         if (red) {
             flmotor = hardware_map.get(DcMotor.class, "motor_1");
@@ -60,7 +57,7 @@ public class Move {
         }
         frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        Sensors.initialize(hardware_map);
         resetEncoders();
     }
 
@@ -75,16 +72,16 @@ public class Move {
     public static void holdDirection()
     {
         if (Sensors.gyro.rawZ() > initGyroPos) {
-            flmotor.setPower(flmotor.getPower() + (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            blmotor.setPower(blmotor.getPower() + (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            frmotor.setPower(frmotor.getPower() - (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            brmotor.setPower(brmotor.getPower() - (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
+            flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            blmotor.setPower(blmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            frmotor.setPower(frmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            brmotor.setPower(brmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
         }
         if (Sensors.gyro.rawZ() < initGyroPos) {
-            flmotor.setPower(flmotor.getPower() - (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            blmotor.setPower(blmotor.getPower() - (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            frmotor.setPower(frmotor.getPower() + (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
-            brmotor.setPower(brmotor.getPower() + (Math.sqrt((Sensors.gyro.rawZ() - initGyroPos) * 0.01) * stabilityMultiplier));
+            flmotor.setPower(flmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            blmotor.setPower(blmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            frmotor.setPower(frmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            brmotor.setPower(brmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
         }
         telemetry.addData("Gyro Z", Sensors.gyro.rawZ());
         telemetry.update();
@@ -204,14 +201,14 @@ public class Move {
         if(distance < 0)
         {
             minPower = -Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.75)
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/2)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
                 frmotor.setPower(Math.max(minPower, maxPower));
                 blmotor.setPower(Math.max(minPower, maxPower));
                 brmotor.setPower(Math.max(minPower, maxPower));
-                holdDirection();
+                //holdDirection();
             }
             while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
             {
@@ -220,20 +217,20 @@ public class Move {
                 frmotor.setPower(Math.max(minPower, maxPower));
                 blmotor.setPower(Math.max(minPower, maxPower));
                 brmotor.setPower(Math.max(minPower, maxPower));
-                holdDirection();
+                //holdDirection();
             }
         }
         else
         {
             minPower = Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.75)
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/2)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
                 frmotor.setPower(Math.min(minPower, maxPower));
                 blmotor.setPower(Math.min(minPower, maxPower));
                 brmotor.setPower(Math.min(minPower, maxPower));
-                holdDirection();
+                //holdDirection();
             }
             while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
             {
@@ -242,7 +239,7 @@ public class Move {
                 frmotor.setPower(Math.min(minPower, maxPower));
                 blmotor.setPower(Math.min(minPower, maxPower));
                 brmotor.setPower(Math.min(minPower, maxPower));
-                holdDirection();
+                //holdDirection();
             }
         }
 
