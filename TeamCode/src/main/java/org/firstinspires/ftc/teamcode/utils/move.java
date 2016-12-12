@@ -28,7 +28,7 @@ public class move {
    */
 
     static int initGyroPos = 0;
-    static double stabilityMultiplier = 0.001;
+    static double stabilityMultiplier = 0.0001;
     static double spinRate = 0.002;
 
     static int ENCODER_CPR = 1120;
