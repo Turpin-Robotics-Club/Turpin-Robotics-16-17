@@ -13,7 +13,7 @@ public class nullAutonomous extends LinearOpMode {
 
     TouchSensor Tsensor;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
         boolean red;
         Tsensor = hardwareMap.touchSensor.get("touch");
         red = !Tsensor.isPressed();

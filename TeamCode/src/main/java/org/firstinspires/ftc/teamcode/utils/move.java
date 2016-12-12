@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,8 +12,6 @@ import static java.lang.Thread.sleep;
 
 
 public class move {
-
-
 
     static DcMotor flmotor;
     static DcMotor frmotor;
@@ -180,7 +179,7 @@ public class move {
      * @param increment the speed at which the speed increases & decreases
      * @throws InterruptedException for sleep
      */
-    public static void forward2(double distance, double minPower, double maxPower, double increment) throws InterruptedException
+    public static void forward2(double distance, double minPower, double maxPower, double increment)
     {
         initGyroPos = Sensors.gyro.rawZ();
 
@@ -201,7 +200,7 @@ public class move {
         if(distance < 0)
         {
             minPower = -Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/2)
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.85)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
@@ -223,7 +222,7 @@ public class move {
         else
         {
             minPower = Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/2)
+            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.85)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
@@ -249,7 +248,7 @@ public class move {
         brmotor.setPower(0);
 
         resetEncoders();
-        sleep(50);
+
 
     }
 

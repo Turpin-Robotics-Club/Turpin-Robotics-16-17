@@ -14,7 +14,7 @@ public class testAuto extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode(){
 
 
         boolean red;
@@ -29,9 +29,8 @@ public class testAuto extends LinearOpMode {
 
 
         //move.driveToLine(0.2);
-        move.forward2(100,0,0.6,0.01);
+        move.forward2(100, 0, 0.6, 0.01);
         //sleep(30000);
-
 
     }
 }
