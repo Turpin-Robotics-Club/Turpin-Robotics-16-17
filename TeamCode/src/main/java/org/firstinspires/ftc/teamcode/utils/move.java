@@ -1,38 +1,43 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import static java.lang.Thread.sleep;
 
 
 
-public class move {
+public class move extends LinearOpMode{
 
-    static DcMotor flmotor;
-    static DcMotor frmotor;
-    static DcMotor blmotor;
-    static DcMotor brmotor;
+    @Override
+    public void runOpMode(){}
+
+    DcMotor flmotor;
+    DcMotor frmotor;
+    DcMotor blmotor;
+    DcMotor brmotor;
     static Telemetry telemetry;
-    static DcMotor spinLeft;
-    static DcMotor spinRight;
+    DcMotor spinLeft;
+    DcMotor spinRight;
+    Servo dump;
     /* UNUSED VARIABLES (for unused classes)
-    static double relativeHeading = 0;
-    static double xmove;
-    static double ymove;
+    double relativeHeading = 0;
+    double xmove;
+    double ymove;
    */
 
-    static int initGyroPos = 0;
-    static double stabilityMultiplier = 0.0001;
-    static double spinRate = 0.002;
+    int initGyroPos = 0;
+    double stabilityMultiplier = 0.0001;
+    double spinRate = 0.002;
 
-    static int ENCODER_CPR = 1120;
-    static double GEAR_RATIO = 1;
-    static double WHEEL_DIAMETER = 5.94;
+    int ENCODER_CPR = 1120;
+    double GEAR_RATIO = 1;
+    double WHEEL_DIAMETER = 5.94;
 
     /**
      * Initializes motor variables
@@ -40,9 +45,10 @@ public class move {
      * @param telemetry The Telemetry instance from the calling OpMode
      * @param red True if on the red Alliance, False otherwise
      */
-    public static void initialize(HardwareMap hardware_map, Telemetry telemetry, boolean red) {
+    public move(HardwareMap hardware_map, Telemetry telemetry, boolean red) {
         move.telemetry = telemetry;
-
+        dump = hardware_map.get(Servo.class, "servo_1");
+        dump.setPosition(255);
         if (red) {
             flmotor = hardware_map.get(DcMotor.class, "motor_1");
             frmotor = hardware_map.get(DcMotor.class, "motor_2");
@@ -61,14 +67,14 @@ public class move {
     }
 
 
-    public static void resetEncoders()
+    public void resetEncoders()
     {
         flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         blmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         brmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-    public static void holdDirection()
+    public void holdDirection()
     {
         if (Sensors.gyro.rawZ() > initGyroPos) {
             flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
@@ -93,10 +99,7 @@ public class move {
      * @param power    The power level for the robot to move at. Should be an interval of [0.0, 1.0]
      * @throws InterruptedException
      */
-    public static void forward(double distance, double power) throws InterruptedException {
-
-        initGyroPos = Sensors.gyro.getHeading();
-
+    public void forward(double distance, double power){
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -120,38 +123,13 @@ public class move {
 
         if (distance < 0) {
 
-            while (flmotor.getCurrentPosition() > COUNTS) {
-                if (Sensors.gyro.getHeading() - initGyroPos < 0) {
-                    flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                }
-                if (Sensors.gyro.getHeading() - initGyroPos > 0) {
-                    flmotor.setPower(flmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                }
+            while (opModeIsActive() && flmotor.getCurrentPosition() > COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
             }
         } else {
-            while (flmotor.getCurrentPosition() < COUNTS) {
-
-                if (Sensors.gyro.getHeading() - initGyroPos < 0) {
-                    flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                }
-                if (Sensors.gyro.getHeading() - initGyroPos > 0) {
-                    flmotor.setPower(flmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 4, 2) * stabilityMultiplier));
-                }
+            while (opModeIsActive() && flmotor.getCurrentPosition() < COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
@@ -167,7 +145,15 @@ public class move {
         telemetry.addData("it has", "begun");
         telemetry.update();
 
-        sleep(50);
+
+    }
+
+    public void dump()
+    {
+        dump.setPosition(0);
+        while(opModeIsActive() && dump.getPosition() != 0);
+        dump.setPosition(255);
+
     }
 
 
@@ -179,7 +165,7 @@ public class move {
      * @param increment the speed at which the speed increases & decreases
      * @throws InterruptedException for sleep
      */
-    public static void forward2(double distance, double minPower, double maxPower, double increment)
+    public void forward2(double distance, double minPower, double maxPower, double increment)
     {
         initGyroPos = Sensors.gyro.rawZ();
 
@@ -200,7 +186,7 @@ public class move {
         if(distance < 0)
         {
             minPower = -Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.85)
+            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.85)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
@@ -209,7 +195,7 @@ public class move {
                 brmotor.setPower(Math.max(minPower, maxPower));
                 holdDirection();
             }
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
+            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
@@ -222,7 +208,7 @@ public class move {
         else
         {
             minPower = Math.abs(minPower);
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.85)
+            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.85)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
@@ -231,7 +217,7 @@ public class move {
                 brmotor.setPower(Math.min(minPower, maxPower));
                 holdDirection();
             }
-            while((flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
+            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
@@ -259,7 +245,7 @@ public class move {
      * @param power    The power level for the robot to move at. Should be an interval of [0.0, 1.0]
      * @throws InterruptedException
      */
-    public static void left(double distance, double power) throws InterruptedException {
+    public void left(double distance, double power){
         initGyroPos = Sensors.gyro.getHeading();
 
         resetEncoders();
@@ -284,7 +270,7 @@ public class move {
 
         if (distance > 0) {
 
-            while (flmotor.getCurrentPosition() > -COUNTS) {
+            while (opModeIsActive() && flmotor.getCurrentPosition() > -COUNTS) {
 
                 if (Sensors.gyro.getHeading() - initGyroPos < 0) {
                     flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
@@ -300,7 +286,7 @@ public class move {
                 }
             }
         } else {
-            while (flmotor.getCurrentPosition() < -COUNTS) {
+            while (opModeIsActive() && flmotor.getCurrentPosition() < -COUNTS) {
 
                 if (Sensors.gyro.getHeading() - initGyroPos < 0) {
                     flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
@@ -324,7 +310,7 @@ public class move {
 
 
         resetEncoders();
-        sleep(50);
+
     }
 
     /**
@@ -333,7 +319,7 @@ public class move {
      * @param degrees The amount (in degrees) to turn the robot. Positive for left, negative for right
      * @throws InterruptedException
      */
-    public static void turnLeft(int degrees) throws InterruptedException {
+    public void turnLeft(int degrees){
 
         resetEncoders();
         flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -350,7 +336,7 @@ public class move {
         if (target > 360) {
             target = target - 360;
         }
-        while (Sensors.gyro.getHeading() != target) {
+        while (opModeIsActive() && Sensors.gyro.getHeading() != target) {
             telemetry.addData("Target:", target);
             telemetry.addData("Current:", Sensors.gyro.getHeading());
             telemetry.addData("Delta:", target - Sensors.gyro.getHeading());
@@ -369,7 +355,7 @@ public class move {
         if (degrees > 360) {
             degrees = degrees - 360;
         }
-        while (Sensors.gyro.getHeading() != degrees) {
+        while (opModeIsActive() && Sensors.gyro.getHeading() != degrees) {
             telemetry.addData("Heading:", degrees);
             telemetry.addData("Current: ", degrees);
             if ((degrees < Sensors.gyro.getHeading() + 180 && degrees > Sensors.gyro.getHeading()) || degrees < (Sensors.gyro.getHeading() + 180) - 360) {
@@ -408,13 +394,13 @@ public class move {
         brmotor.setPower(0);
 
 
-        sleep(50);
+
 
 
     }
 
 
-    public static void driveToLine(double power) throws InterruptedException
+    public void driveToLine(double power)
     {
         resetEncoders();
         flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -422,7 +408,7 @@ public class move {
         blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while (Sensors.line_sensor.green() < 3)
+        while (opModeIsActive() && Sensors.line_sensor.green() < 3)
         {
             flmotor.setPower(power);
             frmotor.setPower(power);
@@ -434,11 +420,11 @@ public class move {
 
         resetEncoders();
 
-        sleep(50);
+
     }
 
 
-    public static void powerUpShooter(DcMotor spin1, DcMotor spin2)
+    public void powerUpShooter(DcMotor spin1, DcMotor spin2)
     {
         spinLeft = spin1;
         spinRight = spin2;
@@ -451,7 +437,7 @@ public class move {
     }
 
     /* INVALID STATEMENT
-    public static void diagonal(double forward, double left, double power) throws InterruptedException{
+    public void diagonal(double forward, double left, double power) throws InterruptedException{
 
 
         resetEncoders();
@@ -502,12 +488,12 @@ public class move {
 
 
 
-        while(-fllCOUNTS + flfCOUNTS > flmotor.getCurrentPosition())
+        while(opModeIsActive() && -fllCOUNTS + flfCOUNTS > flmotor.getCurrentPosition())
         {
 
         }
         *//*
-        while(motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
+        while(opModeIsActive() && motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
         {EncCounts = motor1.getCurrentPosition();}
         motor1.setPower(0);
         motor2.setPower(0);
@@ -516,7 +502,7 @@ public class move {
         motor2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         *//*
 
-        sleep(50);
+
 
         return;
     }

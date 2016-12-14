@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.utils;
 
 import org.firstinspires.ftc.teamcode.utils.move;
@@ -6,7 +7,9 @@ import static java.lang.Thread.sleep;
 
 /**
  * Created by Jonathan on 12/2/2016.
- */
+ *
+
+import org.firstinspires.ftc.teamcode.utils.move;
 
 public class MoveNoGyro extends move {
 
@@ -204,6 +207,6 @@ public class MoveNoGyro extends move {
 
         sleep(50);
     }
-     */
 
-}
+
+}*/

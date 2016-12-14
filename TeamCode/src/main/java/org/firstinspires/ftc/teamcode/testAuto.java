@@ -16,20 +16,17 @@ public class testAuto extends LinearOpMode {
     @Override
     public void runOpMode(){
 
-
         boolean red;
         Tsensor = hardwareMap.touchSensor.get("touch");
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        move.initialize(hardwareMap, telemetry, red);
-        //move.initialize_line_seeker(hardwareMap.colorSensor.get("line_sensor"));
-
+        move drive = new move(hardwareMap, telemetry, red);
         waitForStart();
 
 
         //move.driveToLine(0.2);
-        move.forward2(100, 0, 0.6, 0.01);
+        drive.forward(100, 0.6);
         //sleep(30000);
 
     }
