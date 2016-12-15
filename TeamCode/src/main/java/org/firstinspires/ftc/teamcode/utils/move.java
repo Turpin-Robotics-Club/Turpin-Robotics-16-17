@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,13 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
-
-
-public class move extends LinearOpMode{
-
-    @Override
-    public void runOpMode(){}
+public class move {
 
     DcMotor flmotor;
     DcMotor frmotor;
@@ -25,6 +18,7 @@ public class move extends LinearOpMode{
     DcMotor spinLeft;
     DcMotor spinRight;
     Servo dump;
+    LinearOpMode opMode;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
     double xmove;
@@ -41,12 +35,14 @@ public class move extends LinearOpMode{
 
     /**
      * Initializes motor variables
-     * @param hardware_map The HardwareMap instance from the calling OpMode
-     * @param telemetry The Telemetry instance from the calling OpMode
+     * @param op The instance of the calling LinearOpMode
      * @param red True if on the red Alliance, False otherwise
      */
-    public move(HardwareMap hardware_map, Telemetry telemetry, boolean red) {
-        move.telemetry = telemetry;
+    public move(LinearOpMode op, boolean red) {
+        opMode = op;
+        move.telemetry = op.telemetry;
+        HardwareMap hardware_map = op.hardwareMap;
+
         dump = hardware_map.get(Servo.class, "servo_1");
         dump.setPosition(255);
         if (red) {
@@ -123,13 +119,13 @@ public class move extends LinearOpMode{
 
         if (distance < 0) {
 
-            while (opModeIsActive() && flmotor.getCurrentPosition() > COUNTS) {
+            while (opMode.opModeIsActive() && flmotor.getCurrentPosition() > COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
             }
         } else {
-            while (opModeIsActive() && flmotor.getCurrentPosition() < COUNTS) {
+            while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
@@ -151,7 +147,7 @@ public class move extends LinearOpMode{
     public void dump()
     {
         dump.setPosition(0);
-        while(opModeIsActive() && dump.getPosition() != 0);
+        while(opMode.opModeIsActive() && dump.getPosition() != 0);
         dump.setPosition(255);
 
     }
@@ -186,7 +182,7 @@ public class move extends LinearOpMode{
         if(distance < 0)
         {
             minPower = -Math.abs(minPower);
-            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.85)
+            while(opMode.opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS/1.85)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
@@ -195,7 +191,7 @@ public class move extends LinearOpMode{
                 brmotor.setPower(Math.max(minPower, maxPower));
                 holdDirection();
             }
-            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
+            while(opMode.opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 > COUNTS)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.max(minPower, maxPower));
@@ -208,7 +204,7 @@ public class move extends LinearOpMode{
         else
         {
             minPower = Math.abs(minPower);
-            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.85)
+            while(opMode.opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS/1.85)
             {
                 minPower = minPower + increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
@@ -217,7 +213,7 @@ public class move extends LinearOpMode{
                 brmotor.setPower(Math.min(minPower, maxPower));
                 holdDirection();
             }
-            while(opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
+            while(opMode.opModeIsActive() && (flmotor.getCurrentPosition()+frmotor.getCurrentPosition()+blmotor.getCurrentPosition()+brmotor.getCurrentPosition())/4 < COUNTS)
             {
                 minPower = minPower - increment;
                 flmotor.setPower(Math.min(minPower, maxPower));
@@ -270,7 +266,7 @@ public class move extends LinearOpMode{
 
         if (distance > 0) {
 
-            while (opModeIsActive() && flmotor.getCurrentPosition() > -COUNTS) {
+            while (opMode.opModeIsActive() && flmotor.getCurrentPosition() > -COUNTS) {
 
                 if (Sensors.gyro.getHeading() - initGyroPos < 0) {
                     flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
@@ -286,7 +282,7 @@ public class move extends LinearOpMode{
                 }
             }
         } else {
-            while (opModeIsActive() && flmotor.getCurrentPosition() < -COUNTS) {
+            while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < -COUNTS) {
 
                 if (Sensors.gyro.getHeading() - initGyroPos < 0) {
                     flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
@@ -336,7 +332,7 @@ public class move extends LinearOpMode{
         if (target > 360) {
             target = target - 360;
         }
-        while (opModeIsActive() && Sensors.gyro.getHeading() != target) {
+        while (opMode.opModeIsActive() && Sensors.gyro.getHeading() != target) {
             telemetry.addData("Target:", target);
             telemetry.addData("Current:", Sensors.gyro.getHeading());
             telemetry.addData("Delta:", target - Sensors.gyro.getHeading());
@@ -355,7 +351,7 @@ public class move extends LinearOpMode{
         if (degrees > 360) {
             degrees = degrees - 360;
         }
-        while (opModeIsActive() && Sensors.gyro.getHeading() != degrees) {
+        while (opMode.opModeIsActive() && Sensors.gyro.getHeading() != degrees) {
             telemetry.addData("Heading:", degrees);
             telemetry.addData("Current: ", degrees);
             if ((degrees < Sensors.gyro.getHeading() + 180 && degrees > Sensors.gyro.getHeading()) || degrees < (Sensors.gyro.getHeading() + 180) - 360) {
@@ -408,7 +404,7 @@ public class move extends LinearOpMode{
         blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while (opModeIsActive() && Sensors.line_sensor.green() < 3)
+        while (opMode.opModeIsActive() && Sensors.line_sensor.green() < 3)
         {
             flmotor.setPower(power);
             frmotor.setPower(power);
@@ -488,12 +484,12 @@ public class move extends LinearOpMode{
 
 
 
-        while(opModeIsActive() && -fllCOUNTS + flfCOUNTS > flmotor.getCurrentPosition())
+        while(opMode.opModeIsActive() && -fllCOUNTS + flfCOUNTS > flmotor.getCurrentPosition())
         {
 
         }
         *//*
-        while(opModeIsActive() && motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
+        while(opMode.opModeIsActive() && motor1.getCurrentPosition() < COUNTS && motor2.getCurrentPosition() < COUNTS)
         {EncCounts = motor1.getCurrentPosition();}
         motor1.setPower(0);
         motor2.setPower(0);

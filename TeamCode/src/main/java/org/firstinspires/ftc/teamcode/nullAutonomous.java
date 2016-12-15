@@ -20,7 +20,7 @@ public class nullAutonomous extends LinearOpMode {
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        new move(hardwareMap, telemetry, red);
+        new move(this, red);
         waitForStart();
         Sensors.gyroInitalSet();
     }

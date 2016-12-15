@@ -70,9 +70,9 @@ public class mecanumSimple extends OpMode {
 
 
         flvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
-        frvalue = (-gamepad1.left_stick_x - gamepad1.left_stick_y);
+        frvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
         blvalue = (-gamepad1.left_stick_x + gamepad1.left_stick_y);
-        brvalue = (gamepad1.left_stick_x + gamepad1.left_stick_y);
+        brvalue = (gamepad1.left_stick_x - gamepad1.left_stick_y);
 
         flvalue = flvalue + gamepad1.right_stick_x;
         frvalue = frvalue - gamepad1.right_stick_x;
@@ -93,5 +93,12 @@ public class mecanumSimple extends OpMode {
         frontright.setPower(frvalue * drive_power);
         backleft.setPower(blvalue * drive_power);
         backright.setPower(brvalue * drive_power);
+    }
+
+    public void stop() {
+        frontleft.setPower(0);
+        frontright.setPower(0);
+        backleft.setPower(0);
+        backright.setPower(0);
     }
 }

@@ -28,7 +28,7 @@ public class B_beacon35_10 extends LinearOpMode
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        drive = new move(hardwareMap, telemetry, red);
+        drive = new move(this, red);
         waitForStart();
 
 

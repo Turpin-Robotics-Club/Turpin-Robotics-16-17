@@ -34,20 +34,31 @@ public class BallDrop extends LinearOpMode {
 
         conveyor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        conveyor.setPower(0.45);
+        conveyor.setPower(-0.45);
         spinner.setPower(0.6);
 
-        sleep(5000);
+        sleep(1000);
 
+        for (double i = 0.0; i <= 0.5; i += 0.025) {
+            leftShooter.setPower(i);
+            rightShooter.setPower(-i);
+            telemetry.addData("Speed:", i);
+            telemetry.update();
+            sleep(10);
+        }
+        /*
         while(opModeIsActive() && !motors_running) {
-            double speed = Math.min(Math.pow(leftShooter.getPower(), 2) / 500, 0.5);
+            double speed = Math.min(Math.pow(leftShooter.getPower(), 2.0) / 500.0, 0.5);
             leftShooter.setPower(speed);
             rightShooter.setPower(speed);
+            telemetry.addData("Speed:", leftShooter.getPower());
+            telemetry.update();
             if (speed == 0.5) {
                 motors_running = true;
                 break;
             }
         }
+        */
 
         sleep(5000);
 
@@ -56,6 +67,8 @@ public class BallDrop extends LinearOpMode {
         sleep(1000);
 
         ballStorage.setPosition(1);
+
+        sleep(1000);
     }
 
 }
