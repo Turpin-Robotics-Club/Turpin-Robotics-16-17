@@ -29,7 +29,15 @@ public class NewMecanumSimple extends OpMode{
     Servo storageServo;
     Servo liftServo;
 
+
+    double frontLeftPower;
+    double frontRightPower;
+    double backLeftPower;
+    double backRightPower;
+
+
     public final double SPEED = 0.75;
+    public final double forwardBonus = 1.5;
 
     boolean shooterRunning = false;
 
@@ -71,10 +79,6 @@ public class NewMecanumSimple extends OpMode{
     @Override
     public void loop() {
 
-        double frontLeftPower;
-        double frontRightPower;
-        double backLeftPower;
-        double backRightPower;
 
         knocker.setPower(.4);
 
@@ -90,10 +94,10 @@ public class NewMecanumSimple extends OpMode{
         }
 
         // Movement
-        frontLeftPower = (gamepad1.left_stick_x - gamepad1.left_stick_y);
-        frontRightPower = (gamepad1.left_stick_x + gamepad1.left_stick_y);
-        backLeftPower = (gamepad1.left_stick_x + gamepad1.left_stick_y);
-        backRightPower = (gamepad1.left_stick_x - gamepad1.left_stick_y);
+        frontLeftPower = (gamepad1.left_stick_x - (gamepad1.left_stick_y * forwardBonus));
+        frontRightPower = (gamepad1.left_stick_x + (gamepad1.left_stick_y * forwardBonus));
+        backLeftPower = (gamepad1.left_stick_x + (gamepad1.left_stick_y * forwardBonus));
+        backRightPower = (gamepad1.left_stick_x - (gamepad1.left_stick_y * forwardBonus));
 
         // Turning
         frontLeftPower = frontLeftPower + gamepad1.right_stick_x;
