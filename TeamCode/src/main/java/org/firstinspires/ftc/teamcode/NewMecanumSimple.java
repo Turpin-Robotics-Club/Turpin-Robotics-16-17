@@ -7,22 +7,27 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.utils.Sensors;
+
 /**
  * Created by Jonathan on 12/16/2016.
  */
 
 @TeleOp(name="New Simple Drive")
-public class NewMecanumSimple extends OpMode {
+public class NewMecanumSimple extends OpMode{
 
     DcMotor frontleft;
     DcMotor frontright;
     DcMotor backleft;
     DcMotor backright;
+    DcMotor collector;
+    DcMotor knocker;
 
     DcMotor leftShooter;
     DcMotor rightShooter;
 
     Servo storageServo;
+    Servo liftServo;
 
     public final double SPEED = 0.75;
 
@@ -30,7 +35,7 @@ public class NewMecanumSimple extends OpMode {
 
     private ElapsedTime runtime_b = new ElapsedTime();
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
-    private ElapsedTime runtine_y = new ElapsedTime();
+    private ElapsedTime runtime_y = new ElapsedTime();
 
     @Override
     public void init() {
@@ -38,18 +43,29 @@ public class NewMecanumSimple extends OpMode {
         frontright = hardwareMap.dcMotor.get("front_right");
         backleft = hardwareMap.dcMotor.get("back_left");
         backright = hardwareMap.dcMotor.get("back_right");
+        collector = hardwareMap.dcMotor.get("collector");
+        knocker = hardwareMap.dcMotor.get("knocker");
 
         leftShooter = hardwareMap.dcMotor.get("left_shooter");
         rightShooter = hardwareMap.dcMotor.get("right_shooter");
 
         storageServo = hardwareMap.servo.get("storage_servo");
+        liftServo = hardwareMap.servo.get("lift_servo");
 
         backleft.setDirection(DcMotorSimple.Direction.REVERSE);
         backright.setDirection(DcMotorSimple.Direction.REVERSE);
+        collector.setDirection(DcMotorSimple.Direction.REVERSE);
 
         runtime_b.reset();
-        runtine_y.reset();
+        runtime_y.reset();
         runtimeStorageServo.reset();
+
+        storageServo.setPosition(1);
+        liftServo.setPosition(.225);
+        //liftServo.setPosition(.01);
+        //telemetry.addData("Servo:",liftServo.getPosition());
+        //telemetry.update();
+
     }
 
     @Override
@@ -59,6 +75,19 @@ public class NewMecanumSimple extends OpMode {
         double frontRightPower;
         double backLeftPower;
         double backRightPower;
+
+        knocker.setPower(.4);
+
+        if(gamepad2.left_bumper && gamepad2.right_bumper)
+        {
+            collector.setPower(0);
+        }
+        else if(gamepad2.left_bumper){
+            collector.setPower(.55);
+        }
+        else if(gamepad2.right_bumper){
+            collector.setPower(-.45);
+        }
 
         // Movement
         frontLeftPower = (gamepad1.left_stick_x - gamepad1.left_stick_y);
@@ -100,11 +129,18 @@ public class NewMecanumSimple extends OpMode {
             runtime_b.reset();
         }
 
-        if (gamepad2.y && (runtime_b.seconds() >= 2)) {
+        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
             storageServo.setPosition(0);
             runtimeStorageServo.reset();
+            runtime_y.reset();
         }
 
+        if (gamepad2.a){
+            liftServo.setPosition(.205);
+        }
+        else{
+            liftServo.setPosition(.225);
+        }
 
     }
 
