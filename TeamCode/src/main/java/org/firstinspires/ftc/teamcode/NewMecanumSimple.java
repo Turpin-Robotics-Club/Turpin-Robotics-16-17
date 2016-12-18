@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.utils.RobotConstants;
 import org.firstinspires.ftc.teamcode.utils.Sensors;
 
 /**
@@ -115,7 +116,7 @@ public class NewMecanumSimple extends OpMode{
                 leftShooter.setPower(0.2);
                 rightShooter.setPower(-0.2);
             }
-            double i = Math.min(leftShooter.getPower() + 0.05, 0.7);
+            double i = Math.min(leftShooter.getPower() + 0.05, RobotConstants.MAX_SHOOTER_POWER);
             leftShooter.setPower(i);
             rightShooter.setPower(-i);
         } else {

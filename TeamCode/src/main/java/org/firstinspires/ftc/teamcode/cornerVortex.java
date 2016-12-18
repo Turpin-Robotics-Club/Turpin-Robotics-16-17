@@ -33,10 +33,10 @@ public class cornerVortex extends LinearOpMode{
 
 
 
-            frontleft = hardwareMap.dcMotor.get("front_left");
-            frontright = hardwareMap.dcMotor.get("front_right");
-            backleft = hardwareMap.dcMotor.get("back_left");
-            backright = hardwareMap.dcMotor.get("back_right");
+        frontleft = hardwareMap.dcMotor.get("front_left");
+        frontright = hardwareMap.dcMotor.get("front_right");
+        backleft = hardwareMap.dcMotor.get("back_left");
+        backright = hardwareMap.dcMotor.get("back_right");
 
         backleft.setDirection(DcMotorSimple.Direction.REVERSE);
         backright.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -55,7 +55,7 @@ public class cornerVortex extends LinearOpMode{
         runtime.reset();
 
         if(red) {
-            while (opModeIsActive() && runtime.seconds() < 1) {
+            while (opModeIsActive() && runtime.seconds() < 1.5) {
                 frontleft.setPower(-0.5);
                 frontright.setPower(-0.5);
                 backleft.setPower(-0.5);
@@ -64,7 +64,7 @@ public class cornerVortex extends LinearOpMode{
         }
         else
         {
-            while (opModeIsActive() && runtime.seconds() < 3) {
+            while (opModeIsActive() && runtime.seconds() < 1.5) {
                 frontleft.setPower(0.5);
                 frontright.setPower(0.5);
                 backleft.setPower(0.5);

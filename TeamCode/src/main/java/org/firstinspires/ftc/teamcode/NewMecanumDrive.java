@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.utils.RobotConstants;
+
 
 @TeleOp(name = "New Mecanum Drive", group = "TeleOp")
 //@Disabled
@@ -32,7 +34,7 @@ public class NewMecanumDrive extends OpMode {
     double ymove;
     float turnRate = 0.1f;
     float spinRate = 0.1f;
-    float driveRate = 1.0f;
+    float driveRate = 1.25f;
 
     DcMotor leftShooter;
     DcMotor rightShooter;
@@ -312,7 +314,7 @@ public class NewMecanumDrive extends OpMode {
                 leftShooter.setPower(0.2);
                 rightShooter.setPower(-0.2);
             }
-            double i = Math.min(leftShooter.getPower() + 0.05, 0.7);
+            double i = Math.min(leftShooter.getPower() + 0.05, RobotConstants.MAX_SHOOTER_POWER);
             leftShooter.setPower(i);
             rightShooter.setPower(-i);
         } else {
