@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.teamcode.utils.RobotConstants;
 public class NewMecanumDrive extends OpMode {
 
 
-    ModernRoboticsI2cGyro gyro;
+    GyroSensor gyro;
     double joy;
     double joyLeft;
     double G1_Lstk_x;
@@ -58,7 +59,7 @@ public class NewMecanumDrive extends OpMode {
         frontright = hardwareMap.dcMotor.get("front_right");
         backleft = hardwareMap.dcMotor.get("back_left");
         backright = hardwareMap.dcMotor.get("back_right");
-        gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+        gyro = hardwareMap.gyroSensor.get("gyro");
 
         storageServo = hardwareMap.servo.get("storage_servo");
         liftServo = hardwareMap.servo.get("lift_servo");
