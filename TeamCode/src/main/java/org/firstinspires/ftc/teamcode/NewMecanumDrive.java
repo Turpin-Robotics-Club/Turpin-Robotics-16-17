@@ -33,24 +33,23 @@ public class NewMecanumDrive extends OpMode {
     float turnRate = 0.1f;
     float spinRate = 0.1f;
     float driveRate = 1.0f;
-    DcMotor collector;
-    DcMotor knocker;
 
     DcMotor leftShooter;
     DcMotor rightShooter;
 
+
     Servo storageServo;
     Servo liftServo;
 
-
+    DcMotor knocker;
+    DcMotor collector;
 
     boolean shooterRunning = false;
 
-    private ElapsedTime runtime_b = new ElapsedTime();
+
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
     private ElapsedTime runtime_y = new ElapsedTime();
-
-
+    private ElapsedTime runtime_b = new ElapsedTime();
 
     public void init() {
 
@@ -59,24 +58,28 @@ public class NewMecanumDrive extends OpMode {
         backleft = hardwareMap.dcMotor.get("back_left");
         backright = hardwareMap.dcMotor.get("back_right");
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-        leftShooter = hardwareMap.dcMotor.get("left_shooter");
-        rightShooter = hardwareMap.dcMotor.get("right_shooter");
 
         storageServo = hardwareMap.servo.get("storage_servo");
         liftServo = hardwareMap.servo.get("lift_servo");
+
+        knocker = hardwareMap.dcMotor.get("knocker");
+        collector = hardwareMap.dcMotor.get("collector");
+
+
+        leftShooter = hardwareMap.dcMotor.get("left_shooter");
+        rightShooter = hardwareMap.dcMotor.get("right_shooter");
+
 
         backleft.setDirection(DcMotorSimple.Direction.REVERSE);
         backright.setDirection(DcMotorSimple.Direction.REVERSE);
         collector.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        runtime_b.reset();
-        runtime_y.reset();
-        runtimeStorageServo.reset();
 
+        liftServo.setPosition(0.225);
         storageServo.setPosition(1);
-        liftServo.setPosition(.225);
 
-
+        runtimeStorageServo.reset();
+        runtime_y.reset();
     }
 
     public void loop() {
@@ -255,11 +258,17 @@ public class NewMecanumDrive extends OpMode {
         backright.setPower((brvalue));
 
 
-
-
-
-
         /**OPERATOR'S SECTION**/
+
+        if (gamepad2.a){
+            liftServo.setPosition(.205);
+        }
+        else{
+            liftServo.setPosition(.225);
+        }
+
+
+
 
         if(collector.getPower() > 0)
         {
@@ -282,6 +291,22 @@ public class NewMecanumDrive extends OpMode {
         }
 
 
+        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == 0)) {
+            storageServo.setPosition(1);
+        }
+        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
+            storageServo.setPosition(0);
+            runtimeStorageServo.reset();
+            runtime_y.reset();
+        }
+
+
+
+
+        if (gamepad2.b && (runtime_b.seconds() >= 2)) {
+            shooterRunning = !shooterRunning;
+            runtime_b.reset();
+        }
         if (shooterRunning) {
             if (leftShooter.getPower() < 0.2) {
                 leftShooter.setPower(0.2);
@@ -295,32 +320,6 @@ public class NewMecanumDrive extends OpMode {
             leftShooter.setPower(i);
             rightShooter.setPower(-i);
         }
-
-        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == 0)) {
-            storageServo.setPosition(1);
-        }
-
-        if (gamepad2.b && (runtime_b.seconds() >= 2)) {
-            shooterRunning = !shooterRunning;
-            runtime_b.reset();
-        }
-
-        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
-            storageServo.setPosition(0);
-            runtimeStorageServo.reset();
-            runtime_y.reset();
-        }
-
-        if (gamepad2.a){
-            liftServo.setPosition(.205);
-        }
-        else{
-            liftServo.setPosition(.225);
-        }
-
-
-
-
 
     }
 
