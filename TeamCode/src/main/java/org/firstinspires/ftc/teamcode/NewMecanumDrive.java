@@ -32,9 +32,8 @@ public class NewMecanumDrive extends OpMode {
     double relativeHeading;
     double xmove;
     double ymove;
-    float turnRate = 0.1f;
-    float spinRate = 0.1f;
-    float driveRate = 1.25f;
+    float turnRate = 1.0f;
+    float driveRate = 1.5f;
 
     DcMotor leftShooter;
     DcMotor rightShooter;
@@ -200,10 +199,10 @@ public class NewMecanumDrive extends OpMode {
         */
 
 
-        flvalue = (flvalue + gamepad1.right_stick_x) * 0.75;
-        frvalue = (frvalue + gamepad1.right_stick_x) * 0.75;
-        blvalue = (blvalue - gamepad1.right_stick_x) * 0.75;
-        brvalue = (brvalue - gamepad1.right_stick_x) * 0.75;
+        flvalue = (flvalue + gamepad1.right_stick_x) * turnRate;
+        frvalue = (frvalue + gamepad1.right_stick_x) * turnRate;
+        blvalue = (blvalue - gamepad1.right_stick_x) * turnRate;
+        brvalue = (brvalue - gamepad1.right_stick_x) * turnRate;
 
 
 
