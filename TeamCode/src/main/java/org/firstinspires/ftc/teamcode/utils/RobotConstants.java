@@ -6,5 +6,5 @@ package org.firstinspires.ftc.teamcode.utils;
 
 public class RobotConstants {
 
-    public static final double MAX_SHOOTER_POWER = 0.3;
+    public static final double MAX_SHOOTER_POWER = 0.35;
 }
