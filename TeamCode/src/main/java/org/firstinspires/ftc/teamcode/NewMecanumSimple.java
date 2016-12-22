@@ -45,6 +45,7 @@ public class NewMecanumSimple extends OpMode{
     private ElapsedTime runtime_b = new ElapsedTime();
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
     private ElapsedTime runtime_y = new ElapsedTime();
+    private ElapsedTime runtime_bumpers = new ElapsedTime();
 
     @Override
     public void init() {
@@ -83,15 +84,18 @@ public class NewMecanumSimple extends OpMode{
 
         knocker.setPower(.4);
 
-        if(gamepad2.left_bumper && gamepad2.right_bumper)
+        if(gamepad2.left_bumper && gamepad2.right_bumper && runtime_bumpers.seconds() >= 1)
         {
             collector.setPower(0);
+            runtime_bumpers.reset();
         }
-        else if(gamepad2.left_bumper){
+        else if(gamepad2.left_bumper && runtime_bumpers.seconds() >= 1){
             collector.setPower(.55);
+            runtime_bumpers.reset();
         }
-        else if(gamepad2.right_bumper){
+        else if(gamepad2.right_bumper && runtime_bumpers.seconds() >= 1){
             collector.setPower(-.45);
+            runtime_bumpers.reset();
         }
 
         // Movement
@@ -125,26 +129,26 @@ public class NewMecanumSimple extends OpMode{
             rightShooter.setPower(-i);
         }
 
-        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == 0)) {
-            storageServo.setPosition(1);
+        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == RobotConstants.StorageServoState.RELEASE.value())) {
+            storageServo.setPosition(RobotConstants.StorageServoState.STORE.value());
         }
 
-        if (gamepad2.b && (runtime_b.seconds() >= 2)) {
+        if (gamepad2.b && (runtime_b.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
             shooterRunning = !shooterRunning;
             runtime_b.reset();
         }
 
-        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
-            storageServo.setPosition(0);
+        if (gamepad2.y && (runtime_y.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
+            storageServo.setPosition(RobotConstants.StorageServoState.RELEASE.value());
             runtimeStorageServo.reset();
             runtime_y.reset();
         }
 
         if (gamepad2.a){
-            liftServo.setPosition(.205);
+            liftServo.setPosition(RobotConstants.LiftServoState.LIFTED.value());
         }
         else{
-            liftServo.setPosition(.225);
+            liftServo.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
         }
 
     }
