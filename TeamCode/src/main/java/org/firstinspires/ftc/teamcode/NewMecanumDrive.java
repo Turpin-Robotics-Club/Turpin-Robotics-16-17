@@ -77,8 +77,8 @@ public class NewMecanumDrive extends OpMode {
         collector.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        liftServo.setPosition(0.225);
-        storageServo.setPosition(1);
+        liftServo.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
+        storageServo.setPosition(RobotConstants.StorageServoState.STORE.value());
 
         runtimeStorageServo.reset();
         runtime_y.reset();
@@ -263,10 +263,10 @@ public class NewMecanumDrive extends OpMode {
         /**OPERATOR'S SECTION**/
 
         if (gamepad2.a){
-            liftServo.setPosition(.205);
+            liftServo.setPosition(RobotConstants.LiftServoState.LIFTED.value());
         }
         else{
-            liftServo.setPosition(.225);
+            liftServo.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
         }
 
 
@@ -294,10 +294,10 @@ public class NewMecanumDrive extends OpMode {
 
 
         if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == 0)) {
-            storageServo.setPosition(1);
+            storageServo.setPosition(RobotConstants.StorageServoState.STORE.value());
         }
-        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
-            storageServo.setPosition(0);
+        if (gamepad2.y && (runtime_y.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
+            storageServo.setPosition(RobotConstants.StorageServoState.RELEASE.value());
             runtimeStorageServo.reset();
             runtime_y.reset();
         }
@@ -305,7 +305,7 @@ public class NewMecanumDrive extends OpMode {
 
 
 
-        if (gamepad2.b && (runtime_b.seconds() >= 2)) {
+        if (gamepad2.b && (runtime_b.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
             shooterRunning = !shooterRunning;
             runtime_b.reset();
         }

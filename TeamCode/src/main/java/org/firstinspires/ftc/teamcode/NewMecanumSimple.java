@@ -125,26 +125,26 @@ public class NewMecanumSimple extends OpMode{
             rightShooter.setPower(-i);
         }
 
-        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == 0)) {
-            storageServo.setPosition(1);
+        if (runtimeStorageServo.seconds() >= 1 && (storageServo.getPosition() == RobotConstants.StorageServoState.RELEASE.value())) {
+            storageServo.setPosition(RobotConstants.StorageServoState.STORE.value());
         }
 
-        if (gamepad2.b && (runtime_b.seconds() >= 2)) {
+        if (gamepad2.b && (runtime_b.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
             shooterRunning = !shooterRunning;
             runtime_b.reset();
         }
 
-        if (gamepad2.y && (runtime_y.seconds() >= 2)) {
-            storageServo.setPosition(0);
+        if (gamepad2.y && (runtime_y.seconds() >= RobotConstants.BUTTON_PRESS_WAIT)) {
+            storageServo.setPosition(RobotConstants.StorageServoState.RELEASE.value());
             runtimeStorageServo.reset();
             runtime_y.reset();
         }
 
         if (gamepad2.a){
-            liftServo.setPosition(.205);
+            liftServo.setPosition(RobotConstants.LiftServoState.LIFTED.value());
         }
         else{
-            liftServo.setPosition(.225);
+            liftServo.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
         }
 
     }
