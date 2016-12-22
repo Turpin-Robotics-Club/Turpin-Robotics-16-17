@@ -20,10 +20,14 @@ public class ResetConveyorOpMode extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.right_trigger >= 0.5) {
-            collectorMotor.setPower(0.25 * gamepad1.right_trigger);
-        } else if (gamepad2.right_trigger >= 0.5) {
-            collectorMotor.setPower(0.25 * gamepad2.right_trigger);
+        if (gamepad1.right_trigger >= 0.35) {
+            collectorMotor.setPower(0.2 * gamepad1.right_trigger);
+        } else if (gamepad1.left_trigger >= 0.35) {
+            collectorMotor.setPower(-0.2 * gamepad1.left_trigger);
+        } else if (gamepad2.right_trigger >= 0.35) {
+            collectorMotor.setPower(0.2 * gamepad2.right_trigger);
+        } else if (gamepad2.left_trigger >= 0.35) {
+            collectorMotor.setPower(-0.2 * gamepad2.left_trigger);
         } else {
             collectorMotor.setPower(0);
         }
