@@ -43,7 +43,7 @@ public class newMove {
         move.telemetry = op.telemetry;
         HardwareMap hardware_map = op.hardwareMap;
 
-        dump = hardware_map.get(Servo.class, "servo_1");
+        dump = hardware_map.get(Servo.class, "lift_servo");
         dump.setPosition(255);
         if (red) {
             flmotor = hardware_map.get(DcMotor.class, "back_left");
@@ -123,12 +123,14 @@ public class newMove {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
+                holdDirection();
             }
         } else {
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
+                holdDirection();
             }
         }
 

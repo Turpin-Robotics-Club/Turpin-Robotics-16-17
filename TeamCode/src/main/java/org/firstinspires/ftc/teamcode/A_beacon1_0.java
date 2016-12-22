@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.utils.Sensors;
 import org.firstinspires.ftc.teamcode.utils.move;
+import org.firstinspires.ftc.teamcode.utils.newMove;
 
 
 @Autonomous(name="A beacon1 0", group="Autonomous Finals")
@@ -25,7 +26,7 @@ public class A_beacon1_0 extends LinearOpMode{
             red = !Tsensor.isPressed();
             telemetry.addData("red", red);
             telemetry.update();
-            move drive = new move(this, red);
+            newMove drive = new newMove(this, red);
             waitForStart();
 
 
@@ -35,16 +36,6 @@ public class A_beacon1_0 extends LinearOpMode{
             sleep(50);
             drive.left(-8, 0.5);
 
-            char checkColorResult = Sensors.checkColor();
-            telemetry.addData("Result:", checkColorResult);
-            telemetry.update();
-            sleep(4000);
-            if (checkColorResult == 'u') {
-                drive.left(-3, 0.3);
-            }
-
-            telemetry.addData("Result:", Sensors.checkColor());
-            telemetry.update();
 
             sleep(10000);
 
