@@ -45,6 +45,7 @@ public class NewMecanumSimple extends OpMode{
     private ElapsedTime runtime_b = new ElapsedTime();
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
     private ElapsedTime runtime_y = new ElapsedTime();
+    private ElapsedTime runtime_bumpers = new ElapsedTime();
 
     @Override
     public void init() {
@@ -83,15 +84,18 @@ public class NewMecanumSimple extends OpMode{
 
         knocker.setPower(.4);
 
-        if(gamepad2.left_bumper && gamepad2.right_bumper)
+        if(gamepad2.left_bumper && gamepad2.right_bumper && runtime_bumpers.seconds() >= 1)
         {
             collector.setPower(0);
+            runtime_bumpers.reset();
         }
-        else if(gamepad2.left_bumper){
+        else if(gamepad2.left_bumper && runtime_bumpers.seconds() >= 1){
             collector.setPower(.55);
+            runtime_bumpers.reset();
         }
-        else if(gamepad2.right_bumper){
+        else if(gamepad2.right_bumper && runtime_bumpers.seconds() >= 1){
             collector.setPower(-.45);
+            runtime_bumpers.reset();
         }
 
         // Movement
