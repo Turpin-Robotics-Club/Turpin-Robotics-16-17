@@ -22,6 +22,5 @@ public class nullAutonomous extends LinearOpMode {
         telemetry.update();
         new move(this, red);
         waitForStart();
-        Sensors.gyroInitalSet();
     }
 }

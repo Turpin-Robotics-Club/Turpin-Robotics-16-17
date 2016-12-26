@@ -14,11 +14,12 @@ public class newMove {
     DcMotor frmotor;
     DcMotor blmotor;
     DcMotor brmotor;
-    static Telemetry telemetry;
+    Telemetry telemetry;
     DcMotor spinLeft;
     DcMotor spinRight;
     Servo dump;
     LinearOpMode opMode;
+    Servo lift;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
     double xmove;
@@ -31,7 +32,7 @@ public class newMove {
 
     int ENCODER_CPR = 1120;
     double GEAR_RATIO = 1;
-    double WHEEL_DIAMETER = 5.94;
+    double WHEEL_DIAMETER = 4;
 
     /**
      * Initializes motor variables
@@ -40,11 +41,12 @@ public class newMove {
      */
     public newMove(LinearOpMode op, boolean red) {
         opMode = op;
-        move.telemetry = op.telemetry;
+        this.telemetry = op.telemetry;
         HardwareMap hardware_map = op.hardwareMap;
 
-        dump = hardware_map.get(Servo.class, "lift_servo");
-        dump.setPosition(255);
+        lift = hardware_map.get(Servo.class, "lift_servo");
+        dump = hardware_map.get(Servo.class, "storage_servo");
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value() );
         if (red) {
             flmotor = hardware_map.get(DcMotor.class, "back_left");
             frmotor = hardware_map.get(DcMotor.class, "front_left");
@@ -55,10 +57,12 @@ public class newMove {
             flmotor = hardware_map.get(DcMotor.class, "back_right");
             brmotor = hardware_map.get(DcMotor.class, "back_left");
             blmotor = hardware_map.get(DcMotor.class, "front_left");
-        }
-        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            }
         brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        Sensors.initialize(hardware_map);
+        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Sensors.initialize(hardware_map, telemetry, red);
+        lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
         resetEncoders();
     }
 
@@ -72,20 +76,22 @@ public class newMove {
     }
     public void holdDirection()
     {
-        if (Sensors.gyro.rawZ() > initGyroPos) {
-            flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            blmotor.setPower(blmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            frmotor.setPower(frmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            brmotor.setPower(brmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+        if(Sensors.gyro.rawZ() != 0) {
+            if (Sensors.gyro.rawZ() > initGyroPos) {
+                flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                blmotor.setPower(blmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                frmotor.setPower(frmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                brmotor.setPower(brmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            }
+            if (Sensors.gyro.rawZ() < initGyroPos) {
+                flmotor.setPower(flmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                blmotor.setPower(blmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                frmotor.setPower(frmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+                brmotor.setPower(brmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            }
+            telemetry.addData("Gyro Z", Sensors.gyro.rawZ());
+            telemetry.update();
         }
-        if (Sensors.gyro.rawZ() < initGyroPos) {
-            flmotor.setPower(flmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            blmotor.setPower(blmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            frmotor.setPower(frmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-            brmotor.setPower(brmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-        }
-        telemetry.addData("Gyro Z", Sensors.gyro.rawZ());
-        telemetry.update();
     }
 
     /**
@@ -96,6 +102,7 @@ public class newMove {
      * @throws InterruptedException
      */
     public void forward(double distance, double power){
+        initGyroPos = Sensors.gyro.rawZ();
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -244,7 +251,7 @@ public class newMove {
      * @throws InterruptedException
      */
     public void left(double distance, double power){
-        initGyroPos = Sensors.gyro.getHeading();
+        initGyroPos = Sensors.gyro.rawZ();
 
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
@@ -270,34 +277,14 @@ public class newMove {
 
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() > -COUNTS) {
 
-                if (Sensors.gyro.getHeading() - initGyroPos < 0) {
-                    flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                }
-                if (Sensors.gyro.getHeading() - initGyroPos > 0) {
-                    flmotor.setPower(flmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                }
+                holdDirection();
+
             }
+
         } else {
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < -COUNTS) {
 
-                if (Sensors.gyro.getHeading() - initGyroPos < 0) {
-                    flmotor.setPower(flmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                }
-                if (Sensors.gyro.getHeading() - initGyroPos > 0) {
-                    flmotor.setPower(flmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    blmotor.setPower(blmotor.getPower() - (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    frmotor.setPower(frmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                    brmotor.setPower(brmotor.getPower() + (Math.pow((Sensors.gyro.getHeading() - initGyroPos) * 2, 2) * stabilityMultiplier));
-                }
+                holdDirection();
             }
         }
 

@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-/**
- * Created by Jonathan on 12/18/2016.
- */
 
 public class RobotConstants {
 
@@ -28,7 +25,7 @@ public class RobotConstants {
     public enum LiftServoState {
 
         LIFTED(0.205),
-        UNLIFTED(0.225);
+        UNLIFTED(0.220);
 
         private double value;
 

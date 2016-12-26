@@ -30,11 +30,11 @@ public class A_beacon1_0 extends LinearOpMode{
             waitForStart();
 
 
-            drive.left(-44, 0.5);
+            drive.left(44, 0.5);
             sleep(50);
-            drive.forward(43, 0.4);
+            drive.forward(-43, 0.6);
             sleep(50);
-            drive.left(-8, 0.5);
+            drive.left(8, 0.5);
 
 
             sleep(10000);
