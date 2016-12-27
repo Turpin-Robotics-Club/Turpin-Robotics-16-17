@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,9 +23,10 @@ public class Sensors {
     public static ColorSensor line_sensor;
     public static ColorSensor leye;
     public static ColorSensor reye;
-    public static GyroSensor gyro;
+    public static ModernRoboticsI2cGyro gyro;
     static boolean red;
     static Telemetry telemetry;
+    static  double trueHeading;
 
     /**
      * Initializes any Sensors
@@ -48,11 +50,13 @@ public class Sensors {
         line_sensor.setI2cAddress(I2cAddr.create8bit(0x4c));
         line_sensor.enableLed(true);
 
-        gyro = hardware_map.get(GyroSensor.class, "gyro");
+        gyro = (ModernRoboticsI2cGyro)hardware_map.gyroSensor.get("gyro");
 
         gyro.calibrate();
         runtime.reset();
         gyroInitial = gyro.getHeading();
+
+
     }
 
     public static char checkColor() {
@@ -80,8 +84,27 @@ public class Sensors {
         }
     }
 
-    public static double gyroOffset() {
-        return (gyrochange * (runtime.seconds()));
+    public static double gyroIntegratedHeading() {
+        return (gyrochange * (runtime.seconds())) + gyro.getIntegratedZValue();
+    }
+
+    public static double gyroHeading()
+    {
+        //calculate modified heading
+        trueHeading = (gyrochange * runtime.seconds()) + gyro.getHeading();
+
+        //make sure it's in the gyro's range
+        if(trueHeading >= 360)
+        {
+            return trueHeading - 360;
+        }
+        if(trueHeading < 0)
+        {
+            return trueHeading + 360;
+        }
+
+        //if it is, then return
+        return trueHeading;
     }
 
     public static void offsetReset() {
@@ -116,8 +139,8 @@ public class Sensors {
         }
             else
             {
-                red_value = color_sensor.red();
-                blue_value = color_sensor.blue();
+                red_value = reye.red();
+                blue_value = reye.blue();
 
                 if (red_value == blue_value) {
                     return 'u';
@@ -128,5 +151,6 @@ public class Sensors {
                 }
             }
     }
+
 
 }

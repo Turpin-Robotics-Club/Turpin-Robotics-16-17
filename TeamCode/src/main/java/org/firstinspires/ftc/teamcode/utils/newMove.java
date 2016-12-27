@@ -27,7 +27,7 @@ public class newMove {
    */
 
     int initGyroPos = 0;
-    double stabilityMultiplier = 0.0001;
+    double stabilityMultiplier = 0.01;
     double spinRate = 0.002;
 
     int ENCODER_CPR = 1120;
@@ -76,22 +76,25 @@ public class newMove {
     }
     public void holdDirection()
     {
-        if(Sensors.gyro.rawZ() != 0) {
-            if (Sensors.gyro.rawZ() > initGyroPos) {
-                flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                blmotor.setPower(blmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                frmotor.setPower(frmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                brmotor.setPower(brmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+
+        if(Sensors.gyro.rawX() != -1) {
+            if (Sensors.gyro.getIntegratedZValue() > initGyroPos) {
+                flmotor.setPower(flmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                blmotor.setPower(blmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                frmotor.setPower(frmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                brmotor.setPower(brmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
             }
-            if (Sensors.gyro.rawZ() < initGyroPos) {
-                flmotor.setPower(flmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                blmotor.setPower(blmotor.getPower() - (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                frmotor.setPower(frmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
-                brmotor.setPower(brmotor.getPower() + (Math.abs((Sensors.gyro.rawZ() - initGyroPos)) * stabilityMultiplier));
+            if (Sensors.gyro.getIntegratedZValue() < initGyroPos) {
+                flmotor.setPower(flmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                blmotor.setPower(blmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                frmotor.setPower(frmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
+                brmotor.setPower(brmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier));
             }
-            telemetry.addData("Gyro Z", Sensors.gyro.rawZ());
+            telemetry.addData("Gyro Z", Sensors.gyro.getIntegratedZValue());
+            telemetry.addData("Raw X", Sensors.gyro.rawX());
             telemetry.update();
         }
+
     }
 
     /**
@@ -102,7 +105,7 @@ public class newMove {
      * @throws InterruptedException
      */
     public void forward(double distance, double power){
-        initGyroPos = Sensors.gyro.rawZ();
+        initGyroPos = Sensors.gyro.getIntegratedZValue();
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -172,7 +175,7 @@ public class newMove {
      */
     public void forward2(double distance, double minPower, double maxPower, double increment)
     {
-        initGyroPos = Sensors.gyro.rawZ();
+        initGyroPos = Sensors.gyro.getIntegratedZValue();
 
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
@@ -248,10 +251,9 @@ public class newMove {
      *
      * @param distance Distance (in inches) for the robot to move side to side. Positive for left, negative for right
      * @param power    The power level for the robot to move at. Should be an interval of [0.0, 1.0]
-     * @throws InterruptedException
      */
     public void left(double distance, double power){
-        initGyroPos = Sensors.gyro.rawZ();
+        initGyroPos = Sensors.gyro.getIntegratedZValue();
 
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
@@ -302,7 +304,6 @@ public class newMove {
      * Pivots the robot a certain degree around it's axis.
      *
      * @param degrees The amount (in degrees) to turn the robot. Positive for left, negative for right
-     * @throws InterruptedException
      */
     public void turnLeft(int degrees){
 

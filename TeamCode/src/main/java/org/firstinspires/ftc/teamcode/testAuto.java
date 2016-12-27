@@ -26,8 +26,9 @@ public class testAuto extends LinearOpMode {
         waitForStart();
 
 
-        //move.driveToLine(0.2);
-        drive.left(-100, 0.6);
+        //move.driveToLine(0.2);z
+        drive.left(-50, 0.75);
+        drive.forward(50, 0.6);
         //sleep(30000);
 
     }
