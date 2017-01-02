@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Sensors {
 
-    private static double gyrochange;
+    public static double gyrochange;
     private static double timeAutonomous;
     private static ElapsedTime runtime = new ElapsedTime();
     public static int gyroInitial;

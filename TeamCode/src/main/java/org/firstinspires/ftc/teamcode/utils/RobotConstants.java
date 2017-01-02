@@ -6,7 +6,7 @@ public class RobotConstants {
     public static final double MAX_SHOOTER_POWER = 0.35;
     public static final int BUTTON_PRESS_WAIT = 2;
 
-    public static final double LEFT_MOTOR_POWER_FACTOR = 1 / 1.484;
+    public static final double LEFT_MOTOR_POWER_FACTOR = 1 / 1.500;
 
     public enum StorageServoState {
 

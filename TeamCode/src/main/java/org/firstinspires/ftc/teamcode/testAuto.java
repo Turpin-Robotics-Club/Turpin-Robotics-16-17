@@ -22,11 +22,11 @@ public class testAuto extends LinearOpMode {
         red = !Tsensor.isPressed();
         telemetry.addData("red", red);
         telemetry.update();
-        newMove drive = new newMove(this, red);
+        newMove drive = new newMove(this,red);
         waitForStart();
 
 
-        //move.driveToLine(0.2);z
+        //move.driveToLine(0.2);
         drive.left(-50, 0.75);
         drive.forward(50, 0.6);
         //sleep(30000);

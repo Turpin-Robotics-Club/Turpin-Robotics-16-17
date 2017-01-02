@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.utils.RobotConstants;
+import org.firstinspires.ftc.teamcode.utils.Sensors;
 
 
 @TeleOp(name = "New Mecanum Drive", group = "TeleOp")
@@ -16,12 +17,12 @@ import org.firstinspires.ftc.teamcode.utils.RobotConstants;
 public class NewMecanumDrive extends OpMode {
 
 
-    GyroSensor gyro;
+
     double joy;
     double joyLeft;
     double G1_Lstk_x;
     double G1_Lstk_y;
-    float currentPos;
+    double currentPos;
     DcMotor frontleft;
     DcMotor frontright;
     DcMotor backleft;
@@ -55,11 +56,11 @@ public class NewMecanumDrive extends OpMode {
 
     public void init() {
 
-        frontleft = hardwareMap.dcMotor.get("front_left");
-        frontright = hardwareMap.dcMotor.get("front_right");
-        backleft = hardwareMap.dcMotor.get("back_left");
-        backright = hardwareMap.dcMotor.get("back_right");
-        gyro = hardwareMap.gyroSensor.get("gyro");
+        backright = hardwareMap.dcMotor.get("front_left");
+        backleft = hardwareMap.dcMotor.get("front_right");
+        frontright = hardwareMap.dcMotor.get("back_left");
+        frontleft = hardwareMap.dcMotor.get("back_right");
+
 
         storageServo = hardwareMap.servo.get("storage_servo");
         liftServo = hardwareMap.servo.get("lift_servo");
@@ -88,7 +89,7 @@ public class NewMecanumDrive extends OpMode {
 
         G1_Lstk_x = gamepad1.left_stick_x;
         G1_Lstk_y = gamepad1.left_stick_y;
-        currentPos = gyro.getHeading();
+        currentPos = Sensors.gyroHeading();
 
         if(gamepad1.right_stick_x >= 0 && gamepad1.right_stick_y < 0)
         {
@@ -211,6 +212,12 @@ public class NewMecanumDrive extends OpMode {
         frvalue = (frvalue / 2);
         blvalue = (blvalue / 2);
         brvalue = (brvalue / 2);
+
+
+        if(gamepad1.a)
+        {
+            Sensors.gyro.resetZAxisIntegrator();
+        }
 /*
         telemetry.addData("flvalue", flvalue);
         telemetry.addData("frvalue", frvalue);
