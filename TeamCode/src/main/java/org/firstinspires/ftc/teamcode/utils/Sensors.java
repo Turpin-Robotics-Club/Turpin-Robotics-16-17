@@ -9,9 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-/**
- * Created by Jonathan on 12/9/2016.
- */
+
 
 public class Sensors {
 
@@ -27,6 +25,7 @@ public class Sensors {
     static boolean red;
     static Telemetry telemetry;
     static  double trueHeading;
+    public static double driverOffset = 0;
 
     /**
      * Initializes any Sensors
@@ -52,10 +51,11 @@ public class Sensors {
 
         gyro = (ModernRoboticsI2cGyro)hardware_map.gyroSensor.get("gyro");
 
+        driverOffset = 0;
         gyro.calibrate();
         runtime.reset();
+        while (gyro.isCalibrating());
         gyroInitial = gyro.getHeading();
-
 
     }
 
@@ -75,7 +75,9 @@ public class Sensors {
 
     public static void gyroDriftRead() {
 
-        if (gyro.getHeading() < (gyroInitial + 180) - 360) {
+        if(gyro.getHeading() == 0) {
+            gyrochange= 0;
+        } else if (gyro.getHeading() < (gyroInitial + 180) - 360) {
             gyrochange = -((360 - gyroInitial) + gyro.getHeading()) / runtime.seconds();
         } else if (gyro.getHeading() > gyroInitial + 180) {
             gyrochange = (gyroInitial + (360 - gyro.getHeading())) / runtime.seconds();
@@ -94,17 +96,22 @@ public class Sensors {
         trueHeading = (gyrochange * runtime.seconds()) + gyro.getHeading();
 
         //make sure it's in the gyro's range
-        if(trueHeading >= 360)
-        {
-            return trueHeading - 360;
+        while (0 > trueHeading || trueHeading >= 360) {
+            if (trueHeading >= 360) {
+                trueHeading = trueHeading - 360;
+            }
+            if (trueHeading < 0) {
+                trueHeading = trueHeading + 360;
+            }
         }
-        if(trueHeading < 0)
-        {
-            return trueHeading + 360;
-        }
-
         //if it is, then return
         return trueHeading;
+    }
+
+    public static void resetGyro()
+    {
+        gyro.resetZAxisIntegrator();
+        runtime.reset();
     }
 
     public static void offsetReset() {

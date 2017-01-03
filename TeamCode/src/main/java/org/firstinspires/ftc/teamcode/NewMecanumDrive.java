@@ -91,6 +91,14 @@ public class NewMecanumDrive extends OpMode {
         G1_Lstk_y = gamepad1.left_stick_y;
         currentPos = Sensors.gyroHeading();
 
+
+        telemetry.addData("Joystick value left", joyLeft);
+        telemetry.addData("robot heading", currentPos);
+        telemetry.addData("Gyro Heading", Sensors.gyro.getHeading());
+        telemetry.addData("Driver Offset", Sensors.driverOffset);
+        telemetry.update();
+
+
         if(gamepad1.right_stick_x >= 0 && gamepad1.right_stick_y < 0)
         {
             joy = Math.toDegrees(Math.atan2(Math.abs(gamepad1.right_stick_x), Math.abs(gamepad1.right_stick_y)));
@@ -134,8 +142,7 @@ public class NewMecanumDrive extends OpMode {
             joyLeft = Math.toDegrees(Math.atan2(Math.abs(G1_Lstk_y), Math.abs(G1_Lstk_x)));
             joyLeft = joyLeft + 270;
         }
-        telemetry.addData("Joystick value left", joyLeft);
-        telemetry.addData("robot heading", currentPos);
+
 
 
 
@@ -151,29 +158,28 @@ public class NewMecanumDrive extends OpMode {
 
         if(relativeHeading >= 0 && relativeHeading < 90)
         {
-            telemetry.addData("Quadrant", "1");
+            //telemetry.addData("Quadrant", "1");
             xmove = Math.sin(Math.toRadians(relativeHeading)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
             ymove = -Math.cos(Math.toRadians(relativeHeading)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 90 && relativeHeading < 180)
         {
-            telemetry.addData("Quadrant", "4");
+            //telemetry.addData("Quadrant", "4");
             xmove = Math.cos(Math.toRadians(relativeHeading-90)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
             ymove = Math.sin(Math.toRadians(relativeHeading-90)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 180 && relativeHeading < 270)
         {
-            telemetry.addData("Quadrant", "3");
+            //telemetry.addData("Quadrant", "3");
             xmove = -Math.sin(Math.toRadians(relativeHeading-180)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
             ymove = Math.cos(Math.toRadians(relativeHeading-180)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
         if(relativeHeading >= 270 && relativeHeading < 360)
         {
-            telemetry.addData("Quadrant", "2");
+            //telemetry.addData("Quadrant", "2");
             xmove = -Math.cos(Math.toRadians(relativeHeading-270)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
             ymove = -Math.sin(Math.toRadians(relativeHeading-270)) * Math.pow(Math.sqrt(Math.pow(G1_Lstk_x, 2) + Math.pow(G1_Lstk_y, 2)), 2) * driveRate;
         }
-
 
         flvalue = (xmove - ymove);
         frvalue = (xmove + ymove);
@@ -216,7 +222,7 @@ public class NewMecanumDrive extends OpMode {
 
         if(gamepad1.a)
         {
-            Sensors.gyro.resetZAxisIntegrator();
+            Sensors.resetGyro();
         }
 /*
         telemetry.addData("flvalue", flvalue);

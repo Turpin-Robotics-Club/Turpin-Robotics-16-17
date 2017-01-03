@@ -11,18 +11,14 @@ import org.firstinspires.ftc.teamcode.utils.newMove;
 //@Disabled
 
 public class testAuto extends LinearOpMode {
-    TouchSensor Tsensor;
+
 
 
     @Override
     public void runOpMode(){
 
-        boolean red;
-        Tsensor = hardwareMap.touchSensor.get("touch");
-        red = !Tsensor.isPressed();
-        telemetry.addData("red", red);
-        telemetry.update();
-        newMove drive = new newMove(this,red);
+
+        newMove drive = new newMove(this);
         waitForStart();
 
 

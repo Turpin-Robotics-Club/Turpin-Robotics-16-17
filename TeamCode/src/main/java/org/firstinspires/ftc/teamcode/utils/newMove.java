@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -14,6 +15,7 @@ public class newMove {
     double BackSpeed;
 
 
+    TouchSensor Tsensor;
     DcMotor flmotor;
     DcMotor frmotor;
     DcMotor blmotor;
@@ -24,6 +26,7 @@ public class newMove {
     Servo dump;
     LinearOpMode opMode;
     Servo lift;
+    boolean red;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
     double xmove;
@@ -41,13 +44,15 @@ public class newMove {
     /**
      * Initializes motor variables
      * @param op The instance of the calling LinearOpMode
-     * @param red True if on the red Alliance, False otherwise
      */
-    public newMove(LinearOpMode op, boolean red) {
+    public newMove(LinearOpMode op) {
         opMode = op;
         this.telemetry = op.telemetry;
         HardwareMap hardware_map = op.hardwareMap;
 
+
+        Tsensor = hardware_map.get(TouchSensor.class, "touch");
+        red = !Tsensor.isPressed();
 
         lift = hardware_map.get(Servo.class, "lift_servo");
         dump = hardware_map.get(Servo.class, "storage_servo");
@@ -60,6 +65,7 @@ public class newMove {
             frmotor = hardware_map.get(DcMotor.class, "front_left");
             blmotor = hardware_map.get(DcMotor.class, "back_right");
             brmotor = hardware_map.get(DcMotor.class, "front_right");
+            telemetry.addData(">", "BLUE");
         } else {
             //RED
             FrontSpeed = 1;
@@ -68,6 +74,7 @@ public class newMove {
             flmotor = hardware_map.get(DcMotor.class, "back_right");
             brmotor = hardware_map.get(DcMotor.class, "back_left");
             blmotor = hardware_map.get(DcMotor.class, "front_left");
+            telemetry.addData(">", "RED");
             }
         brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
