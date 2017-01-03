@@ -90,11 +90,11 @@ public class NewMecanumSimple extends OpMode{
             runtime_bumpers.reset();
         }
         else if(gamepad2.left_bumper && runtime_bumpers.seconds() >= 1){
-            collector.setPower(.55);
+            collector.setPower(RobotConstants.COLLECT_POWER);
             runtime_bumpers.reset();
         }
         else if(gamepad2.right_bumper && runtime_bumpers.seconds() >= 1){
-            collector.setPower(-.45);
+            collector.setPower(RobotConstants.RELEASE_POWER);
             runtime_bumpers.reset();
         }
 

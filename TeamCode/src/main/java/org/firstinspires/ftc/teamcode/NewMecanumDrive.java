@@ -299,10 +299,10 @@ public class NewMecanumDrive extends OpMode {
             collector.setPower(0);
         }
         else if(gamepad2.left_bumper){
-            collector.setPower(.55);
+            collector.setPower(RobotConstants.COLLECT_POWER);
         }
         else if(gamepad2.right_bumper){
-            collector.setPower(-.45);
+            collector.setPower(RobotConstants.RELEASE_POWER);
         }
 
 

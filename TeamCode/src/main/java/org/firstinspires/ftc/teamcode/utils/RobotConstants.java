@@ -8,6 +8,9 @@ public class RobotConstants {
 
     public static final double LEFT_MOTOR_POWER_FACTOR = 1 / 1.500;
 
+    public static final double COLLECT_POWER = 0.6;
+    public static final double RELEASE_POWER = -0.4;
+
     public enum StorageServoState {
 
         STORE(1),

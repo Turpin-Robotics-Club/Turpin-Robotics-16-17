@@ -33,7 +33,7 @@ public class newMove {
     double ymove;
    */
 
-    int initGyroPos = 0;
+    double initGyroPos = 0;
     double stabilityMultiplier = 0.01;
     double spinRate = 0.002;
 
@@ -61,23 +61,25 @@ public class newMove {
             //BLUE
             FrontSpeed = RobotConstants.LEFT_MOTOR_POWER_FACTOR;
             BackSpeed = 1;
-            flmotor = hardware_map.get(DcMotor.class, "back_left");
-            frmotor = hardware_map.get(DcMotor.class, "front_left");
-            blmotor = hardware_map.get(DcMotor.class, "back_right");
-            brmotor = hardware_map.get(DcMotor.class, "front_right");
+            flmotor = hardware_map.get(DcMotor.class, "front_right");
+            frmotor = hardware_map.get(DcMotor.class, "back_right");
+            blmotor = hardware_map.get(DcMotor.class, "front_left");
+            brmotor = hardware_map.get(DcMotor.class, "back_left");
             telemetry.addData(">", "BLUE");
         } else {
             //RED
             FrontSpeed = 1;
             BackSpeed = RobotConstants.LEFT_MOTOR_POWER_FACTOR;
-            frmotor = hardware_map.get(DcMotor.class, "front_right");
-            flmotor = hardware_map.get(DcMotor.class, "back_right");
+            frmotor = hardware_map.get(DcMotor.class, "back_right");
+            flmotor = hardware_map.get(DcMotor.class, "front_right");
             brmotor = hardware_map.get(DcMotor.class, "back_left");
             blmotor = hardware_map.get(DcMotor.class, "front_left");
             telemetry.addData(">", "RED");
             }
         brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        telemetry.update();
 
         Sensors.initialize(hardware_map, telemetry, red);
         lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
@@ -96,19 +98,19 @@ public class newMove {
     {
 
         if(Sensors.gyro.rawX() != -1) {
-            if (Sensors.gyro.getIntegratedZValue() > initGyroPos) {
-                flmotor.setPower(FrontSpeed * (flmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                blmotor.setPower(BackSpeed * (blmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                frmotor.setPower(FrontSpeed * (frmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                brmotor.setPower(BackSpeed * (brmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
+            if (Sensors.gyroIntegratedHeading() > initGyroPos) {
+                flmotor.setPower(FrontSpeed * (flmotor.getPower() + (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                blmotor.setPower(BackSpeed * (blmotor.getPower() + (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                frmotor.setPower(FrontSpeed * (frmotor.getPower() - (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                brmotor.setPower(BackSpeed * (brmotor.getPower() - (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
             }
-            if (Sensors.gyro.getIntegratedZValue() < initGyroPos) {
-                flmotor.setPower(FrontSpeed * (flmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                blmotor.setPower(BackSpeed * (blmotor.getPower() - (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                frmotor.setPower(FrontSpeed * (frmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
-                brmotor.setPower(BackSpeed * (brmotor.getPower() + (Math.abs((Sensors.gyro.getIntegratedZValue() - initGyroPos)) * stabilityMultiplier)));
+            if (Sensors.gyroIntegratedHeading() < initGyroPos) {
+                flmotor.setPower(FrontSpeed * (flmotor.getPower() - (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                blmotor.setPower(BackSpeed * (blmotor.getPower() - (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                frmotor.setPower(FrontSpeed * (frmotor.getPower() + (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
+                brmotor.setPower(BackSpeed * (brmotor.getPower() + (Math.abs((Sensors.gyroIntegratedHeading() - initGyroPos)) * stabilityMultiplier)));
             }
-            telemetry.addData("Gyro Z", Sensors.gyro.getIntegratedZValue());
+            telemetry.addData("Gyro Z", Sensors.gyroIntegratedHeading());
             telemetry.addData("Raw X", Sensors.gyro.rawX());
             telemetry.update();
         }
@@ -122,7 +124,7 @@ public class newMove {
      * @throws InterruptedException
      */
     public void forward(double distance, double power){
-        initGyroPos = Sensors.gyro.getIntegratedZValue();
+        initGyroPos = Sensors.gyroIntegratedHeading();
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -150,14 +152,14 @@ public class newMove {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
-                holdDirection();
+                //holdDirection();
             }
         } else {
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < COUNTS) {
                 telemetry.addData("front left counts", flmotor.getCurrentPosition());
                 telemetry.addData("target", COUNTS);
                 telemetry.update();
-                holdDirection();
+                //holdDirection();
             }
         }
 
@@ -192,7 +194,7 @@ public class newMove {
      */
     public void forward2(double distance, double minPower, double maxPower, double increment)
     {
-        initGyroPos = Sensors.gyro.getIntegratedZValue();
+        initGyroPos = Sensors.gyroIntegratedHeading();
 
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
@@ -270,7 +272,7 @@ public class newMove {
      * @param power    The power level for the robot to move at. Should be an interval of [0.0, 1.0]
      */
     public void left(double distance, double power){
-        initGyroPos = Sensors.gyro.getIntegratedZValue();
+        initGyroPos = Sensors.gyroIntegratedHeading();
 
         resetEncoders();
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
@@ -296,14 +298,14 @@ public class newMove {
 
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() > -COUNTS) {
 
-                holdDirection();
+                //holdDirection();
 
             }
 
         } else {
             while (opMode.opModeIsActive() && flmotor.getCurrentPosition() < -COUNTS) {
 
-                holdDirection();
+                //holdDirection();
             }
         }
 
@@ -331,7 +333,7 @@ public class newMove {
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         initGyroPos = Sensors.gyro.getHeading();
-        int target = initGyroPos - degrees;
+        double target = initGyroPos - degrees;
 
         if (target < 0) {
             target = 360 + target;
