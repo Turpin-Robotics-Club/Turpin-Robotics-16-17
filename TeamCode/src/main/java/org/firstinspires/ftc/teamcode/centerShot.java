@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.utils.RobotConstants;
  */
 
 @Autonomous(name="Cunter shot", group="Autonomous Finals")
-//@Disabled
+@Disabled
 public class centerShot extends LinearOpMode{
     double WHEEL_DIAMETER = 4;
     double ENCODER_CPR = 1150;

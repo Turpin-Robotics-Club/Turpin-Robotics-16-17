@@ -24,9 +24,9 @@ public class newMove {
     DcMotor spinLeft;
     DcMotor spinRight;
     Servo dump;
-    LinearOpMode opMode;
+    static LinearOpMode opMode;
     Servo lift;
-    boolean red;
+    static boolean red;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
     double xmove;
@@ -180,6 +180,33 @@ public class newMove {
         dump.setPosition(0);
         while(opMode.opModeIsActive() && dump.getPosition() != 0);
         dump.setPosition(255);
+
+    }
+
+
+
+    public void driveToBeacon(double power)
+    {
+        initGyroPos = Sensors.gyroIntegratedHeading();
+
+        flmotor.setPower(FrontSpeed * (-power));
+        frmotor.setPower(FrontSpeed * (power));
+        blmotor.setPower(BackSpeed * (power));
+        brmotor.setPower(BackSpeed * (-power));
+
+        if(red)
+        {
+            while (Sensors.checkColor() != 'r' && opMode.opModeIsActive());
+        }
+        else
+        {
+
+        }
+
+        flmotor.setPower(0);
+        frmotor.setPower(0);
+        blmotor.setPower(0);
+        brmotor.setPower(0);
 
     }
 

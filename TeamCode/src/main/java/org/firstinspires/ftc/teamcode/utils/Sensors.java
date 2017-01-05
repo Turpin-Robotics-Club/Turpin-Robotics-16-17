@@ -17,10 +17,9 @@ public class Sensors {
     private static double timeAutonomous;
     private static ElapsedTime runtime = new ElapsedTime();
     public static int gyroInitial;
-    public static ColorSensor color_sensor;
-    public static ColorSensor line_sensor;
     public static ColorSensor leye;
     public static ColorSensor reye;
+    public static ColorSensor line_sensor;
     public static ModernRoboticsI2cGyro gyro;
     static boolean red;
     static Telemetry telemetry;
@@ -33,21 +32,17 @@ public class Sensors {
      * @param hardware_map The HardwareMap instance from the calling OpMode
      */
     public static void initialize(HardwareMap hardware_map, Telemetry tele, boolean reds) {
-        color_sensor = hardware_map.get(ColorSensor.class, "color_sensor");
-        color_sensor.setI2cAddress(I2cAddr.create8bit(0x5c));
+        leye = hardware_map.get(ColorSensor.class, "leye");
+        leye.setI2cAddress(I2cAddr.create8bit(0x4c));
+        leye.enableLed(false);
         red = reds;
 
         telemetry = tele;
 
-        leye = hardware_map.get(ColorSensor.class, "leye");
-        color_sensor.setI2cAddress(I2cAddr.create8bit(0x6c));
+
         reye = hardware_map.get(ColorSensor.class, "reye");
-        color_sensor.setI2cAddress(I2cAddr.create8bit(0x7c));
-
-
-        line_sensor = hardware_map.get(ColorSensor.class, "line_sensor");
-        line_sensor.setI2cAddress(I2cAddr.create8bit(0x4c));
-        line_sensor.enableLed(true);
+        reye.setI2cAddress(I2cAddr.create8bit(0x5c));
+        reye.enableLed(false);
 
         gyro = (ModernRoboticsI2cGyro)hardware_map.gyroSensor.get("gyro");
 
@@ -61,8 +56,8 @@ public class Sensors {
 
     public static char checkColor() {
 
-        int red_value = color_sensor.red();
-        int blue_value = color_sensor.blue();
+        int red_value = leye.red();
+        int blue_value = leye.blue();
 
         if (red_value == blue_value) {
             return 'u';
@@ -119,44 +114,6 @@ public class Sensors {
         telemetry.update();
         gyro.calibrate();
         gyrochange = 0;
-    }
-
-
-    /**
-     * NEEDS TO BE FINISHED
-     * @return
-     */
-    public static char compareBeacon() {
-
-        int red_value;
-        int blue_value;
-
-        if (red) {
-
-            red_value = leye.red();
-            blue_value = leye.blue();
-
-            if (red_value == blue_value) {
-                return 'u';
-            } else if (red_value > blue_value) {
-                return 'r';
-            } else {
-                return 'b';
-            }
-        }
-            else
-            {
-                red_value = reye.red();
-                blue_value = reye.blue();
-
-                if (red_value == blue_value) {
-                    return 'u';
-                } else if (red_value > blue_value) {
-                    return 'r';
-                } else {
-                    return 'b';
-                }
-            }
     }
 
 

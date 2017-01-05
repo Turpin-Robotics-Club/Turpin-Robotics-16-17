@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.utils;
 
 public class RobotConstants {
 
-    public static final double MAX_SHOOTER_POWER = 0.35;
+    public static final double MAX_SHOOTER_POWER = 0.325;
     public static final int BUTTON_PRESS_WAIT = 2;
 
     public static final double LEFT_MOTOR_POWER_FACTOR = 1 / 1.500;
@@ -30,7 +30,7 @@ public class RobotConstants {
     public enum LiftServoState {
 
         LIFTED(0.205),
-        UNLIFTED(0.220);
+        UNLIFTED(0.225);
 
         private double value;
 

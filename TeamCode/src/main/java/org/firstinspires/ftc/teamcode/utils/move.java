@@ -404,13 +404,13 @@ public class move {
         blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        while (opMode.opModeIsActive() && Sensors.line_sensor.green() < 3)
+        while (opMode.opModeIsActive() && Sensors.leye.green() < 3)
         {
             flmotor.setPower(power);
             frmotor.setPower(power);
             blmotor.setPower(power);
             brmotor.setPower(power);
-            telemetry.addData("green", Sensors.line_sensor.green());
+            telemetry.addData("green", Sensors.leye.green());
             telemetry.update();
         }
 

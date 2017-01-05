@@ -36,6 +36,7 @@ public class NewMecanumDrive extends OpMode {
     double ymove;
     float turnRate = 1.0f;
     float driveRate = 1.5f;
+    double collectorPower = 0;
 
     DcMotor leftShooter;
     DcMotor rightShooter;
@@ -294,15 +295,21 @@ public class NewMecanumDrive extends OpMode {
             knocker.setPower(0);
         }
 
-        if(gamepad2.left_bumper && gamepad2.right_bumper)
+        if(gamepad2.right_trigger > 0.5)
         {
+            collectorPower = 0;
             collector.setPower(0);
         }
         else if(gamepad2.left_bumper){
-            collector.setPower(RobotConstants.COLLECT_POWER);
+            collectorPower = RobotConstants.COLLECT_POWER;
+            collector.setPower(0);
         }
         else if(gamepad2.right_bumper){
-            collector.setPower(RobotConstants.RELEASE_POWER);
+            collectorPower = RobotConstants.RELEASE_POWER;
+            collector.setPower(0);
+        }
+        else {
+            collector.setPower(collectorPower);
         }
 
 
