@@ -56,16 +56,18 @@ public class newMove {
 
         lift = hardware_map.get(Servo.class, "lift_servo");
         dump = hardware_map.get(Servo.class, "storage_servo");
-        dump.setPosition(RobotConstants.StorageServoState.STORE.value() );
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value());
         if (!red) {
             //BLUE
             FrontSpeed = RobotConstants.LEFT_MOTOR_POWER_FACTOR;
             BackSpeed = 1;
+            frmotor = hardware_map.get(DcMotor.class, "back_left");
             flmotor = hardware_map.get(DcMotor.class, "front_right");
-            frmotor = hardware_map.get(DcMotor.class, "back_right");
-            blmotor = hardware_map.get(DcMotor.class, "front_left");
-            brmotor = hardware_map.get(DcMotor.class, "back_left");
+            brmotor = hardware_map.get(DcMotor.class, "back_right");
+            blmotor = hardware_map.get(DcMotor.class, "front_right");
             telemetry.addData(">", "BLUE");
+            blmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            flmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         } else {
             //RED
             FrontSpeed = 1;
@@ -75,9 +77,10 @@ public class newMove {
             brmotor = hardware_map.get(DcMotor.class, "back_left");
             blmotor = hardware_map.get(DcMotor.class, "front_left");
             telemetry.addData(">", "RED");
+            brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
             }
-        brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         telemetry.update();
 
@@ -196,6 +199,7 @@ public class newMove {
 
         if(red)
         {
+            while (Sensors.checkColor() != 'u' && opMode.opModeIsActive());
             while (Sensors.checkColor() != 'r' && opMode.opModeIsActive());
         }
         else
