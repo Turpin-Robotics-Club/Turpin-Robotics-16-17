@@ -26,7 +26,7 @@ public class A_beacon1_0 extends LinearOpMode{
                 sleep(50);
                 drive.driveToBeacon(0.85);
 
-                sleep(10000);
+                //sleep(10000);
 
         }
     }
