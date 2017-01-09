@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.utils.RobotConstants;
 import org.firstinspires.ftc.teamcode.utils.Sensors;
 import org.firstinspires.ftc.teamcode.utils.newMove;
 
@@ -17,14 +18,14 @@ public class A_beacon1_0 extends LinearOpMode{
                 waitForStart();
                 Sensors.gyroDriftRead();
 
-
+                
                 drive.left(-45, 0.75);
                 sleep(50);
                 drive.forward(45, 0.75);
                 sleep(50);
                 //drive.left(-5, 0.75);
                 //sleep(50);
-                drive.driveToBeacon(0.85);
+                drive.driveToBeacon(0.65);
                 sleep(10000);
 
         }

@@ -25,7 +25,7 @@ public class newMove {
     DcMotor spinRight;
     Servo dump;
     static LinearOpMode opMode;
-    Servo lift;
+    public Servo lift;
     static boolean red;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
@@ -57,6 +57,11 @@ public class newMove {
         lift = hardware_map.get(Servo.class, "lift_servo");
         dump = hardware_map.get(Servo.class, "storage_servo");
         dump.setPosition(RobotConstants.StorageServoState.STORE.value());
+
+        spinLeft = hardware_map.get(DcMotor.class, "left_shooter");
+        spinRight = hardware_map.get(DcMotor.class, "right_shooter");
+        spinRight.setDirection(DcMotor.Direction.REVERSE);
+
         if (!red) {
             //BLUE
             FrontSpeed = RobotConstants.LEFT_MOTOR_POWER_FACTOR;
@@ -172,8 +177,6 @@ public class newMove {
         brmotor.setPower(BackSpeed * (0));
 
         resetEncoders();
-        telemetry.addData("it has", "begun");
-        telemetry.update();
 
 
     }
@@ -188,8 +191,65 @@ public class newMove {
 
 
 
-    public void driveToBeacon(double power)
-    {
+    public void driveToBeacon(double power) {
+        int i = 0;
+
+        resetEncoders();
+
+        flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        flmotor.setPower(FrontSpeed * (power));
+        frmotor.setPower(FrontSpeed * (-power));
+        blmotor.setPower(BackSpeed * (-power));
+        brmotor.setPower(BackSpeed * (power));
+
+
+        while (opMode.opModeIsActive() && Sensors.checkColor() == 'u') {
+            i++;
+            telemetry.addData("Loop Times", i);
+            telemetry.update();
+        }
+
+        if(Sensors.checkColor() == 'r' && red || Sensors.checkColor() == 'b' && !red)
+        {
+            flmotor.setPower(0);
+            frmotor.setPower(0);
+            blmotor.setPower(0);
+            brmotor.setPower(0);
+
+            for(int l = 0; l < 10000; l++);
+
+            left(2, 0.75);
+            forward(3.5, 0.68);
+        }
+        else if(Sensors.checkColor() == 'b' && red || Sensors.checkColor() == 'r' && !red)
+        {
+            flmotor.setPower(0);
+            frmotor.setPower(0);
+            blmotor.setPower(0);
+            brmotor.setPower(0);
+
+            for(int l = 0; l < 10000; l++);
+
+            left(-13, 0.75);
+            forward(3.5, 0.68);
+        }
+
+        if (Sensors.leye.red() > 2){
+            flmotor.setPower(0);
+            frmotor.setPower(0);
+            blmotor.setPower(0);
+            brmotor.setPower(0);
+        }
+
+
+
+    }
+
+/*
         initGyroPos = Sensors.gyroIntegratedHeading();
 
         while (Sensors.checkColor() != 'u' && opMode.opModeIsActive()){
@@ -222,7 +282,7 @@ public class newMove {
         brmotor.setPower(0);
 
     }
-
+*/
 
     /**
      *
@@ -469,11 +529,9 @@ public class newMove {
     }
 
 
-    public void powerUpShooter(DcMotor spin1, DcMotor spin2)
+    public void powerUpShooter()
     {
-        spinLeft = spin1;
-        spinRight = spin2;
-        spinRight.setDirection(DcMotor.Direction.REVERSE);
+
 
         spinLeft.setPower(-0.8);
         spinRight.setPower(-0.8);
