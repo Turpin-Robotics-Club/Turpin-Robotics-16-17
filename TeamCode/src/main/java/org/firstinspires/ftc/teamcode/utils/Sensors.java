@@ -59,12 +59,12 @@ public class Sensors {
         int red_value = leye.red();
         int blue_value = leye.blue();
 
-        if (red_value == blue_value) {
-            return 'u';
-        } else if (red_value > blue_value) {
+        if (red_value > 1 + blue_value) {
             return 'r';
-        } else {
+        } else if (blue_value > 1 + red_value) {
             return 'b';
+        } else {
+            return 'u';
         }
     }
 

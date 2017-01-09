@@ -192,21 +192,25 @@ public class newMove {
     {
         initGyroPos = Sensors.gyroIntegratedHeading();
 
+        while (Sensors.checkColor() != 'u' && opMode.opModeIsActive());
+
         flmotor.setPower(FrontSpeed * (-power));
         frmotor.setPower(FrontSpeed * (power));
         blmotor.setPower(BackSpeed * (power));
         brmotor.setPower(BackSpeed * (-power));
-
         //if(red)
         //{
-            //while (Sensors.checkColor() != 'u' && opMode.opModeIsActive());
-            while (opMode.opModeIsActive()) {
+
+            while (opMode.opModeIsActive() && Sensors.checkColor() == 'r') {
+
+                /*
                 flmotor.setPower(FrontSpeed * (-power));
                 frmotor.setPower(FrontSpeed * (power));
                 blmotor.setPower(BackSpeed * (power));
                 brmotor.setPower(BackSpeed * (-power));
 
                 if (Sensors.checkColor() == 'r') {
+
                     flmotor.setPower(0);
                     frmotor.setPower(0);
                     blmotor.setPower(0);
@@ -224,6 +228,7 @@ public class newMove {
                     telemetry.addData("Hasn't seen red", true);
                     telemetry.update();
                 }
+                */
             }
             telemetry.addData("Status", "Saw red");
             telemetry.update();
