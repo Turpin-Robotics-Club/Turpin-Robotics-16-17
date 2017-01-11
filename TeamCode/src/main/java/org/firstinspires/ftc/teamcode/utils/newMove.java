@@ -196,10 +196,10 @@ public class newMove {
 
         resetEncoders();
 
-        flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         flmotor.setPower(FrontSpeed * (power));
         frmotor.setPower(FrontSpeed * (-power));
@@ -223,7 +223,7 @@ public class newMove {
             for(int l = 0; l < 10000; l++);
 
             left(2, 0.75);
-            forward(3.2, 0.68);
+            forward(3.7, 0.68);
         }
         else if(Sensors.checkColor() == 'b' && red || Sensors.checkColor() == 'r' && !red)
         {
@@ -235,7 +235,7 @@ public class newMove {
             for(int l = 0; l < 10000; l++);
 
             left(-13, 0.75);
-            forward(3.2, 0.68);
+            forward(3.7, 0.68);
         }
 
         if (Sensors.leye.red() > 2){
