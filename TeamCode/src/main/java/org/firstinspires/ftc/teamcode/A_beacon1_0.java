@@ -18,10 +18,12 @@ public class A_beacon1_0 extends LinearOpMode{
                 waitForStart();
                 Sensors.gyroDriftRead();
 
-                
+
+
+
                 drive.left(-45, 0.75);
                 sleep(50);
-                drive.forward(52, 0.75);
+                drive.forward(48, 0.75);
                 sleep(50);
                 //drive.left(-5, 0.75);
                 //sleep(50);

@@ -183,9 +183,22 @@ public class newMove {
 
     public void dump()
     {
-        dump.setPosition(0);
-        while(opMode.opModeIsActive() && dump.getPosition() != 0);
-        dump.setPosition(255);
+
+        for(int I = 0; I<90000; I++)
+        {
+            dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
+        }
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value());
+
+    }
+
+    public void lift()
+    {
+        for(int I = 0; I<400000; I++)
+        {
+            lift.setPosition(RobotConstants.LiftServoState.LIFTED.value());
+        }
+        lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
 
     }
 
