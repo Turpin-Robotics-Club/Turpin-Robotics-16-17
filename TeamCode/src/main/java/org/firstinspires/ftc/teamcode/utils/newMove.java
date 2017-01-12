@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -553,6 +554,27 @@ public class newMove {
         spinRight.setPower(-0.8);
 
 
+    }
+
+    public void shootBall() {
+        lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value());
+
+        for (int i = 0; i < 30000; i++);
+
+        dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
+
+        for (double i = 0.0; i <= RobotConstants.MAX_SHOOTER_POWER; i += (RobotConstants.MAX_SHOOTER_POWER * 0.0125)) {
+            spinLeft.setPower(i);
+            spinRight.setPower(-i);
+            for (int s = 0; s < 10000; s++);
+        }
+
+        for (int i = 0; i < 500000; i++);
+        lift.setPosition(RobotConstants.LiftServoState.LIFTED.value());
+
+        for (int i = 0; i < 500000; i++);
+        lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
     }
 
     /* INVALID STATEMENT
