@@ -236,8 +236,8 @@ public class newMove {
 
             for(int l = 0; l < 10000; l++);
 
-            left(2, 0.75);
-            forward(3.7, 0.68);
+            left(1, 0.75);
+            forward(4.3, 0.68);
         }
         else if(Sensors.checkColor() == 'b' && red || Sensors.checkColor() == 'r' && !red)
         {
@@ -249,7 +249,7 @@ public class newMove {
             for(int l = 0; l < 10000; l++);
 
             left(-13, 0.75);
-            forward(3.7, 0.68);
+            forward(4.3, 0.68);
         }
 
         if (Sensors.leye.red() > 2){
@@ -564,17 +564,52 @@ public class newMove {
 
         dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
 
-        for (double i = 0.0; i <= RobotConstants.MAX_SHOOTER_POWER; i += (RobotConstants.MAX_SHOOTER_POWER * 0.0125)) {
-            spinLeft.setPower(i);
-            spinRight.setPower(-i);
+        double j;
+        for (j = 0.0; j <= RobotConstants.MAX_SHOOTER_POWER; j += (RobotConstants.MAX_SHOOTER_POWER * 0.0125)) {
+            spinLeft.setPower(j);
+            spinRight.setPower(-j);
             for (int s = 0; s < 10000; s++);
         }
 
-        for (int i = 0; i < 500000; i++);
+        for (int i = 0; i < 300000; i++){
+            spinRight.setPower(j);
+            spinLeft.setPower(j);
+        }
+
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value());
         lift.setPosition(RobotConstants.LiftServoState.LIFTED.value());
 
-        for (int i = 0; i < 500000; i++);
+        for (int i = 0; i < 250000; i++){
+            spinRight.setPower(j);
+            spinLeft.setPower(j);
+        };
+
         lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
+//
+        for (int i = 0; i < 200000; i++){
+            spinRight.setPower(j);
+            spinLeft.setPower(j);
+        }
+
+        dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
+
+        for (int i = 0; i < 500000; i++){
+            spinRight.setPower(j);
+            spinLeft.setPower(j);
+        }
+
+        lift.setPosition(RobotConstants.LiftServoState.LIFTED.value());
+
+        for (int i = 0; i < 300000; i++){
+            spinRight.setPower(j);
+            spinLeft.setPower(j);
+        }
+
+        lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
+
+        spinLeft.setPower(0);
+        spinRight.setPower(0);
+        dump.setPosition(RobotConstants.StorageServoState.STORE.value());
     }
 
     /* INVALID STATEMENT
