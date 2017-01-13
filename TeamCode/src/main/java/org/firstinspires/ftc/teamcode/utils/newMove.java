@@ -566,7 +566,7 @@ public class newMove {
         for (j = 0.0; j <= RobotConstants.MAX_SHOOTER_POWER; j += (RobotConstants.MAX_SHOOTER_POWER * 0.1)) {
             spinLeft.setPower(j);
             spinRight.setPower(-j);
-            for (int s = 0; s < 10000; s++);
+            //for (int s = 0; s < 10000; s++);
         }
 
         dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
