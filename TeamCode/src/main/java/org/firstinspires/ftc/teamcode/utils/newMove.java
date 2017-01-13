@@ -562,16 +562,16 @@ public class newMove {
 
         for (int i = 0; i < 30000; i++);
 
-        dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
-
         double j;
-        for (j = 0.0; j <= RobotConstants.MAX_SHOOTER_POWER; j += (RobotConstants.MAX_SHOOTER_POWER * 0.0125)) {
+        for (j = 0.0; j <= RobotConstants.MAX_SHOOTER_POWER; j += (RobotConstants.MAX_SHOOTER_POWER * 0.1)) {
             spinLeft.setPower(j);
             spinRight.setPower(-j);
             for (int s = 0; s < 10000; s++);
         }
 
-        for (int i = 0; i < 300000; i++){
+        dump.setPosition(RobotConstants.StorageServoState.RELEASE.value());
+
+        for (int i = 0; i < 500000; i++){
             spinRight.setPower(j);
             spinLeft.setPower(j);
         }
@@ -579,10 +579,10 @@ public class newMove {
         dump.setPosition(RobotConstants.StorageServoState.STORE.value());
         lift.setPosition(RobotConstants.LiftServoState.LIFTED.value());
 
-        for (int i = 0; i < 250000; i++){
+        for (int i = 0; i < 300000; i++){
             spinRight.setPower(j);
             spinLeft.setPower(j);
-        };
+        }
 
         lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
 //
