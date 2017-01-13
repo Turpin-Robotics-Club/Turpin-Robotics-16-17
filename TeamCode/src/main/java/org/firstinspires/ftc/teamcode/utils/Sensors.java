@@ -56,8 +56,17 @@ public class Sensors {
 
     public static char checkColor() {
 
-        int red_value = leye.red();
-        int blue_value = leye.blue();
+        int red_value;
+        int blue_value;
+
+        if (red) {
+            red_value = leye.red();
+            blue_value = leye.blue();
+        }
+        else {
+            red_value = reye.red();
+            blue_value = reye.blue();
+        }
 
         if (red_value >= 2 + blue_value) {
             return 'r';
