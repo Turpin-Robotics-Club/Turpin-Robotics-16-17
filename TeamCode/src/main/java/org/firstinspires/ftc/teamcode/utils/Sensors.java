@@ -30,10 +30,11 @@ public class Sensors {
     private static LinearOpMode opMode;
     private static Telemetry telemetry;
 
+
     /**
-     * Initializes any Sensors
      *
-     * @param hardware_map The HardwareMap instance from the calling OpMode
+     * @param _opMode to get FTC data
+     * @param reds whether or not we are on the red team
      */
     public static void initialize(OpMode _opMode, boolean reds) {
         if (_opMode instanceof LinearOpMode) {
@@ -52,7 +53,7 @@ public class Sensors {
 
         reye = hardware_map.get(ColorSensor.class, "reye");
         reye.setI2cAddress(I2cAddr.create8bit(0x5c));
-        reye.enableLed(true);
+        reye.enableLed(false);
 
         gyro = (ModernRoboticsI2cGyro)hardware_map.gyroSensor.get("gyro");
 
@@ -60,12 +61,12 @@ public class Sensors {
         gyro.calibrate();
         runtime.reset();
         while (gyro.isCalibrating() && opMode.opModeIsActive()) {
-            telemetry.addData("Time", runtime.seconds());
-            telemetry.update();
+            //telemetry.addData("Time", runtime.seconds());
+            //telemetry.update();
             for (int i = 0; i < 10000; i++);
         }
-        telemetry.addData("Done", "");
-        telemetry.update();
+        //telemetry.addData("Done", "");
+        //telemetry.update();
         gyroInitial = gyro.getHeading();
 
     }

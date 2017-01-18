@@ -224,6 +224,12 @@ public class newMove {
         while (opMode.opModeIsActive() && Sensors.checkColor() == 'u') {
             i++;
             telemetry.addData("Loop Times", i);
+            telemetry.addData("left red value" ,Sensors.leye.red());
+            telemetry.addData("left blue value", Sensors.leye.blue());
+
+            telemetry.addData("right red value", Sensors.reye.red());
+            telemetry.addData("right blue value", Sensors.reye.blue());
+
             telemetry.update();
         }
 
