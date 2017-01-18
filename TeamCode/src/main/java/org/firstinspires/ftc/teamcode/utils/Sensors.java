@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,34 +24,48 @@ public class Sensors {
     public static ColorSensor line_sensor;
     public static ModernRoboticsI2cGyro gyro;
     static boolean red;
-    static Telemetry telemetry;
     static  double trueHeading;
     public static double driverOffset = 0;
+
+    private static LinearOpMode opMode;
+    private static Telemetry telemetry;
 
     /**
      * Initializes any Sensors
      *
      * @param hardware_map The HardwareMap instance from the calling OpMode
      */
-    public static void initialize(HardwareMap hardware_map, Telemetry tele, boolean reds) {
+    public static void initialize(OpMode _opMode, boolean reds) {
+        if (_opMode instanceof LinearOpMode) {
+            opMode = (LinearOpMode) _opMode;
+        } else {
+            return;
+        }
+        HardwareMap hardware_map = opMode.hardwareMap;
         leye = hardware_map.get(ColorSensor.class, "leye");
         leye.setI2cAddress(I2cAddr.create8bit(0x4c));
         leye.enableLed(false);
         red = reds;
 
-        telemetry = tele;
+        telemetry = opMode.telemetry;
 
 
         reye = hardware_map.get(ColorSensor.class, "reye");
         reye.setI2cAddress(I2cAddr.create8bit(0x5c));
-        reye.enableLed(false);
+        reye.enableLed(true);
 
         gyro = (ModernRoboticsI2cGyro)hardware_map.gyroSensor.get("gyro");
 
         driverOffset = 0;
         gyro.calibrate();
         runtime.reset();
-        while (gyro.isCalibrating());
+        while (gyro.isCalibrating() && opMode.opModeIsActive()) {
+            telemetry.addData("Time", runtime.seconds());
+            telemetry.update();
+            for (int i = 0; i < 10000; i++);
+        }
+        telemetry.addData("Done", "");
+        telemetry.update();
         gyroInitial = gyro.getHeading();
 
     }

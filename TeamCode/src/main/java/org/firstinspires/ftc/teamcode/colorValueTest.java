@@ -14,7 +14,7 @@ import java.util.Iterator;
 public class colorValueTest extends OpMode {
     @Override
     public void init() {
-        Sensors.initialize(hardwareMap,telemetry,true);
+        Sensors.initialize(this,true);
     }
 
 
@@ -32,7 +32,6 @@ public class colorValueTest extends OpMode {
             telemetry.addData("Color I2C Address", Integer.toHexString(sensor.getI2cAddress().get8Bit()));
         }
         telemetry.update();
-
 
 
     }

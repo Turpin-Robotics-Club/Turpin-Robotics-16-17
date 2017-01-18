@@ -58,7 +58,7 @@ public class move {
         }
         frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        Sensors.initialize(hardware_map, telemetry, red);
+        Sensors.initialize(opMode, red);
         resetEncoders();
     }
 
