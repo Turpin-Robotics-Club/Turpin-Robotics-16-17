@@ -68,7 +68,7 @@ public class newMove {
             FrontSpeed = RobotConstants.LEFT_MOTOR_POWER_FACTOR;
             BackSpeed = 1;
             frmotor = hardware_map.get(DcMotor.class, "back_left");
-            flmotor = hardware_map.get(DcMotor.class, "front_right");
+            flmotor = hardware_map.get(DcMotor.class, "front_left");
             brmotor = hardware_map.get(DcMotor.class, "back_right");
             blmotor = hardware_map.get(DcMotor.class, "front_right");
             telemetry.addData(">", "BLUE");
@@ -90,7 +90,7 @@ public class newMove {
 
         telemetry.update();
 
-        Sensors.initialize(hardware_map, telemetry, red);
+        Sensors.initialize(opMode, red);
         lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
         resetEncoders();
     }

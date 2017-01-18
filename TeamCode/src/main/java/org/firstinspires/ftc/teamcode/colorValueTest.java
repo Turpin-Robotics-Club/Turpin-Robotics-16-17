@@ -11,14 +11,14 @@ import org.firstinspires.ftc.teamcode.utils.Sensors;
 public class colorValueTest extends OpMode {
     @Override
     public void init() {
-        Sensors.initialize(hardwareMap,telemetry,true);
+        Sensors.initialize(this,true);
     }
 
 
     @Override
     public void loop() {
-        telemetry.addData("red value" ,Sensors.leye.red());
-        telemetry.addData("blue value", Sensors.leye.blue());
+        telemetry.addData("red value" ,Sensors.reye.red());
+        telemetry.addData("blue value", Sensors.reye.blue());
 
 
     }
