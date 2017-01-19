@@ -264,7 +264,8 @@ public class newMove {
             blmotor.setPower(0);
             brmotor.setPower(0);
         }
-        forward(-3.2, 0.68);
+        //forward(-3.2, 0.68);
+        forward(-3.6, 0.68);
 
 
 
