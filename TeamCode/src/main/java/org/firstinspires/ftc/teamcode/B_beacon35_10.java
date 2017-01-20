@@ -26,14 +26,14 @@ public class B_beacon35_10 extends LinearOpMode
 
         newMove drive = new newMove(this);
         waitForStart();
-
+        Sensors.gyroDriftRead();
 
         sleep(10000);
-        drive.left(-120, 0.5);
+        drive.left(-115, 0.95);
         sleep(50);
-        drive.forward2(30, 0.3, 0.7, 0.1);
+        drive.forward(40,0.7);
         sleep(50);
-        drive.left(-8, 0.5);
+        drive.left(-20, 0.5);
     }
 
 }

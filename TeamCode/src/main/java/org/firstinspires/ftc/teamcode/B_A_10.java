@@ -25,17 +25,20 @@ public class B_A_10 extends LinearOpMode
 
 
 
-        sleep(10000);
+        sleep(9000);
         drive.left(-3,0.8);
         sleep(50);
-        drive.forward(40, 0.7);
+        drive.forward(35, 0.7);
         sleep(50);
         drive.shootBall();
         sleep(50);
-        drive.left(-45.5,0.8);
+        drive.left(-40,0.8);
         sleep(50);
-        drive.turnLeft(90);
+        drive.forward(5,0.7);
         sleep(50);
+        drive.forward(-5,0.7);
+        sleep(50);
+        drive.left(-15,0.75);
     }
 
 }

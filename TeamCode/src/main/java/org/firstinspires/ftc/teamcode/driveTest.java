@@ -20,7 +20,7 @@ public class driveTest extends LinearOpMode{
 
         sleep(1000);
 
-        drive.left(-100, 0.75);
+        drive.forward(-100, 0.75);
 
     }
 }
