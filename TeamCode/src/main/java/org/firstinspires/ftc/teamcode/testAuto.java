@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.utils.move;
 import org.firstinspires.ftc.teamcode.utils.newMove;
 
 @Autonomous(name="Autonomous Test", group="Autonomous Tests")
-//@Disabled
+@Disabled
 
 public class testAuto extends LinearOpMode {
 

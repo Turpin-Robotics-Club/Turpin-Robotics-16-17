@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.utils.Sensors;
 import org.firstinspires.ftc.teamcode.utils.newMove;
 
 
-@Autonomous(name="A beacon1 0", group="Autonomous Finals")
+@Autonomous(name="A beacon2 0", group="Autonomous Finals")
 //@Disabled
-public class A_beacon1_0 extends LinearOpMode{
+public class A_beacon2_0 extends LinearOpMode{
             public void runOpMode() throws InterruptedException{
 
 
