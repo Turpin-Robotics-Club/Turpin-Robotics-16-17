@@ -12,22 +12,22 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class newMove {
 
-    double FrontSpeed;
-    double BackSpeed;
+    public double FrontSpeed;
+    public double BackSpeed;
 
 
     TouchSensor Tsensor;
-    DcMotor flmotor;
-    DcMotor frmotor;
-    DcMotor blmotor;
-    DcMotor brmotor;
+    public DcMotor flmotor;
+    public DcMotor frmotor;
+    public DcMotor blmotor;
+    public DcMotor brmotor;
     Telemetry telemetry;
     DcMotor spinLeft;
     DcMotor spinRight;
     Servo dump;
     static LinearOpMode opMode;
     public Servo lift;
-    static boolean red;
+    public static boolean red;
     /* UNUSED VARIABLES (for unused classes)
     double relativeHeading = 0;
     double xmove;
