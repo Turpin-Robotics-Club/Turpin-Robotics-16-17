@@ -268,11 +268,17 @@ public class NewMecanumDrive extends OpMode {
 
 
 
-        frontleft.setPower(flvalue);
-        frontright.setPower((frvalue));
-        backleft.setPower((blvalue));
-        backright.setPower((brvalue));
-
+        if(gamepad1.right_bumper) {
+            frontleft.setPower((flvalue)/2);
+            frontright.setPower((frvalue)/2);
+            backleft.setPower((blvalue)/2);
+            backright.setPower((brvalue)/2);
+        } else {
+            frontleft.setPower(flvalue);
+            frontright.setPower((frvalue));
+            backleft.setPower((blvalue));
+            backright.setPower((brvalue));
+        }
 
         /**OPERATOR'S SECTION**/
 
