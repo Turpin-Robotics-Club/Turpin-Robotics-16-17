@@ -22,16 +22,16 @@ public class A_beacon2_0 extends LinearOpMode{
 
                 sleep(1000);
 
-                drive.left(-39, 0.75);
+                drive.left(-39, 0.8);
                 sleep(50);
                 //drive.forward(46.5, 0.75);
-                drive.forward(40.0, 0.75);
+                drive.forward(39.0, 0.8);
                 sleep(50);
                 //drive.left(-5, 0.75);
                 //sleep(50);
                 drive.driveToBeacon(0.65);
                 sleep(50);
-                drive.left(-20, 0.75);
+                drive.left(-20, 0.85);
                 sleep(50);
                 drive.driveToBeacon(0.65);
                 //sleep(10000);
