@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.utils.newMove;
  *
  * This is also completely untested, so if it starts the robot apocalypse, I did nothing, I swear
  */
-@Autonomous(name="_A beacon2 0", group="Autonomous Finals")
+@Autonomous(name="Ben A beacon2 0", group="Autonomous Finals")
 public class _A_beacon2_0 extends LinearOpMode {
 
     private newMove drive;
@@ -56,14 +56,14 @@ public class _A_beacon2_0 extends LinearOpMode {
         spinLeft.setPower(0.0);
         spinRight.setPower(0.0);
 
-        drive.left(-39, 0.75);
+        drive.left(-39, 0.8);
         sleepWhileRunning(0.05);
-        drive.forward(40.0, 0.75);
+        drive.forward(39.0, 0.8);
         sleepWhileRunning(0.05);
 
         driveToBeacon(0.65);
         sleepWhileRunning(0.05);
-        drive.left(-20, 0.75);
+        drive.left(-20, 0.85);
         driveToBeacon(0.65);
 
     }
@@ -75,22 +75,23 @@ public class _A_beacon2_0 extends LinearOpMode {
             spinRight.setPower(power);
         }
 
-        sleepWhileRunning(0.025);
+        sleepWhileRunning(0.5);
 
         storageServo.setPosition(RobotConstants.StorageServoState.RELEASE.value());
 
-        sleepWhileRunning(0.05);
+        sleepWhileRunning(2.5);
 
         liftServo.setPosition(RobotConstants.LiftServoState.LIFTED.value());
         storageServo.setPosition(RobotConstants.StorageServoState.STORE.value());
 
-        sleepWhileRunning(0.025);
+        sleepWhileRunning(2.5);
 
         liftServo.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
     }
 
     public void sleepWhileRunning(double seconds) throws InterruptedException  { // Hopefully keep robot actually doing something while still 'sleeping'
         ElapsedTime time = new ElapsedTime();
+        time.reset();
 
         while (opModeIsActive() && time.seconds() < seconds);
     }
@@ -127,19 +128,19 @@ public class _A_beacon2_0 extends LinearOpMode {
         switch (Sensors.checkColor()) { // Why a switch statement? Because I'm too lazy to write if's, and yes, I'm that lazy
             case 'r':
                 if (drive.red) { // We're on the red team, and the beacon is red
-                    drive.left(1, 0.75);
+                    //drive.left(1, 0.75);
                     drive.forward(4.3, 0.58);
                 } else { // Something in the previous comment isn't true, so do something else
-                    drive.left(-13, 0.75);
+                    drive.left(-12, 0.75);
                     drive.forward(4.3, 0.58);
                 }
                 break;
             case 'b':
                 if (drive.red) { // We see a blue beacon, but we're on the red team and don't like blue
-                    drive.left(-13, 0.75);
+                    drive.left(-12, 0.75);
                     drive.forward(4.3, 0.58);
                 } else { // We're one the blue team and this beacon is blue, so we got that going for us, which is nice
-                    drive.left(1, 0.75);
+                    //drive.left(1, 0.75);
                     drive.forward(4.3, 0.58);
                 }
                 break;
