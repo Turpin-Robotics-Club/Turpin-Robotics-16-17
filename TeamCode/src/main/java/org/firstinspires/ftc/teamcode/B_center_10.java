@@ -26,19 +26,19 @@ public class B_center_10 extends LinearOpMode
 
 
         sleep(9000);
-        drive.left(-3, 0.8);
-        sleep(50);
-        drive.forward(35, 0.85);
-        sleep(50);
+        drive.left(-3, 0.95);
+        sleep(40);
+        drive.forward(35, 0.95);
+        sleep(40);
         drive.shootBall();
-        sleep(50);
-        drive.left(-37.5, 0.8);
-        sleep(50);
-        drive.forward(10, 0.8);
-        sleep(50);
-        drive.left(-15,0.85);
-        sleep(50);
-        drive.forward(-15, 0.85);
+        sleep(40);
+        drive.left(-37.5, 0.95);
+        sleep(40);
+        drive.forward(10, 0.95);
+        sleep(40);
+        drive.left(-15,0.95);
+        sleep(40);
+        drive.forward(-15, 0.95);
 
 
     }
