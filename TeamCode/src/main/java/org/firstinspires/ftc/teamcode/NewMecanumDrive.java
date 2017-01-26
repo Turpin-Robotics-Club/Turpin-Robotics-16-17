@@ -50,6 +50,7 @@ public class NewMecanumDrive extends OpMode {
 
     boolean shooterRunning = false;
 
+    double bumperPower = 0.4;
 
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
     private ElapsedTime runtime_y = new ElapsedTime();
@@ -269,10 +270,10 @@ public class NewMecanumDrive extends OpMode {
 
 
         if(gamepad1.right_bumper) {
-            frontleft.setPower((flvalue)/2);
-            frontright.setPower((frvalue)/2);
-            backleft.setPower((blvalue)/2);
-            backright.setPower((brvalue)/2);
+            frontleft.setPower((flvalue)* bumperPower);
+            frontright.setPower((frvalue) * bumperPower);
+            backleft.setPower((blvalue) * bumperPower);
+            backright.setPower((brvalue) * bumperPower);
         } else {
             frontleft.setPower(flvalue);
             frontright.setPower((frvalue));
