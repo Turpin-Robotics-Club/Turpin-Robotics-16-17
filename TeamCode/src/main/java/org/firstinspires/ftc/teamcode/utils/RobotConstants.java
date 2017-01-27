@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.utils;
 public class RobotConstants {
 
     //public static final double MAX_SHOOTER_POWER = 0.2775; //33 for corner // As of 1.19.2017
-    public static final double MAX_SHOOTER_POWER = 0.32; //as of 1/23/17: 0.29125
+    public static final double MAX_SHOOTER_POWER = 0.60; //as of 1/27/17: 0.32
     public static final int BUTTON_PRESS_WAIT = 2;
 
     public static final double LEFT_MOTOR_POWER_FACTOR = 1 / 1.545;
