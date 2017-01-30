@@ -50,7 +50,7 @@ public class NewMecanumDrive extends OpMode {
 
     boolean shooterRunning = false;
 
-    double bumperPower = 0.4;
+    double bumperPower = 0.3;
 
     private ElapsedTime runtimeStorageServo = new ElapsedTime();
     private ElapsedTime runtime_y = new ElapsedTime();

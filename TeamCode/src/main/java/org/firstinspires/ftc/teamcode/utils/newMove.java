@@ -248,7 +248,7 @@ public class newMove {
             for(int l = 0; l < 10000; l++);
 
             //left(0, 0.75);
-            forward(4.3, 0.58);
+            forward(4.3, 0.9);
         }
         else if(Sensors.checkColor() == 'b' && red || Sensors.checkColor() == 'r' && !red)
         {
@@ -259,18 +259,12 @@ public class newMove {
 
             for(int l = 0; l < 10000; l++);
 
-            left(-12, 0.75);
-            forward(4.3, 0.58);
+            left(-10, 0.75);
+            forward(4.3, 0.9);
         }
 
-        if (Sensors.leye.red() > 2){
-            flmotor.setPower(0);
-            frmotor.setPower(0);
-            blmotor.setPower(0);
-            brmotor.setPower(0);
-        }
         //forward(-3.2, 0.68);
-        forward(-3.6, 0.68);
+        forward(-3.6, 0.58);
 
 
 
