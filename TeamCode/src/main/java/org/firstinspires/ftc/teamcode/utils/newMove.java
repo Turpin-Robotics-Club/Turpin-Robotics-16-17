@@ -720,15 +720,27 @@ public class newMove {
         blmotor.setPower(.6);
         brmotor.setPower(.6);
 
-        double rawZ = Sensors.gyro.rawZ();
+        double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;
+        telemetry.addData("Difference", difference);
+        telemetry.addData("Raw Z", rawZ);
 
         if(Math.abs((rawZ - initGyroPos)) >= 2){
              if(difference < 0){
-
+                 telemetry.addData("In IF", true);
+                 flmotor.setPower(.0);
+                 blmotor.setPower(.0);
+                 frmotor.setPower(.0);
+                 brmotor.setPower(.0);
              }
+        } else {
+            flmotor.setPower(.6);
+            frmotor.setPower(.6);
+            blmotor.setPower(.6);
+            brmotor.setPower(.6);
         }
+        telemetry.update();
 
     }
 
