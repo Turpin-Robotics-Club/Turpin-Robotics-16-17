@@ -714,5 +714,22 @@ public class newMove {
         return;
     }
 */
+    public void isaacGyroCorrection(){
+        flmotor.setPower(.6);
+        frmotor.setPower(.6);
+        blmotor.setPower(.6);
+        brmotor.setPower(.6);
+
+        double rawZ = Sensors.gyro.rawZ();
+
+        double difference = rawZ - initGyroPos;
+
+        if(Math.abs((rawZ - initGyroPos)) >= 2){
+             if(difference < 0){
+
+             }
+        }
+
+    }
 
 }
