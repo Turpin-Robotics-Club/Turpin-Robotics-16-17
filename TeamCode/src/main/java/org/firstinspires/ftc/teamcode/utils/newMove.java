@@ -715,11 +715,6 @@ public class newMove {
     }
 */
     public void isaacGyroCorrection(){
-        flmotor.setPower(.6);
-        frmotor.setPower(.6);
-        blmotor.setPower(.6);
-        brmotor.setPower(.6);
-
         double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;
@@ -727,17 +722,22 @@ public class newMove {
         telemetry.addData("Raw Z", rawZ);
 
         if(Math.abs((rawZ - initGyroPos)) >= 2){
-             if(difference < 0){
+             if(difference > 180){
                  telemetry.addData("In IF", true);
-                 flmotor.setPower(.0);
-                 blmotor.setPower(.0);
-                 frmotor.setPower(.0);
-                 brmotor.setPower(.0);
+                 flmotor.setPower(.9);
+                 blmotor.setPower(.9);
+                 frmotor.setPower(.1);
+                 brmotor.setPower(.1);
+             } else{
+                 flmotor.setPower(.1);
+                 blmotor.setPower(.1);
+                 frmotor.setPower(.9);
+                 brmotor.setPower(.9);
              }
-        } else {
+        }else{
             flmotor.setPower(.6);
-            frmotor.setPower(.6);
             blmotor.setPower(.6);
+            frmotor.setPower(.6);
             brmotor.setPower(.6);
         }
         telemetry.update();
