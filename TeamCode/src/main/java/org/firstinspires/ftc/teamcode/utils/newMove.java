@@ -722,17 +722,27 @@ public class newMove {
         telemetry.addData("Raw Z", rawZ);
 
         if(Math.abs((rawZ - initGyroPos)) >= 2){
+
              if(difference > 180){
-                 telemetry.addData("In IF", true);
-                 flmotor.setPower(.9);
-                 blmotor.setPower(.9);
-                 frmotor.setPower(.1);
-                 brmotor.setPower(.1);
+                 //double offset = Math.pow(360 - difference, 2) / 150;
+                 if (difference < 355) {
+                     flmotor.setPower(0.9);
+                     blmotor.setPower(0.9);
+                     frmotor.setPower(.1);
+                     brmotor.setPower(.1);
+                 } else {
+                     flmotor.setPower(0.25);
+                     blmotor.setPower(0.25);
+                     frmotor.setPower(.1);
+                     brmotor.setPower(.1);
+                 }
              } else{
+                 //double offset = Math.pow(difference, 2) / 150;
+                 double offset = Math.max(0.005 * difference, .1);
                  flmotor.setPower(.1);
                  blmotor.setPower(.1);
-                 frmotor.setPower(.9);
-                 brmotor.setPower(.9);
+                 frmotor.setPower(offset);
+                 brmotor.setPower(offset);
              }
         }else{
             flmotor.setPower(.6);
