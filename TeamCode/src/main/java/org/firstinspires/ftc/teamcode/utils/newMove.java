@@ -714,7 +714,7 @@ public class newMove {
         return;
     }
 */
-    public void isaacGyroCorrection(){
+    public void isaacGyroCorrectionForward(){
         double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;
@@ -738,11 +738,17 @@ public class newMove {
                  }
              } else{
                  //double offset = Math.pow(difference, 2) / 150;
-                 double offset = Math.max(0.005 * difference, .1);
-                 flmotor.setPower(.1);
-                 blmotor.setPower(.1);
-                 frmotor.setPower(offset);
-                 brmotor.setPower(offset);
+                 if(difference < 5){
+                     flmotor.setPower(0.1);
+                     blmotor.setPower(0.1);
+                     frmotor.setPower(.25);
+                     brmotor.setPower(.25);
+                 }else{
+                     flmotor.setPower(0.1);
+                     blmotor.setPower(0.1);
+                     frmotor.setPower(.9);
+                     brmotor.setPower(.9);
+                 }
              }
         }else{
             flmotor.setPower(.6);
@@ -750,7 +756,51 @@ public class newMove {
             frmotor.setPower(.6);
             brmotor.setPower(.6);
         }
-        telemetry.update();
+
+    }
+
+    public void isaacGyroCorrectionBackward(){
+        double rawZ = Sensors.gyro.getHeading();
+
+        double difference = rawZ - initGyroPos;
+        telemetry.addData("Difference", difference);
+        telemetry.addData("Raw Z", rawZ);
+
+        if(Math.abs((rawZ - initGyroPos)) >= 2){
+
+            if(difference > 180){
+                //double offset = Math.pow(360 - difference, 2) / 150;
+                if (difference < 355) {
+                    frmotor.setPower(-0.9);
+                    brmotor.setPower(-0.9);
+                    flmotor.setPower(-.1);
+                    blmotor.setPower(-.1);
+                } else {
+                    frmotor.setPower(-0.25);
+                    brmotor.setPower(-0.25);
+                    flmotor.setPower(-.1);
+                    blmotor.setPower(-.1);
+                }
+            } else{
+                //double offset = Math.pow(difference, 2) / 150;
+                if(difference < 5){
+                    frmotor.setPower(-0.1);
+                    brmotor.setPower(-0.1);
+                    flmotor.setPower(-.25);
+                    blmotor.setPower(-.25);
+                }else{
+                    frmotor.setPower(-0.1);
+                    brmotor.setPower(-0.1);
+                    flmotor.setPower(-.9);
+                    blmotor.setPower(-.9);
+                }
+            }
+        }else{
+            flmotor.setPower(-.6);
+            blmotor.setPower(-.6);
+            frmotor.setPower(-.6);
+            brmotor.setPower(-.6);
+        }
 
     }
 
