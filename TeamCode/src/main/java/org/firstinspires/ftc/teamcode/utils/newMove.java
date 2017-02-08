@@ -714,6 +714,51 @@ public class newMove {
         return;
     }
 */
+
+    public void issacGyroCorrectionForward(double power) {
+        double rawZ = Sensors.gyro.getHeading();
+
+        double difference = rawZ - initGyroPos;
+        telemetry.addData("Difference", difference);
+        telemetry.addData("Raw Z", rawZ);
+
+        if (Math.abs((rawZ - initGyroPos)) >= 2) {
+
+            if (difference > 180) {
+                //double offset = Math.pow(360 - difference, 2) / 150;
+                if (difference < 355) {
+                    flmotor.setPower(0.9);
+                    blmotor.setPower(0.9);
+                    frmotor.setPower(.1);
+                    brmotor.setPower(.1);
+                } else {
+                    flmotor.setPower(0.25);
+                    blmotor.setPower(0.25);
+                    frmotor.setPower(.1);
+                    brmotor.setPower(.1);
+                }
+            } else {
+                //double offset = Math.pow(difference, 2) / 150;
+                if (difference < 5){
+                    flmotor.setPower(0.1);
+                    blmotor.setPower(0.1);
+                    frmotor.setPower(.25);
+                    brmotor.setPower(.25);
+                } else {
+                    flmotor.setPower(0.1);
+                    blmotor.setPower(0.1);
+                    frmotor.setPower(.9);
+                    brmotor.setPower(.9);
+                }
+            }
+        } else {
+            flmotor.setPower(power);
+            blmotor.setPower(power);
+            frmotor.setPower(power);
+            brmotor.setPower(power);
+        }
+    }
+
     public void isaacGyroCorrectionForward(){
         double rawZ = Sensors.gyro.getHeading();
 
