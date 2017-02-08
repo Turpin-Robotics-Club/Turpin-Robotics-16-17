@@ -23,13 +23,11 @@ public class IsaacGyroCorrection extends LinearOpMode{
         drive.blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        drive.flmotor.setPower(-.6);
-        drive.frmotor.setPower(-.6);
-        drive.blmotor.setPower(-.6);
-        drive.brmotor.setPower(-.6);
+
 
         while (opModeIsActive()) {
-            drive.isaacGyroCorrectionBackward();
+            drive.isaacGyroCorrectionLeft();
+
         }
 
 
