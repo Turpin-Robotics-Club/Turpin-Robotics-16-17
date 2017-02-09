@@ -759,6 +759,51 @@ public class newMove {
         }
     }
 
+    public void isaacGyroCorrectionLeft(double power){
+        double rawZ = Sensors.gyro.getHeading();
+
+        double difference = rawZ - initGyroPos;
+        telemetry.addData("Difference", difference);
+        telemetry.addData("Raw Z", rawZ);
+
+        if(Math.abs((rawZ - initGyroPos)) >= 2){
+
+            if(difference > 180){
+                //double offset = Math.pow(360 - difference, 2) / 150;
+                if (difference < 355) {
+                    flmotor.setPower(-.6);
+                    frmotor.setPower(.1);
+                    blmotor.setPower(.9);
+                    brmotor.setPower(-.6);
+                } else {
+                    flmotor.setPower(-.6);
+                    frmotor.setPower(.3);
+                    blmotor.setPower(.7);
+                    brmotor.setPower(-.6);
+                }
+            } else{
+                //double offset = Math.pow(difference, 2) / 150;
+                if(difference < 5){
+                    flmotor.setPower(-.7);
+                    frmotor.setPower(.6);
+                    blmotor.setPower(.6);
+                    brmotor.setPower(-.3);
+                }else{
+                    flmotor.setPower(-.9);
+                    frmotor.setPower(.6);
+                    blmotor.setPower(.6);
+                    brmotor.setPower(-.1);
+                }
+            }
+        }else{
+            flmotor.setPower(-power);
+            frmotor.setPower(power);
+            blmotor.setPower(power);
+            brmotor.setPower(-power);
+        }
+
+    }
+
     public void isaacGyroCorrectionForward(){
         double rawZ = Sensors.gyro.getHeading();
 
@@ -804,7 +849,7 @@ public class newMove {
 
     }
 
-    public void isaacGyroCorrectionBackward(){
+    public void isaacGyroCorrectionBackward(double power){
         double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;
@@ -841,10 +886,10 @@ public class newMove {
                 }
             }
         }else{
-            flmotor.setPower(-.6);
-            blmotor.setPower(-.6);
-            frmotor.setPower(-.6);
-            brmotor.setPower(-.6);
+            flmotor.setPower(-power);
+            blmotor.setPower(-power);
+            frmotor.setPower(-power);
+            brmotor.setPower(-power);
         }
 
     }
@@ -894,7 +939,7 @@ public class newMove {
 
     }
 
-    public void isaacGyroCorrectionRight(){
+    public void isaacGyroCorrectionRight(double power){
         double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;
@@ -932,10 +977,10 @@ public class newMove {
                 }
             }
         }else{
-            flmotor.setPower(.6);
-            frmotor.setPower(-.6);
-            blmotor.setPower(-.6);
-            brmotor.setPower(.6);
+            flmotor.setPower(power);
+            frmotor.setPower(-power);
+            blmotor.setPower(-power);
+            brmotor.setPower(power);
         }
 
     }
