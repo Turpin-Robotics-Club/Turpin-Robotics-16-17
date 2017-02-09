@@ -26,7 +26,7 @@ public class IsaacGyroCorrection extends LinearOpMode{
 
 
         while (opModeIsActive()) {
-            drive.isaacGyroCorrectionLeft();
+            drive.isaacGyroCorrectionRight();
 
         }
 

@@ -894,4 +894,50 @@ public class newMove {
 
     }
 
+    public void isaacGyroCorrectionRight(){
+        double rawZ = Sensors.gyro.getHeading();
+
+        double difference = rawZ - initGyroPos;
+        telemetry.addData("Difference", difference);
+        telemetry.addData("Raw Z", rawZ);
+
+        if(Math.abs((rawZ - initGyroPos)) >= 2){
+
+            if(difference > 180){
+                //double offset = Math.pow(360 - difference, 2) / 150;
+                if (difference < 355) {
+                    flmotor.setPower(.6);
+                    frmotor.setPower(-.9);
+                    blmotor.setPower(-.1);
+                    brmotor.setPower(.6);
+                } else {
+                    flmotor.setPower(.6);
+                    frmotor.setPower(-.7);
+                    blmotor.setPower(-.3);
+                    brmotor.setPower(.6);
+                }
+            } else{
+                //double offset = Math.pow(difference, 2) / 150;
+                if(difference < 5){
+                    flmotor.setPower(.3);
+                    frmotor.setPower(-.6);
+                    blmotor.setPower(-.6);
+                    brmotor.setPower(.7);
+
+                }else{
+                    flmotor.setPower(.1);
+                    frmotor.setPower(-.6);
+                    blmotor.setPower(-.6);
+                    brmotor.setPower(.9);
+                }
+            }
+        }else{
+            flmotor.setPower(.6);
+            frmotor.setPower(-.6);
+            blmotor.setPower(-.6);
+            brmotor.setPower(.6);
+        }
+
+    }
+
 }
