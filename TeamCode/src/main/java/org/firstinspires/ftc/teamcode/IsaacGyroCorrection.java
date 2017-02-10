@@ -29,20 +29,23 @@ public class IsaacGyroCorrection extends LinearOpMode{
         while (opModeIsActive()) {
             telemetry.addData("Time", runtime.seconds());
             telemetry.update();
-            if (runtime.seconds() < 4) {
+            if (runtime.seconds() < 3.5) {
                 drive.issacGyroCorrectionForward(0.5);
                 sleep(75);
-            } else if (runtime.seconds() > 4 && runtime.seconds() < 8) {
-                drive.isaacGyroCorrectionLeft(0.6);
+            } else if (runtime.seconds() > 3.5 && runtime.seconds() < 7) {
+                drive.isaacGyroCorrectionLeft(0.8);
                 sleep(75);
-            } else if (runtime.seconds() > 8 && runtime.seconds() < 12) {
+            } else if (runtime.seconds() > 7 && runtime.seconds() < 10.5) {
                 drive.isaacGyroCorrectionBackward(0.5);
                 sleep(75);
-            } else if (runtime.seconds() > 12 && runtime.seconds() < 16) {
-                drive.isaacGyroCorrectionRight(0.6);
+            } else if (runtime.seconds() > 10.5 && runtime.seconds() < 14) {
+                drive.isaacGyroCorrectionRight(0.8);
+            } else if (runtime.seconds() > 14) {
+                drive.flmotor.setPower(0.0);
+                drive.frmotor.setPower(0.0);
+                drive.blmotor.setPower(0.0);
+                drive.brmotor.setPower(0.0);
             }
         }
-
-
     }
 }
