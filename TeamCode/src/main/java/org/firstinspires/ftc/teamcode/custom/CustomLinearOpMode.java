@@ -85,10 +85,6 @@ public abstract class CustomLinearOpMode extends LinearOpMode {
         resetEncoders();
     }
 
-    protected double encoderPosition() {
-        return (flmotor.getCurrentPosition() + frmotor.getCurrentPosition() + blmotor.getCurrentPosition()+brmotor.getCurrentPosition()) * 0.25;
-    }
-
     protected void resetEncoders() {
         flmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -270,57 +266,6 @@ public abstract class CustomLinearOpMode extends LinearOpMode {
             frmotor.setPower(-power);
             blmotor.setPower(-power);
             brmotor.setPower(power);
-        }
-    }
-
-    protected void benGyroCorrectionForward(double distance, double power) {
-        double rawZ = Sensors.gyro.getHeading();
-
-        double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
-        double ROTATIONS = distance / CIRCUMFERENCE;
-        double COUNTS = ENCODER_CPR * ROTATIONS * GEAR_RATIO;
-
-        int counts[] = new int[] {(int)COUNTS, (int)COUNTS, (int)COUNTS, (int)COUNTS};
-
-
-        resetEncoders();
-        flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        flmotor.setTargetPosition((int) counts[0]);
-        frmotor.setTargetPosition((int) counts[1]);
-        blmotor.setTargetPosition((int) counts[2]);
-        brmotor.setTargetPosition((int) counts[3]);
-
-
-        flmotor.setPower(FrontSpeed * (power));
-        frmotor.setPower(FrontSpeed * (power));
-        blmotor.setPower(BackSpeed * (power));
-        brmotor.setPower(BackSpeed * (power));
-
-        double difference = rawZ - initGyroPos;
-        telemetry.addData("Difference", difference);
-        telemetry.addData("Raw Z", rawZ);
-
-
-        while (opModeIsActive()) {
-            if (Math.abs((rawZ - initGyroPos)) >= 2) { // We need to correct
-            } else {
-                if (flmotor.getCurrentPosition() == counts[0] && frmotor.getCurrentPosition() == counts[1] &&
-                        blmotor.getCurrentPosition() == counts[2] && brmotor.getCurrentPosition() == counts[3]) {
-                    flmotor.setPower(0);
-                    frmotor.setPower(0);
-                    blmotor.setPower(0);
-                    brmotor.setPower(0);
-                } else {
-                    flmotor.setPower(FrontSpeed * (power));
-                    frmotor.setPower(FrontSpeed * (power));
-                    blmotor.setPower(BackSpeed * (power));
-                    brmotor.setPower(BackSpeed * (power));
-                }
-            }
         }
     }
 }
