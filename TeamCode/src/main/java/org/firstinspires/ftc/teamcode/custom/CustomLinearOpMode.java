@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.custom;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,6 +24,10 @@ public abstract class CustomLinearOpMode extends LinearOpMode {
     // Shooter motors
     protected DcMotor spinLeft = null;
     protected DcMotor spinRight = null;
+
+    // Collecting motors
+    protected DcMotor knocker;
+    protected DcMotor collector;
 
     // Servos
     protected Servo lift = null;
@@ -79,6 +82,10 @@ public abstract class CustomLinearOpMode extends LinearOpMode {
             brmotor.setDirection(DcMotorSimple.Direction.REVERSE);
             frmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+
+        knocker = hardwareMap.dcMotor.get("knocker");
+        collector = hardwareMap.dcMotor.get("collector");
+        collector.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Sensors.initialize(this, red);
         lift.setPosition(RobotConstants.LiftServoState.UNLIFTED.value());
