@@ -68,10 +68,10 @@ public class BenGyroCorrection extends CustomLinearOpMode {
 
 
         resetEncoders();
-        flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         flmotor.setTargetPosition(counts[0]);
         frmotor.setTargetPosition(counts[1]);
@@ -88,6 +88,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         telemetry.addData("Raw Z", rawZ);
 
         while (opModeIsActive()) {
+            telemetry.addData("Original Counts", COUNTS);
             if (Math.abs((rawZ - initGyroPos)) >= 2) { // We need to correct
                 if (!correcting) {
                     originals[0] = flmotor.getCurrentPosition();
@@ -167,6 +168,19 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     brmotor.setPower(BackSpeed * (power));
                 }
             }
+            for (int i = 0; i < delta.length; i++) {
+                telemetry.addData("Delta " + i, delta[i]);
+            }
+            telemetry.addData("flmotor target", flmotor.getTargetPosition());
+            telemetry.addData("frmotor target", frmotor.getTargetPosition());
+            telemetry.addData("blmotor target", blmotor.getTargetPosition());
+            telemetry.addData("brmotor target", brmotor.getTargetPosition());
+
+            telemetry.addData("flmotor current", flmotor.getCurrentPosition());
+            telemetry.addData("frmotor current", frmotor.getCurrentPosition());
+            telemetry.addData("blmotor current", blmotor.getCurrentPosition());
+            telemetry.addData("brmotor current", brmotor.getCurrentPosition());
+            telemetry.update();
         }
     }
 
