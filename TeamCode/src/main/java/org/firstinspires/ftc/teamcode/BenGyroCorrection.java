@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.custom.CustomLinearOpMode;
 import org.firstinspires.ftc.teamcode.utils.Sensors;
-import org.firstinspires.ftc.teamcode.utils.newMove;
 
 /**
  * Created by isaacgoldner on 2/1/17.
@@ -26,7 +23,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        benGyroCorrectionForward(24, 0.5);
+        benGyroCorrectionForward(32, 0.5);
         sleep(100);
         /*
         runtime.reset();
@@ -97,12 +94,12 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     originals[3] = brmotor.getCurrentPosition();
                     correcting = true;
 
-                    flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
-                if (difference > 180) {
+                if (difference > 180) { // Pushed left, correct right
                     if (difference < 355) {
                         flmotor.setPower(0.9);
                         blmotor.setPower(0.9);
@@ -114,11 +111,11 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                         frmotor.setPower(.1);
                         brmotor.setPower(.1);
                     }
-                    delta[0] += flmotor.getCurrentPosition() - originals[0];
-                    delta[1] += frmotor.getCurrentPosition() - originals[1];
-                    delta[2] += blmotor.getCurrentPosition() - originals[2];
-                    delta[3] += brmotor.getCurrentPosition() - originals[3];
-                } else {
+                    delta[0] = (flmotor.getCurrentPosition() - originals[0]);
+                    delta[1] = (frmotor.getCurrentPosition() - originals[1]);
+                    delta[2] = -(blmotor.getCurrentPosition() - originals[2]);
+                    delta[3] = -(brmotor.getCurrentPosition() - originals[3]);
+                } else { // Pushed right, correct left
                     if (difference < 5){
                         flmotor.setPower(0.1);
                         blmotor.setPower(0.1);
@@ -130,10 +127,10 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                         frmotor.setPower(.9);
                         brmotor.setPower(.9);
                     }
-                    delta[0] += flmotor.getCurrentPosition() - originals[0];
-                    delta[1] += frmotor.getCurrentPosition() - originals[1];
-                    delta[2] += blmotor.getCurrentPosition() - originals[2];
-                    delta[3] += brmotor.getCurrentPosition() - originals[3];
+                    delta[0] = -(flmotor.getCurrentPosition() - originals[0]);
+                    delta[1] = -(frmotor.getCurrentPosition() - originals[1]);
+                    delta[2] = (blmotor.getCurrentPosition() - originals[2]);
+                    delta[3] = (brmotor.getCurrentPosition() - originals[3]);
                 }
 
             } else {
@@ -143,13 +140,14 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     frmotor.setPower(0);
                     blmotor.setPower(0);
                     brmotor.setPower(0);
+                    break;
                 } else if (correcting) {
                     correcting = false;
 
-                    flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    frmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    blmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    brmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                     flmotor.setTargetPosition(counts[0] + delta[0]);
                     frmotor.setTargetPosition(counts[1] + delta[1]);
@@ -182,6 +180,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
             telemetry.addData("brmotor current", brmotor.getCurrentPosition());
             telemetry.update();
         }
+        resetEncoders();
     }
 
     /**
