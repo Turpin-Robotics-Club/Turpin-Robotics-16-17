@@ -23,7 +23,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        benGyroCorrectionForward(32, 0.5);
+        benGyroCorrectionForward(48, 0.5);
         sleep(100);
         /*
         runtime.reset();
@@ -52,7 +52,6 @@ public class BenGyroCorrection extends CustomLinearOpMode {
     }
 
     protected void benGyroCorrectionForward(double distance, double power) {
-        double rawZ = Sensors.gyro.getHeading();
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -62,7 +61,6 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         int originals[] = new int[4];
         int delta[] = new int[] {0,0,0,0};
         boolean correcting = false;
-
 
         resetEncoders();
         flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -75,18 +73,20 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         blmotor.setTargetPosition(counts[2]);
         brmotor.setTargetPosition(counts[3]);
 
-        flmotor.setPower(FrontSpeed * (power));
-        frmotor.setPower(FrontSpeed * (power));
-        blmotor.setPower(BackSpeed * (power));
-        brmotor.setPower(BackSpeed * (power));
-
-        double difference = rawZ - initGyroPos;
-        telemetry.addData("Difference", difference);
-        telemetry.addData("Raw Z", rawZ);
+        flmotor.setPower(power);
+        frmotor.setPower(power);
+        blmotor.setPower(power);
+        brmotor.setPower(power);
 
         while (opModeIsActive()) {
+            double rawZ = Sensors.gyro.getHeading();
+            double difference = rawZ - initGyroPos;
+            telemetry.addData("Difference", difference);
+            telemetry.addData("Raw Z", rawZ);
+
             telemetry.addData("Original Counts", COUNTS);
             if (Math.abs((rawZ - initGyroPos)) >= 2) { // We need to correct
+                telemetry.addData("Correcting", true);
                 if (!correcting) {
                     originals[0] = flmotor.getCurrentPosition();
                     originals[1] = frmotor.getCurrentPosition();
@@ -134,6 +134,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                 }
 
             } else {
+                /*
                 if (flmotor.getCurrentPosition() == counts[0] && frmotor.getCurrentPosition() == counts[1] &&
                         blmotor.getCurrentPosition() == counts[2] && brmotor.getCurrentPosition() == counts[3]) {
                     flmotor.setPower(0);
@@ -142,6 +143,8 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     brmotor.setPower(0);
                     break;
                 } else if (correcting) {
+                */
+                if (correcting) {
                     correcting = false;
 
                     flmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -154,16 +157,16 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     blmotor.setTargetPosition(counts[2] + delta[2]);
                     brmotor.setTargetPosition(counts[3] + delta[3]);
 
-                    flmotor.setPower(FrontSpeed * (power));
-                    frmotor.setPower(FrontSpeed * (power));
-                    blmotor.setPower(BackSpeed * (power));
-                    brmotor.setPower(BackSpeed * (power));
+                    flmotor.setPower(power);
+                    frmotor.setPower(power);
+                    blmotor.setPower(power);
+                    brmotor.setPower(power);
                     delta = new int[4];
                 } else {
-                    flmotor.setPower(FrontSpeed * (power));
-                    frmotor.setPower(FrontSpeed * (power));
-                    blmotor.setPower(BackSpeed * (power));
-                    brmotor.setPower(BackSpeed * (power));
+                    flmotor.setPower(power);
+                    frmotor.setPower(power);
+                    blmotor.setPower(power);
+                    brmotor.setPower(power);
                 }
             }
             for (int i = 0; i < delta.length; i++) {
@@ -184,39 +187,39 @@ public class BenGyroCorrection extends CustomLinearOpMode {
     }
 
     /**
-    public void runOpMode() throws InterruptedException {
+     public void runOpMode() throws InterruptedException {
 
-        newMove drive = new newMove(this);
-        ElapsedTime runtime = new ElapsedTime();
-        waitForStart();
+     newMove drive = new newMove(this);
+     ElapsedTime runtime = new ElapsedTime();
+     waitForStart();
 
-        drive.flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        drive.frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        drive.blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        drive.brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+     drive.flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+     drive.frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+     drive.blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+     drive.brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        runtime.reset();
-        while (opModeIsActive()) {
-            telemetry.addData("Time", runtime.seconds());
-            telemetry.update();
-            if (runtime.seconds() < 3.5) {
-                drive.issacGyroCorrectionForward(0.5);
-                sleep(75);
-            } else if (runtime.seconds() > 3.5 && runtime.seconds() < 7) {
-                drive.isaacGyroCorrectionLeft(0.8);
-                sleep(75);
-            } else if (runtime.seconds() > 7 && runtime.seconds() < 10.5) {
-                drive.isaacGyroCorrectionBackward(0.5);
-                sleep(75);
-            } else if (runtime.seconds() > 10.5 && runtime.seconds() < 14) {
-                drive.isaacGyroCorrectionRight(0.8);
-            } else if (runtime.seconds() > 14) {
-                drive.flmotor.setPower(0.0);
-                drive.frmotor.setPower(0.0);
-                drive.blmotor.setPower(0.0);
-                drive.brmotor.setPower(0.0);
-            }
-        }
-    }
+     runtime.reset();
+     while (opModeIsActive()) {
+     telemetry.addData("Time", runtime.seconds());
+     telemetry.update();
+     if (runtime.seconds() < 3.5) {
+     drive.issacGyroCorrectionForward(0.5);
+     sleep(75);
+     } else if (runtime.seconds() > 3.5 && runtime.seconds() < 7) {
+     drive.isaacGyroCorrectionLeft(0.8);
+     sleep(75);
+     } else if (runtime.seconds() > 7 && runtime.seconds() < 10.5) {
+     drive.isaacGyroCorrectionBackward(0.5);
+     sleep(75);
+     } else if (runtime.seconds() > 10.5 && runtime.seconds() < 14) {
+     drive.isaacGyroCorrectionRight(0.8);
+     } else if (runtime.seconds() > 14) {
+     drive.flmotor.setPower(0.0);
+     drive.frmotor.setPower(0.0);
+     drive.blmotor.setPower(0.0);
+     drive.brmotor.setPower(0.0);
+     }
+     }
+     }
      **/
 }
