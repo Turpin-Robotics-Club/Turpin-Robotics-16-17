@@ -23,7 +23,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        benGyroCorrectionForward(32, 0.5);
+        benGyroCorrectionForward(48, 0.5);
         sleep(100);
         /*
         runtime.reset();
@@ -52,7 +52,6 @@ public class BenGyroCorrection extends CustomLinearOpMode {
     }
 
     protected void benGyroCorrectionForward(double distance, double power) {
-        double rawZ = Sensors.gyro.getHeading();
 
         double CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
         double ROTATIONS = distance / CIRCUMFERENCE;
@@ -80,13 +79,15 @@ public class BenGyroCorrection extends CustomLinearOpMode {
         blmotor.setPower(BackSpeed * (power));
         brmotor.setPower(BackSpeed * (power));
 
-        double difference = rawZ - initGyroPos;
-        telemetry.addData("Difference", difference);
-        telemetry.addData("Raw Z", rawZ);
-
         while (opModeIsActive()) {
+            double rawZ = Sensors.gyro.getHeading();
+            double difference = rawZ - initGyroPos;
+            telemetry.addData("Difference", difference);
+            telemetry.addData("Raw Z", rawZ);
+
             telemetry.addData("Original Counts", COUNTS);
             if (Math.abs((rawZ - initGyroPos)) >= 2) { // We need to correct
+                telemetry.addData("Correcting", true);
                 if (!correcting) {
                     originals[0] = flmotor.getCurrentPosition();
                     originals[1] = frmotor.getCurrentPosition();
@@ -94,10 +95,10 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     originals[3] = brmotor.getCurrentPosition();
                     correcting = true;
 
-                    flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    flmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    frmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 }
                 if (difference > 180) { // Pushed left, correct right
                     if (difference < 355) {
