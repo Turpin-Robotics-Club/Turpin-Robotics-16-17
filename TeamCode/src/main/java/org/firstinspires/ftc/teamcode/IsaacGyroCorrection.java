@@ -25,6 +25,7 @@ public class IsaacGyroCorrection extends LinearOpMode{
         drive.blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        /*
         runtime.reset();
         while (opModeIsActive()) {
             telemetry.addData("Time", runtime.seconds());
@@ -47,5 +48,13 @@ public class IsaacGyroCorrection extends LinearOpMode{
                 drive.brmotor.setPower(0.0);
             }
         }
+        */
+
+        while(opModeIsActive()){
+            drive.isaacGyroCorrectionRight(.7);
+
+        }
+
+
     }
 }
