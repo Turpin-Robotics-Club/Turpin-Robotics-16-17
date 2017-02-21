@@ -715,7 +715,7 @@ public class newMove {
     }
 */
 
-    public void issacGyroCorrectionForward(double power) {
+    public void isaacGyroCorrectionForward(double power) {
         double rawZ = Sensors.gyro.getHeading();
 
         double difference = rawZ - initGyroPos;

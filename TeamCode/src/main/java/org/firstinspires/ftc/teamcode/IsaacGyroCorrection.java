@@ -25,7 +25,7 @@ public class IsaacGyroCorrection extends LinearOpMode{
         drive.blmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.brmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        /*
+/*
         runtime.reset();
         while (opModeIsActive()) {
             telemetry.addData("Time", runtime.seconds());
@@ -33,14 +33,14 @@ public class IsaacGyroCorrection extends LinearOpMode{
             if (runtime.seconds() < 3.5) {
                 drive.issacGyroCorrectionForward(0.5);
                 sleep(75);
-            } else if (runtime.seconds() > 3.5 && runtime.seconds() < 7) {
-                drive.isaacGyroCorrectionLeft(0.8);
+            } else if (runtime.seconds() > 3.5 && runtime.seconds() < 8.5) {
+                drive.isaacGyroCorrectionLeft(0.9);
                 sleep(75);
-            } else if (runtime.seconds() > 7 && runtime.seconds() < 10.5) {
+            } else if (runtime.seconds() > 8.5 && runtime.seconds() < 12) {
                 drive.isaacGyroCorrectionBackward(0.5);
                 sleep(75);
-            } else if (runtime.seconds() > 10.5 && runtime.seconds() < 14) {
-                drive.isaacGyroCorrectionRight(0.8);
+            } else if (runtime.seconds() > 12 && runtime.seconds() < 17) {
+                drive.isaacGyroCorrectionRight(0.9);
             } else if (runtime.seconds() > 14) {
                 drive.flmotor.setPower(0.0);
                 drive.frmotor.setPower(0.0);
@@ -51,10 +51,8 @@ public class IsaacGyroCorrection extends LinearOpMode{
         */
 
         while(opModeIsActive()){
-            drive.isaacGyroCorrectionRight(.7);
-
+            drive.isaacGyroCorrectionForward(.7);
         }
-
 
     }
 }
