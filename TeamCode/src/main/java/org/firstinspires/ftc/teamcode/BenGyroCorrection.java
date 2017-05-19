@@ -87,6 +87,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
             telemetry.addData("Original Counts", COUNTS);
             if (Math.abs((rawZ - initGyroPos)) >= 2) { // We need to correct
                 telemetry.addData("Correcting", true);
+                /*
                 if (!correcting) {
                     originals[0] = flmotor.getCurrentPosition();
                     originals[1] = frmotor.getCurrentPosition();
@@ -94,11 +95,12 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     originals[3] = brmotor.getCurrentPosition();
                     correcting = true;
 
-                    flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                    brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    //flmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    //frmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    //blmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    //brmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
+                */
                 if (difference > 180) { // Pushed left, correct right
                     if (difference < 355) {
                         flmotor.setPower(0.9);
@@ -111,10 +113,10 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                         frmotor.setPower(.1);
                         brmotor.setPower(.1);
                     }
-                    delta[0] = (flmotor.getCurrentPosition() - originals[0]);
-                    delta[1] = (frmotor.getCurrentPosition() - originals[1]);
-                    delta[2] = -(blmotor.getCurrentPosition() - originals[2]);
-                    delta[3] = -(brmotor.getCurrentPosition() - originals[3]);
+                    //delta[0] = (flmotor.getCurrentPosition() - originals[0]);
+                    //delta[1] = (frmotor.getCurrentPosition() - originals[1]);
+                    //delta[2] = -(blmotor.getCurrentPosition() - originals[2]);
+                    //delta[3] = -(brmotor.getCurrentPosition() - originals[3]);
                 } else { // Pushed right, correct left
                     if (difference < 5){
                         flmotor.setPower(0.1);
@@ -127,10 +129,10 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                         frmotor.setPower(.9);
                         brmotor.setPower(.9);
                     }
-                    delta[0] = -(flmotor.getCurrentPosition() - originals[0]);
-                    delta[1] = -(frmotor.getCurrentPosition() - originals[1]);
-                    delta[2] = (blmotor.getCurrentPosition() - originals[2]);
-                    delta[3] = (brmotor.getCurrentPosition() - originals[3]);
+                    //delta[0] = -(flmotor.getCurrentPosition() - originals[0]);
+                    //delta[1] = -(frmotor.getCurrentPosition() - originals[1]);
+                    //delta[2] = (blmotor.getCurrentPosition() - originals[2]);
+                    //delta[3] = (brmotor.getCurrentPosition() - originals[3]);
                 }
 
             } else {
@@ -144,6 +146,7 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     break;
                 } else if (correcting) {
                 */
+                /*
                 if (correcting) {
                     correcting = false;
 
@@ -156,18 +159,18 @@ public class BenGyroCorrection extends CustomLinearOpMode {
                     frmotor.setTargetPosition(counts[1] + delta[1]);
                     blmotor.setTargetPosition(counts[2] + delta[2]);
                     brmotor.setTargetPosition(counts[3] + delta[3]);
-
-                    flmotor.setPower(power);
-                    frmotor.setPower(power);
-                    blmotor.setPower(power);
-                    brmotor.setPower(power);
                     delta = new int[4];
-                } else {
-                    flmotor.setPower(power);
-                    frmotor.setPower(power);
-                    blmotor.setPower(power);
-                    brmotor.setPower(power);
                 }
+                */
+                double fl_target_power = Math.min((Math.pow(flmotor.getTargetPosition() - flmotor.getCurrentPosition(), 2) / 10000000) + 0.25, 0.6);
+                double fr_target_power = Math.min((Math.pow(frmotor.getTargetPosition() - frmotor.getCurrentPosition(), 2) / 10000000) + 0.25, 0.6);
+                double bl_target_power = Math.min((Math.pow(blmotor.getTargetPosition() - blmotor.getCurrentPosition(), 2) / 10000000) + 0.25, 0.6);
+                double br_target_power = Math.min((Math.pow(brmotor.getTargetPosition() - brmotor.getCurrentPosition(), 2) / 10000000) + 0.25, 0.6);
+
+                flmotor.setPower(fl_target_power);
+                frmotor.setPower(fr_target_power);
+                blmotor.setPower(bl_target_power);
+                brmotor.setPower(br_target_power);
             }
             for (int i = 0; i < delta.length; i++) {
                 telemetry.addData("Delta " + i, delta[i]);

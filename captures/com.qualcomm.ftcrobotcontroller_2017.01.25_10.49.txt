@@ -1,0 +1,125 @@
+AGGREGATED OVER LAST 24 HOURS:
+Per-Package Stats:
+  * com.qualcomm.ftcrobotcontroller / u0a146:
+      * com.qualcomm.ftcrobotcontroller / u0a146:
+               TOTAL: 44% (18MB-20MB-25MB/15MB-18MB-22MB over 163)
+                 Top: 44% (18MB-20MB-25MB/15MB-18MB-22MB over 163)
+          (Last Act): 1.8% (18MB-19MB-22MB/16MB-17MB-19MB over 11)
+            (Cached): 0.02%
+      * com.qualcomm.ftccommon.FtcRobotControllerService:
+        Process: com.qualcomm.ftcrobotcontroller
+            Running count 33 / time 45%
+              Bound count 33 / time 45%
+          Executing count 33 / time 0.01%
+  * com.qualcomm.ftcrobotcontroller / u0a147:
+      * com.qualcomm.ftcrobotcontroller / u0a147:
+               TOTAL: 6.2% (18MB-21MB-23MB/16MB-18MB-21MB over 28)
+                 Top: 6.2% (18MB-21MB-23MB/16MB-18MB-21MB over 28)
+             Service: 0.00%
+          (Last Act): 2.3% (18MB-21MB-22MB/16MB-18MB-20MB over 4)
+            (Cached): 0.03%
+      * com.qualcomm.ftccommon.FtcRobotControllerService:
+        Process: com.qualcomm.ftcrobotcontroller
+            Running count 14 / time 8.5%
+              Bound count 14 / time 8.5%
+          Executing count 16 / time 0.00%
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+      * com.qualcomm.ftcrobotcontroller / u0a148:
+               TOTAL: 41% (18MB-21MB-24MB/16MB-19MB-22MB over 156)
+                 Top: 41% (18MB-21MB-24MB/16MB-19MB-22MB over 156)
+             Service: 0.01%
+          (Last Act): 0.74% (18MB-19MB-20MB/16MB-17MB-18MB over 4)
+            (Cached): 0.08%
+      * com.qualcomm.ftccommon.FtcRobotControllerService:
+        Process: com.qualcomm.ftcrobotcontroller
+            Running count 48 / time 42%
+              Bound count 48 / time 42%
+          Executing count 53 / time 0.01%
+
+Summary:
+  * com.qualcomm.ftcrobotcontroller / u0a146:
+           TOTAL: 44% (18MB-20MB-25MB/15MB-18MB-22MB over 163)
+             Top: 44% (18MB-20MB-25MB/15MB-18MB-22MB over 163)
+      (Last Act): 1.8% (18MB-19MB-22MB/16MB-17MB-19MB over 11)
+        (Cached): 0.02%
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+           TOTAL: 41% (18MB-21MB-24MB/16MB-19MB-22MB over 156)
+             Top: 41% (18MB-21MB-24MB/16MB-19MB-22MB over 156)
+         Service: 0.01%
+      (Last Act): 0.74% (18MB-19MB-20MB/16MB-17MB-18MB over 4)
+        (Cached): 0.08%
+  * com.qualcomm.ftcrobotcontroller / u0a147:
+           TOTAL: 6.2% (18MB-21MB-23MB/16MB-18MB-21MB over 28)
+             Top: 6.2% (18MB-21MB-23MB/16MB-18MB-21MB over 28)
+         Service: 0.00%
+      (Last Act): 2.3% (18MB-21MB-22MB/16MB-18MB-20MB over 4)
+        (Cached): 0.03%
+
+Run time Stats:
+  SOff/Norm: +2h44m21s60ms
+  SOn /Norm: +9h1m13s688ms
+      TOTAL: +11h45m34s748ms
+
+          Start time: 2017-01-20 06:50:19
+  Total elapsed time: +12h23m48s769ms (partial) libdvm.so chromeview
+
+AGGREGATED OVER LAST 3 HOURS:
+Per-Package Stats:
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+      * com.qualcomm.ftcrobotcontroller / u0a148:
+               TOTAL: 96% (19MB-21MB-23MB/16MB-19MB-21MB over 90)
+                 Top: 96% (19MB-21MB-23MB/16MB-19MB-21MB over 90)
+             Service: 0.00%
+          (Last Act): 1.6% (18MB-18MB-19MB/16MB-16MB-16MB over 2)
+            (Cached): 0.24%
+      * com.qualcomm.ftccommon.FtcRobotControllerService:
+        Process: com.qualcomm.ftcrobotcontroller
+            Running count 28 / time 98%
+              Bound count 28 / time 98%
+          Executing count 31 / time 0.01%
+
+Summary:
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+           TOTAL: 96% (19MB-21MB-23MB/16MB-19MB-21MB over 90)
+             Top: 96% (19MB-21MB-23MB/16MB-19MB-21MB over 90)
+         Service: 0.00%
+      (Last Act): 1.6% (18MB-18MB-19MB/16MB-16MB-16MB over 2)
+        (Cached): 0.24%
+
+Run time Stats:
+  SOff/Norm: +60s153ms
+  SOn /Norm: +2h56m35s31ms
+      TOTAL: +2h57m35s184ms
+
+          Start time: 2017-01-24 14:17:09
+  Total elapsed time: +3h34m37s80ms (partial) libdvm.so chromeview
+
+CURRENT STATS:
+Per-Package Stats:
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+      * com.qualcomm.ftcrobotcontroller / u0a148:
+               TOTAL: 95% (19MB-21MB-22MB/16MB-18MB-20MB over 14)
+                 Top: 95% (19MB-21MB-22MB/16MB-18MB-20MB over 14)
+             Service: 0.01%
+          (Last Act): 2.1%
+            (Cached): 0.08%
+      * com.qualcomm.ftccommon.FtcRobotControllerService:
+        Process: com.qualcomm.ftcrobotcontroller
+            Running count 8 / time 96%
+              Bound count 8 / time 96%
+          Executing count 9 / time 0.03%
+
+Summary:
+  * com.qualcomm.ftcrobotcontroller / u0a148:
+           TOTAL: 95% (19MB-21MB-22MB/16MB-18MB-20MB over 14)
+             Top: 95% (19MB-21MB-22MB/16MB-18MB-20MB over 14)
+         Service: 0.01%
+      (Last Act): 2.1%
+        (Cached): 0.08%
+
+Run time Stats:
+  SOn /Norm: +24m18s549ms (running)
+      TOTAL: +24m18s549ms
+
+          Start time: 2017-01-25 10:24:53
+  Total elapsed time: +24m30s494ms (partial) libdvm.so chromeview
